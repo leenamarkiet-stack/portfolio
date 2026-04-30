@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Case Study — Leena Markiet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+  html,body{margin:0;padding:0;background:#FFEDCE;font-family:Inter,sans-serif;}
+  *,*::before,*::after{box-sizing:border-box;}
+  img{display:block;width:100%;height:100%;object-fit:cover;}
+  @keyframes blob1 { 0%,100%{transform:translate(0,0) scale(1);} 33%{transform:translate(-60px,30px) scale(1.1);} 66%{transform:translate(40px,-20px) scale(0.95);} }
+  @keyframes blob2 { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(60px,40px) scale(1.1);} }
+  .blob-a { animation: blob1 22s ease-in-out infinite; }
+  .blob-b { animation: blob2 26s ease-in-out infinite; }
+
+  .hd { padding:14px 48px; }
+  .hero { padding:48px 64px 40px; }
+  .hero-img { padding:0 64px; }
+  .body-pad { padding:56px 64px 80px; }
+  .meta-grid { grid-template-columns:repeat(5,1fr); }
+  .img-grid { grid-template-columns:repeat(2,1fr); }
+  .hero-h1 { font-size:56px; }
+  @media (max-width: 720px) {
+    .hd { padding:12px 20px; flex-wrap:wrap; gap:8px; }
+    .hd > * { font-size:10px !important; }
+    .hero { padding:32px 20px 28px; }
+    .hero-img { padding:0 20px; }
+    .body-pad { padding:40px 20px 60px; }
+    .hero-h1 { font-size:34px !important; }
+    .meta-grid { grid-template-columns:repeat(2,1fr) !important; }
+    .img-grid { grid-template-columns:1fr !important; }
+  }
+</style>
+</head>
+<body>
+<script>
+const P={cream:'#FFEDCE',peach:'#FFC193',coral:'#FF8383',red:'#FF3737',
+         sage:'#C3CC9B',forest:'#546B41',ink:'#1F1A14',paper:'#FFFAF0'};
+
+const DEFAULT_PROJECTS=[
+  {id:"p1",title:"Reimagining outpatient triage",client:"Nordic Health",role:"Lead Service Designer",year:"2025",tags:["Service Design","Healthcare","Research"],description:"End-to-end redesign of a triage flow used by 2,400 nurses across 14 hospitals.",cover:{hue:18,label:"Triage flow"},
+   caseStudy:{overview:"Brief context: who I worked with, the problem they were facing, and the outcome we landed on.",team:"1 PM, 2 Engineers, 1 Researcher",duration:"16 weeks",heroImage:"",sections:[{heading:"Discovery",body:"What we found in research. Quotes from interviews, key tensions, the mess.",images:[{label:"Research wall",url:""},{label:"Journey map",url:""}]},{heading:"Synthesis",body:"How insights became opportunities. Frameworks, principles, where we placed bets.",images:[{label:"Opportunity map",url:""},{label:"Workshop output",url:""}]},{heading:"Design & Delivery",body:"What shipped, how it tested, what changed because of this work.",images:[{label:"Final UI 01",url:""},{label:"Final UI 02",url:""}]}]}},
+  {id:"p2",title:"A calmer banking app",client:"Pilvi Bank",role:"UX/UI Designer",year:"2024",tags:["UX/UI","Fintech","Mobile"],description:"Reduced support tickets by 31% with a redesigned daily-banking experience.",cover:{hue:200,label:"Mobile banking"},
+   caseStudy:{overview:"Brief context about this project.",team:"1 PM, 3 Engineers",duration:"12 weeks",heroImage:"",sections:[{heading:"Discovery",body:"Research findings.",images:[{label:"Research",url:""},{label:"Insights",url:""}]},{heading:"Design",body:"Design process.",images:[{label:"Wireframes",url:""},{label:"Final design",url:""}]},{heading:"Outcome",body:"What shipped.",images:[{label:"Launch",url:""},{label:"Impact",url:""}]}]}},
+  {id:"p3",title:"Citizen permit service",client:"City of Tampere",role:"Service Designer",year:"2024",tags:["Service Design","Public Sector","Research"],description:"Cross-departmental service blueprint and digital application portal.",cover:{hue:140,label:"Permit service"},
+   caseStudy:{overview:"Brief context.",team:"2 PMs, 4 Engineers, 1 Researcher",duration:"20 weeks",heroImage:"",sections:[{heading:"Discovery",body:"Research.",images:[{label:"Research wall",url:""},{label:"Blueprint",url:""}]},{heading:"Co-design",body:"Co-design sessions.",images:[{label:"Workshop",url:""},{label:"Prototype",url:""}]},{heading:"Delivery",body:"Outcome.",images:[{label:"Portal",url:""},{label:"Impact",url:""}]}]}},
+  {id:"p4",title:"Design system from scratch",client:"Verso (in-house)",role:"Design System Lead",year:"2023",tags:["Design System","UI","Tooling"],description:"Built and shipped a 240-component Figma library with token pipeline.",cover:{hue:280,label:"Design system"},
+   caseStudy:{overview:"Brief context.",team:"2 Designers, 2 Engineers",duration:"24 weeks",heroImage:"",sections:[{heading:"Audit",body:"Audit findings.",images:[{label:"Audit",url:""},{label:"Patterns",url:""}]},{heading:"Build",body:"Component build.",images:[{label:"Components",url:""},{label:"Tokens",url:""}]},{heading:"Adoption",body:"Rollout.",images:[{label:"Docs",url:""},{label:"Adoption",url:""}]}]}},
+  {id:"p5",title:"Onboarding for first-time investors",client:"Taimi Invest",role:"UX Designer",year:"2023",tags:["UX/UI","Fintech","Onboarding"],description:"Lifted activation by 22%.",cover:{hue:60,label:"Onboarding"},
+   caseStudy:{overview:"Brief context.",team:"1 PM, 2 Engineers",duration:"10 weeks",heroImage:"",sections:[{heading:"Research",body:"User research.",images:[{label:"Research",url:""},{label:"Personas",url:""}]},{heading:"Design",body:"Design iterations.",images:[{label:"Flow",url:""},{label:"UI",url:""}]},{heading:"Launch",body:"Outcome.",images:[{label:"Launch",url:""},{label:"Metrics",url:""}]}]}},
+  {id:"p6",title:"Workshops in a box",client:"Self-initiated",role:"Designer & Facilitator",year:"2023",tags:["Service Design","Facilitation","Toolkit"],description:"Open-source toolkit for journey-mapping workshops.",cover:{hue:340,label:"Workshop toolkit"},
+   caseStudy:{overview:"Brief context.",team:"Solo",duration:"Ongoing",heroImage:"",sections:[{heading:"Problem",body:"The problem.",images:[{label:"Problem",url:""},{label:"Context",url:""}]},{heading:"Build",body:"How I built it.",images:[{label:"Toolkit",url:""},{label:"Cards",url:""}]},{heading:"Impact",body:"600+ teams.",images:[{label:"Usage",url:""},{label:"Feedback",url:""}]}]}},
+  {id:"p7",title:"Voice-first elderly care",client:"Hoiva Co.",role:"Service & UX Designer",year:"2022",tags:["Service Design","Voice UI","Accessibility"],description:"Voice companion piloted with 80 residents.",cover:{hue:240,label:"Voice care"},
+   caseStudy:{overview:"Brief context.",team:"1 PM, 3 Engineers, 1 Researcher",duration:"18 weeks",heroImage:"",sections:[{heading:"Research",body:"User research.",images:[{label:"Interviews",url:""},{label:"Journey",url:""}]},{heading:"Design",body:"Voice UI design.",images:[{label:"Flows",url:""},{label:"Prototype",url:""}]},{heading:"Pilot",body:"Pilot results.",images:[{label:"Pilot",url:""},{label:"Outcome",url:""}]}]}},
+  {id:"p8",title:"Restaurant ops dashboard",client:"Kitchn",role:"UI Designer",year:"2022",tags:["UX/UI","B2B","Data"],description:"Dense, glanceable dashboard.",cover:{hue:120,label:"Ops dashboard"},
+   caseStudy:{overview:"Brief context.",team:"1 PM, 4 Engineers",duration:"8 weeks",heroImage:"",sections:[{heading:"Discovery",body:"Discovery.",images:[{label:"Research",url:""},{label:"Data",url:""}]},{heading:"Design",body:"Dashboard design.",images:[{label:"Wireframe",url:""},{label:"Final",url:""}]},{heading:"Launch",body:"Outcome.",images:[{label:"Dashboard",url:""},{label:"Metrics",url:""}]}]}},
+];
+
+function loadData() {
+  try {
+    const s=localStorage.getItem('portfolio_data');
+    if(s){const d=JSON.parse(s);return{bio:d.bio,projects:d.projects||DEFAULT_PROJECTS};}
+  }catch(e){}
+  return{projects:DEFAULT_PROJECTS};
+}
+
+const params=new URLSearchParams(location.search);
+const id=params.get('id')||'p1';
+const {projects,bio}=loadData();
+const project=projects.find(p=>p.id===id)||projects[0];
+const cs=project.caseStudy||(DEFAULT_PROJECTS.find(p=>p.id===id)||DEFAULT_PROJECTS[0]).caseStudy;
+
+// Update title
+document.title=`${project.title} — Leena Markiet`;
+
+const hue=project.cover.hue||18;
+const coverGrad=`linear-gradient(135deg,hsl(${hue},70%,85%),hsl(${(hue+40)%360},65%,60%))`;
+
+function placeholder(label,h){
+  const c=`hsl(${h||hue},65%,70%)`;
+  const c2=`hsl(${(h||hue)+30},60%,55%)`;
+  return `<div style="width:100%;height:100%;background:linear-gradient(135deg,${c},${c2});display:flex;align-items:center;justify-content:center;">
+    <span style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.9);padding:6px 12px;border-radius:999px;background:rgba(0,0,0,0.15);">${label}</span>
+  </div>`;
+}
+
+function img(src,label,h){
+  if(src) return `<img src="${src}" alt="${label}" style="width:100%;height:100%;object-fit:cover;">`;
+  return placeholder(label,h);
+}
+
+const heroGradCSS=`linear-gradient(135deg,${P.cream} 0%,${P.peach} 60%,${P.coral} 100%)`;
+const btnGrad=`linear-gradient(135deg,${P.coral} 0%,${P.red} 100%)`;
+
+const sectionsHTML=cs.sections.map((sec,i)=>`
+  <section style="margin-bottom:56px;">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:18px;">
+      <span style="font-size:11px;letter-spacing:0.1em;font-weight:600;
+        background:linear-gradient(135deg,${P.coral},${P.red});
+        -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">0${i+1}</span>
+      <h2 style="margin:0;font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:30px;letter-spacing:-0.01em;color:${P.ink};">${sec.heading}</h2>
+    </div>
+    <p style="margin:0 0 24px;max-width:680px;font-size:15px;line-height:1.65;color:#3A332C;">${sec.body||'Content coming soon.'}</p>
+    <div class="img-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+      ${(sec.images||[]).map((im,j)=>`
+        <div style="aspect-ratio:4/3;border-radius:6px;overflow:hidden;border:1px solid rgba(0,0,0,0.08);">
+          ${img(im.url,im.label,hue+(j*30)+(i*10))}
+        </div>`).join('')}
+    </div>
+  </section>
+`).join('');
+
+document.body.innerHTML=`
+<div style="min-height:100vh;background:${P.cream};color:${P.ink};font-family:Inter,system-ui,sans-serif;">
+
+  <!-- Sticky header -->
+  <div class="hd" style="position:sticky;top:0;z-index:100;background:${P.cream};border-bottom:1px solid rgba(0,0,0,0.08);
+    display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(8px);">
+    <a href="index.html" style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+      color:${P.forest};text-decoration:none;display:flex;align-items:center;gap:8px;">
+      ← Back to portfolio
+    </a>
+    <span style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(31,26,20,0.45);">
+      Case study / ${project.year}
+    </span>
+    <a href="admin.html?edit=${project.id}" style="font-size:11px;letter-spacing:0.08em;
+      text-transform:uppercase;color:${P.forest};text-decoration:none;opacity:0.5;">
+      Edit ✎
+    </a>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero" style="background:${heroGradCSS};position:relative;overflow:hidden;">
+    <div aria-hidden class="blob-a" style="position:absolute;top:-100px;right:-60px;width:400px;height:400px;
+      background:radial-gradient(closest-side,${P.red}44,transparent 70%);filter:blur(20px);pointer-events:none;"></div>
+    <div aria-hidden class="blob-b" style="position:absolute;bottom:-120px;left:-80px;width:380px;height:380px;
+      background:radial-gradient(closest-side,${P.peach}88,transparent 70%);filter:blur(24px);pointer-events:none;"></div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;position:relative;">
+      ${project.tags.map(t=>`<span style="font-size:10.5px;letter-spacing:0.06em;padding:4px 10px;
+        border-radius:999px;background:${P.paper}cc;border:1px solid ${P.ink}18;color:${P.ink};">${t}</span>`).join('')}
+    </div>
+    <h1 class="hero-h1" style="margin:0;font-family:'Instrument Serif',Georgia,serif;font-weight:400;
+      line-height:1.05;letter-spacing:-0.02em;color:${P.ink};position:relative;max-width:800px;">
+      ${project.title}
+    </h1>
+    <p style="margin:20px 0 0;max-width:640px;font-size:17px;line-height:1.55;color:${P.ink};position:relative;">
+      ${cs.overview||project.description}
+    </p>
+
+    <!-- Meta strip -->
+    <div class="meta-grid" style="margin-top:32px;display:grid;gap:16px;
+      padding-top:20px;border-top:1px dashed ${P.ink}33;position:relative;">
+      ${[
+        {k:'Client',v:project.client},
+        {k:'Role',v:project.role},
+        {k:'Year',v:project.year},
+        {k:'Team',v:cs.team||'—'},
+        {k:'Duration',v:cs.duration||'—'},
+      ].map(m=>`<div>
+        <div style="font-size:10px;letter-spacing:0.1em;color:${P.forest};text-transform:uppercase;margin-bottom:4px;">${m.k}</div>
+        <div style="font-size:13px;color:${P.ink};">${m.v}</div>
+      </div>`).join('')}
+    </div>
+  </header>
+
+  <!-- Hero image -->
+  <div class="hero-img" style="margin-top:-1px;">
+    <div style="aspect-ratio:16/7;width:100%;border-radius:0 0 8px 8px;overflow:hidden;
+      border:1px solid rgba(0,0,0,0.06);border-top:none;">
+      ${img(cs.heroImage,`${project.title} — hero`)}
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="body-pad">
+    ${sectionsHTML}
+
+    <!-- Outro -->
+    <div style="padding-top:28px;border-top:1px solid rgba(0,0,0,0.12);
+      display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+      <span style="font-size:11px;letter-spacing:0.08em;color:#5C544A;text-transform:uppercase;">
+        End of case study
+      </span>
+      <a href="mailto:${(bio&&bio.email)||'leena@markiet.studo'}"
+        style="font-size:13px;font-weight:500;padding:10px 18px;border-radius:999px;
+          background:${btnGrad};color:${P.paper};text-decoration:none;
+          box-shadow:0 8px 20px -8px ${P.red}80;">
+        Talk about a project like this →
+      </a>
+    </div>
+  </div>
+
+</div>`;
+</script>
+</body>
+</html>
