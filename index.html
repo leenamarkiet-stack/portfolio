@@ -206,7 +206,7 @@ function Card({p,idx,dragProps}) {
         <p style={{margin:0,fontSize:12.5,lineHeight:1.45,color:P.ink}}>{p.description}</p>
         <div style={{marginTop:'auto',paddingTop:8,display:'flex',flexWrap:'wrap',gap:4}}>
           {p.tags.map(t=>{const c=tagColor(t);return <span key={t} style={{fontSize:11,fontWeight:500,letterSpacing:'0.03em',padding:'3px 9px',
-            borderRadius:4,whiteSpace:'nowrap',background:c.bg,color:c.fg,border:`1px solid ${c.br}`}}>{t}</span>;})}
+            borderRadius:4,whiteSpace:'nowrap',background:c.bg,color:c.fg}}>{t}</span>;})}
         </div>
         <div style={{fontSize:10,color:P.forest,letterSpacing:'0.06em',textTransform:'uppercase',
           paddingTop:4,borderTop:`1px dashed ${P.ink}18`,marginTop:4}}>{p.role}</div>
