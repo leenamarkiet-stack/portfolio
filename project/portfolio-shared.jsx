@@ -91,7 +91,7 @@ function PlaceholderImage({ hue = 30, label = "image", style = {}, dense = false
       }}/>
       <span style={{
         position: 'relative', zIndex: 1,
-        fontFamily: 'ui-monospace, "JetBrains Mono", "Fira Code", monospace',
+        fontFamily: '"Inter", system-ui, sans-serif',
         fontSize: dense ? 10 : 11, letterSpacing: '0.04em',
         color: fg, padding: '4px 8px',
         background: mono ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.6)',

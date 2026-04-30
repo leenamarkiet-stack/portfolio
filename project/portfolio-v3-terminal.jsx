@@ -10,7 +10,7 @@ function TerminalPortfolio({ accent = '#FF6A3D', serifFont, sansFont, monoFont }
   const fonts = {
     serif: `"${serifFont || 'Instrument Serif'}", Georgia, serif`,
     sans:  `"${sansFont  || 'Inter Tight'}", system-ui, sans-serif`,
-    mono:  `"${monoFont  || 'JetBrains Mono'}", ui-monospace, monospace`,
+    mono:  `"${monoFont  || 'Inter'}", system-ui, sans-serif`,
   };
 
   const openProject = items.find(p => p.id === open);

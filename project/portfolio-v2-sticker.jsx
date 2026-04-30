@@ -10,7 +10,7 @@ function StickerPortfolio({ accent = '#E0533C', serifFont, sansFont, monoFont })
   const fonts = {
     serif: `"${serifFont || 'Instrument Serif'}", Georgia, serif`,
     sans:  `"${sansFont  || 'Inter Tight'}", system-ui, sans-serif`,
-    mono:  `"${monoFont  || 'JetBrains Mono'}", ui-monospace, monospace`,
+    mono:  `"${monoFont  || 'Inter'}", system-ui, sans-serif`,
   };
 
   // Per-card tilt + accent block — deterministic by index so reorder feels right
