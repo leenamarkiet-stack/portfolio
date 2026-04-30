@@ -70,6 +70,22 @@ const btnGrad  = `linear-gradient(135deg,${P.coral} 0%,${P.red} 100%)`;
 const heroGrad = `linear-gradient(135deg,${P.cream} 0%,${P.peach} 60%,${P.coral} 100%)`;
 const SERIF    = `"Instrument Serif", Georgia, serif`;
 
+// Stable per-tag color: hash → palette
+const TAG_PALETTES = [
+  { bg:`${P.sage}55`,   fg:P.forest, br:`${P.forest}33` },
+  { bg:`${P.peach}66`,  fg:'#8B4513', br:`${P.coral}55` },
+  { bg:`${P.coral}33`,  fg:'#A02020', br:`${P.red}44` },
+  { bg:`${P.cream}cc`,  fg:'#7A5C2F', br:`${P.peach}88` },
+  { bg:'#D9E4C7',       fg:P.forest, br:`${P.sage}88` },
+  { bg:'#FFE0E0',       fg:'#8A2A2A', br:`${P.coral}66` },
+  { bg:'#F5DCC0',       fg:P.forest, br:`${P.peach}88` },
+  { bg:'#E8D5B7',       fg:'#5C3A0F', br:`${P.peach}66` },
+];
+function tagColor(tag){
+  let h=0; for(let i=0;i<tag.length;i++) h=(h*31+tag.charCodeAt(i))>>>0;
+  return TAG_PALETTES[h % TAG_PALETTES.length];
+}
+
 const DEFAULT_BIO = {
   name:"Leena Markiet", role:"Service Designer & UX/UI",
   location:"Abu Dhabi, United Arab Emirates",
@@ -189,8 +205,8 @@ function Card({p,idx,dragProps}) {
         <h3 style={{fontFamily:SERIF,fontWeight:400,fontSize:20,margin:0,lineHeight:1.2,color:P.ink}}>{p.title}</h3>
         <p style={{margin:0,fontSize:12.5,lineHeight:1.45,color:P.ink}}>{p.description}</p>
         <div style={{marginTop:'auto',paddingTop:8,display:'flex',flexWrap:'wrap',gap:4}}>
-          {p.tags.map(t=><span key={t} style={{fontSize:9.5,letterSpacing:'0.05em',padding:'2px 7px',
-            borderRadius:3,whiteSpace:'nowrap',background:`${P.sage}55`,color:P.forest}}>{t}</span>)}
+          {p.tags.map(t=>{const c=tagColor(t);return <span key={t} style={{fontSize:11,fontWeight:500,letterSpacing:'0.03em',padding:'3px 9px',
+            borderRadius:4,whiteSpace:'nowrap',background:c.bg,color:c.fg,border:`1px solid ${c.br}`}}>{t}</span>;})}
         </div>
         <div style={{fontSize:10,color:P.forest,letterSpacing:'0.06em',textTransform:'uppercase',
           paddingTop:4,borderTop:`1px dashed ${P.ink}18`,marginTop:4}}>{p.role}</div>
