@@ -102,6 +102,38 @@
     background: linear-gradient(135deg, var(--coral), var(--red)); color: var(--paper);
     text-decoration:none; box-shadow:0 8px 20px -8px rgba(255,55,55,0.5); }
 
+  /* Related projects */
+  .related { padding: 56px 0 0; }
+  .related-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:18px; gap:14px; }
+  .related-h2 { font-family:'Instrument Serif',Georgia,serif; font-weight:400; font-size:28px;
+    letter-spacing:-0.01em; margin:0; color: var(--ink); }
+  .related-link { font-size:11px; letter-spacing:0.08em; color: var(--forest);
+    text-transform:uppercase; text-decoration:none; }
+  .related-link:hover { color: var(--ink); }
+  .related-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .related-card { background: var(--paper); border:1px solid rgba(31,26,20,0.07);
+    border-radius:8px; overflow:hidden; cursor:pointer; text-decoration:none; color: inherit;
+    display:flex; flex-direction:column;
+    transition: transform .18s ease, box-shadow .18s ease; }
+  .related-card:hover { transform: translateY(-3px);
+    box-shadow: 0 18px 36px -16px rgba(31,26,20,0.25); }
+  .related-cover { aspect-ratio: 4/3; position: relative; overflow:hidden; }
+  .related-cover img { width:100%; height:100%; object-fit: cover; }
+  .related-cover .ph-gr { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .related-cover .ph-gr span { font-size:10.5px; letter-spacing:0.08em; color: var(--ink);
+    text-transform:uppercase; padding:5px 11px; border-radius:999px; background:rgba(255,250,240,0.85); }
+  .related-cover .ph-yr {
+    position:absolute; top:8px; right:8px;
+    font-size:10px; font-weight:500; padding:3px 8px; border-radius:999px;
+    color: var(--paper); background: linear-gradient(135deg, var(--coral), var(--red));
+  }
+  .related-body { padding: 12px 14px 14px; display:flex; flex-direction:column; gap:6px; flex:1; }
+  .related-title { font-family:'Instrument Serif',Georgia,serif; font-weight:400;
+    font-size:18px; line-height:1.2; margin:0; color: var(--ink); }
+  .related-tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:auto; padding-top:6px; }
+  .related-tag { font-size:10.5px; padding:2px 8px; border-radius:4px;
+    background: rgba(195,204,155,0.45); color: var(--forest); font-weight:500; }
+
   /* Placeholder */
   .ph { width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
   .ph span { font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
@@ -135,9 +167,10 @@
     .layout-media-left, .layout-media-right { grid-template-columns: 1fr; gap: 18px; }
     .extra-grid { grid-template-columns: repeat(2,1fr); gap:12px; }
     .gallery-grid { grid-template-columns: repeat(2,1fr); }
+    .related-grid { grid-template-columns: repeat(2,1fr); }
   }
   @media (max-width: 460px) {
-    .extra-grid, .gallery-grid { grid-template-columns: 1fr; }
+    .extra-grid, .gallery-grid, .related-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -303,6 +336,73 @@ function renderSection(sec, i) {
 
 const sectionsHTML = (cs.sections || []).map(renderSection).join('');
 
+// Related projects: pick the next ~3 projects after the current one (wrap around)
+const TAG_PALETTES = [
+  { bg:'rgba(195,204,155,0.45)', fg:'#546B41' },
+  { bg:'rgba(255,193,147,0.45)', fg:'#8B4513' },
+  { bg:'rgba(255,131,131,0.25)', fg:'#A02020' },
+  { bg:'rgba(255,237,206,0.85)', fg:'#7A5C2F' },
+  { bg:'#D9E4C7',                fg:'#546B41' },
+  { bg:'#FFE0E0',                fg:'#8A2A2A' },
+  { bg:'#F5DCC0',                fg:'#546B41' },
+  { bg:'#E8D5B7',                fg:'#5C3A0F' },
+];
+function relatedTagColor(tag) {
+  let h = 0; for (let i = 0; i < tag.length; i++) h = (h*31 + tag.charCodeAt(i)) >>> 0;
+  return TAG_PALETTES[h % TAG_PALETTES.length];
+}
+function pickRelated(all, currentId, n) {
+  const idx = all.findIndex(p => p.id === currentId);
+  if (idx < 0) return all.slice(0, n);
+  const rest = [...all.slice(idx + 1), ...all.slice(0, idx)];
+  return rest.slice(0, Math.min(n, rest.length));
+}
+const relatedProjects = pickRelated(projects, project.id, 3);
+const COVERS = [
+  `linear-gradient(135deg,${P.peach},${P.coral})`,
+  `linear-gradient(135deg,${P.sage},${P.forest})`,
+  `linear-gradient(135deg,${P.cream},${P.peach})`,
+  `linear-gradient(135deg,${P.coral},${P.red})`,
+  `linear-gradient(135deg,${P.peach},${P.sage})`,
+  `linear-gradient(135deg,${P.red},${P.forest})`,
+  `linear-gradient(135deg,${P.sage},${P.peach})`,
+  `linear-gradient(135deg,${P.forest},${P.coral})`,
+];
+
+function relatedCardHTML(p, i) {
+  const cover = (p.cover && p.cover.imageUrl)
+    ? `<img src="${escapeHtml(p.cover.imageUrl)}" alt="${escapeHtml(p.cover.label||p.title)}">`
+    : `<div style="position:absolute;inset:0;background:${COVERS[i % COVERS.length]};"></div>
+       <div class="ph-gr"><span>${escapeHtml((p.cover && p.cover.label) || p.title)}</span></div>`;
+  return `
+    <a class="related-card" href="article.html?id=${encodeURIComponent(p.id)}">
+      <div class="related-cover">
+        ${cover}
+        <span class="ph-yr">${escapeHtml(p.year || '')}</span>
+      </div>
+      <div class="related-body">
+        <h3 class="related-title">${escapeHtml(p.title)}</h3>
+        <div class="related-tags">
+          ${(p.tags || []).slice(0, 3).map(t => {
+            const c = relatedTagColor(t);
+            return `<span class="related-tag" style="background:${c.bg};color:${c.fg};">${escapeHtml(t)}</span>`;
+          }).join('')}
+        </div>
+      </div>
+    </a>`;
+}
+
+const relatedHTML = relatedProjects.length ? `
+  <section class="related">
+    <div class="related-head">
+      <h2 class="related-h2">More work</h2>
+      <a class="related-link" href="index.html">All projects →</a>
+    </div>
+    <div class="related-grid">
+      ${relatedProjects.map(relatedCardHTML).join('')}
+    </div>
+  </section>` : '';
+
 const heroImageHTML = cs.heroImage ? `
   <div class="hero-img-wrap">
     <div class="hero-img">
@@ -356,6 +456,7 @@ ${heroImageHTML}
       <span class="outro-end">End of case study</span>
       <a class="cta" href="mailto:${escapeHtml(bioEmail)}">Talk about a project like this →</a>
     </div>
+    ${relatedHTML}
   </div>
 </div>
 `;
