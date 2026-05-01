@@ -303,6 +303,12 @@ function expDate(m, y) {
   return (m ? MONTHS_SHORT[m] + ' ' : '') + y;
 }
 
+// True only for the admin (signed in via /admin.html). Drag-to-reorder is
+// gated on this so visitors can't shuffle cards on the public site.
+function isAdminSignedIn() {
+  try { return localStorage.getItem('admin_auth') === '1'; } catch(e) { return false; }
+}
+
 function useReorderable(initial, key) {
   const ids = initial.map(i=>i.id);
   const [order, setOrder] = React.useState(() => {
@@ -313,17 +319,21 @@ function useReorderable(initial, key) {
   const items = React.useMemo(()=>{const m=new Map(initial.map(i=>[i.id,i]));return order.map(id=>m.get(id)).filter(Boolean);},[initial,order]);
   const [dragId,setDragId]=React.useState(null);
   const [overId,setOverId]=React.useState(null);
-  const dragProps = (id) => ({
-    draggable:true,
-    onDragStart:(e)=>{setDragId(id);e.dataTransfer.effectAllowed='move';},
-    onDragOver:(e)=>{e.preventDefault();if(id!==overId)setOverId(id);},
-    onDrop:(e)=>{e.preventDefault();if(!dragId||dragId===id){setDragId(null);setOverId(null);return;}
-      setOrder(prev=>{const n=[...prev],from=n.indexOf(dragId),to=n.indexOf(id);if(from<0||to<0)return prev;n.splice(from,1);n.splice(to,0,dragId);return n;});
-      setDragId(null);setOverId(null);},
-    onDragEnd:()=>{setDragId(null);setOverId(null);},
-    'data-drag-state':dragId===id?'dragging':(overId===id&&dragId?'over':''),
-  });
-  return {items,dragProps};
+  const adminOn = isAdminSignedIn();
+  const dragProps = (id) => {
+    if (!adminOn) return { 'data-drag-state':'' };  // visitors get no drag handlers
+    return ({
+      draggable:true,
+      onDragStart:(e)=>{setDragId(id);e.dataTransfer.effectAllowed='move';},
+      onDragOver:(e)=>{e.preventDefault();if(id!==overId)setOverId(id);},
+      onDrop:(e)=>{e.preventDefault();if(!dragId||dragId===id){setDragId(null);setOverId(null);return;}
+        setOrder(prev=>{const n=[...prev],from=n.indexOf(dragId),to=n.indexOf(id);if(from<0||to<0)return prev;n.splice(from,1);n.splice(to,0,dragId);return n;});
+        setDragId(null);setOverId(null);},
+      onDragEnd:()=>{setDragId(null);setOverId(null);},
+      'data-drag-state':dragId===id?'dragging':(overId===id&&dragId?'over':''),
+    });
+  };
+  return {items,dragProps,adminOn};
 }
 
 function GradBtn({href,primary,children}) {
@@ -655,7 +665,7 @@ function Portfolio() {
         </section>
 
         <section>
-          <SectionLabel num="02" title="Selected work" hint="Drag any card to reorder ↔"/>
+          <SectionLabel num="02" title="Selected work"/>
           <div className="grid-4">
             {items.map((p,idx)=><Card key={p.id} p={p} idx={idx} dragProps={dragProps(p.id)}/>)}
           </div>
