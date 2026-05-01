@@ -39,9 +39,11 @@
     display: grid;
     grid-template-columns: minmax(360px, 540px) 200px minmax(360px, 1fr);
     grid-template-rows: auto auto;
-    column-gap: 32px; row-gap: 44px;
+    column-gap: 32px; row-gap: 28px;
     align-items: start;
   }
+  /* Extra horizontal breathing room between the bio area (cols 1-2) and the timeline (col 3) */
+  .hero-timeline { padding-left: 36px; }
   .bio-top    { grid-column: 1; grid-row: 1; }
   .hero-photo { grid-column: 2; grid-row: 1; }
   .bio-bottom { grid-column: 1 / 3; grid-row: 2; }       /* paragraph + buttons stretch under the photo */
