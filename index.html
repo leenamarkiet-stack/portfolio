@@ -38,13 +38,22 @@
   .hero-grid {
     display: grid;
     grid-template-columns: minmax(360px, 540px) 200px minmax(360px, 1fr);
-    gap: 32px; align-items: start;
+    grid-template-rows: auto auto;
+    column-gap: 32px; row-gap: 28px;
+    align-items: start;
   }
+  .bio-top    { grid-column: 1; grid-row: 1; }
+  .hero-photo { grid-column: 2; grid-row: 1; }
+  .bio-bottom { grid-column: 1 / 3; grid-row: 2; }       /* paragraph + buttons stretch under the photo */
+  .hero-timeline { grid-column: 3; grid-row: 1 / -1; }    /* timeline spans both rows on the right */
   .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
   .name-h1 { font-size: 76px; }
   @media (max-width: 1180px) {
     .hero-grid { grid-template-columns: 1fr 200px; }
-    .hero-timeline { grid-column: 1 / -1; margin-top: 32px; margin-bottom: 0 !important; }
+    .bio-top { grid-column: 1; }
+    .hero-photo { grid-column: 2; }
+    .bio-bottom { grid-column: 1 / -1; }
+    .hero-timeline { grid-column: 1 / -1; grid-row: auto; margin-top: 16px; margin-bottom: 0 !important; }
   }
   @media (max-width: 900px) {
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -559,8 +568,8 @@ function Portfolio() {
               <span style={{whiteSpace:'nowrap'}}>2026 — {bio.location}</span>
             </div>
 
-            <section className="hero-grid" style={{alignItems:'start'}}>
-              <div style={{paddingTop:4}}>
+            <section className="hero-grid">
+              <div className="bio-top" style={{paddingTop:4}}>
                 {bio.status ? (
                   <div style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:11,letterSpacing:'0.1em',
                     textTransform:'uppercase',color:P.forest,background:`${P.sage}66`,
@@ -577,12 +586,6 @@ function Portfolio() {
                     {bio.role.toLowerCase()}
                   </em>
                 </h1>
-                <p style={{maxWidth:600,marginTop:24,fontSize:16,lineHeight:1.55,color:P.ink}}>{bio.paragraph}</p>
-                <div style={{display:'flex',gap:10,marginTop:28,flexWrap:'wrap'}}>
-                  {(headerButtons||[]).map((b,i)=>(
-                    <GradBtn key={i} href={b.url||'#'} primary={!!b.primary}>{b.label||''} {b.primary?'↗':'↗'}</GradBtn>
-                  ))}
-                </div>
               </div>
               <div className="hero-photo" style={{width:200,height:240,borderRadius:8,padding:4,
                 background:`linear-gradient(160deg,${P.paper},${P.cream})`,
@@ -594,6 +597,15 @@ function Portfolio() {
                     ? <img src={bio.photoUrl} alt={bio.name} style={{width:'100%',height:'100%',objectFit:'cover'}}/>
                     : <span style={{fontSize:10,letterSpacing:'0.12em',color:P.paper,
                         background:`${P.ink}33`,padding:'4px 10px',borderRadius:999}}>PHOTO</span>}
+                </div>
+              </div>
+
+              <div className="bio-bottom">
+                <p style={{margin:0,fontSize:16,lineHeight:1.55,color:P.ink}}>{bio.paragraph}</p>
+                <div style={{display:'flex',gap:10,marginTop:28,flexWrap:'wrap'}}>
+                  {(headerButtons||[]).map((b,i)=>(
+                    <GradBtn key={i} href={b.url||'#'} primary={!!b.primary}>{b.label||''} {b.primary?'↗':'↗'}</GradBtn>
+                  ))}
                 </div>
               </div>
 
