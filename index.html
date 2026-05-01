@@ -93,7 +93,7 @@
   .hero-timeline {
     align-self: end !important;
     /* Lift the timeline cards to align with the hero buttons row */
-    margin-bottom: 28px;
+    margin-bottom: 38px;
   }
   .exp-label-row { display: flex; justify-content: space-between; align-items: center;
     margin-bottom: 10px; }
@@ -121,12 +121,33 @@
     scroll-snap-type: none;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    -webkit-mask-image: linear-gradient(to right, black 0, black calc(100% - 70px), transparent 100%);
-            mask-image: linear-gradient(to right, black 0, black calc(100% - 70px), transparent 100%);
+    /* Default mask: fade both edges (cards trail off into the gradient on
+       both sides). The component sets data-at-start / data-at-end so the
+       fade on the relevant edge disappears when you reach that edge. */
+    --fade: 70px;
+    -webkit-mask-image: linear-gradient(to right,
+      transparent 0, black var(--fade),
+      black calc(100% - var(--fade)), transparent 100%);
+            mask-image: linear-gradient(to right,
+      transparent 0, black var(--fade),
+      black calc(100% - var(--fade)), transparent 100%);
   }
   .exp-grid::-webkit-scrollbar { display: none; height: 0; width: 0; }
-  /* Full timeline view: no fade, full visibility */
-  .hero-screen-timeline .exp-grid {
+  .exp-grid[data-at-start="true"] {
+    -webkit-mask-image: linear-gradient(to right, black 0, black calc(100% - var(--fade)), transparent 100%);
+            mask-image: linear-gradient(to right, black 0, black calc(100% - var(--fade)), transparent 100%);
+  }
+  .exp-grid[data-at-end="true"] {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black var(--fade), black 100%);
+            mask-image: linear-gradient(to right, transparent 0, black var(--fade), black 100%);
+  }
+  .exp-grid[data-at-start="true"][data-at-end="true"] {
+    -webkit-mask-image: none; mask-image: none;
+  }
+  /* Full timeline view: no fade ever */
+  .hero-screen-timeline .exp-grid,
+  .hero-screen-timeline .exp-grid[data-at-start],
+  .hero-screen-timeline .exp-grid[data-at-end] {
     -webkit-mask-image: none; mask-image: none;
   }
 
@@ -433,6 +454,30 @@ function useHostWheelToHorizontal(hostRef, getTargetEl, deps) {
   }, deps || []);
 }
 
+// Tag a scroll container with data-at-start / data-at-end so CSS can drop the
+// edge fade when you've scrolled to that edge. Updates on scroll + resize.
+function useScrollEdgeAttrs(ref, deps) {
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => {
+      const max = Math.max(0, el.scrollWidth - el.clientWidth);
+      el.dataset.atStart = (el.scrollLeft <= 1) ? 'true' : 'false';
+      el.dataset.atEnd   = (max <= 1 || el.scrollLeft >= max - 1) ? 'true' : 'false';
+    };
+    update();
+    el.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    // Re-check after layout settles in (custom fonts, late content)
+    const t = setTimeout(update, 100);
+    return () => {
+      el.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+      clearTimeout(t);
+    };
+  }, deps || []);
+}
+
 function TimelineGrid({experience, refTo}) {
   return (
     <div ref={refTo} className="exp-grid"
@@ -480,6 +525,7 @@ function Portfolio() {
   useHostWheelToHorizontal(heroPadRef,
     () => expanded ? fullRef.current : compactRef.current,
     [expanded]);
+  useScrollEdgeAttrs(compactRef, []);
   React.useEffect(() => {
     if (!expanded) return;
     const onKey = (e) => { if (e.key === 'Escape') setExpanded(false); };
