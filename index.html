@@ -37,14 +37,14 @@
   .content-pad { padding: 64px 64px 96px; }
   .hero-grid {
     display: grid;
-    grid-template-columns: 200px minmax(360px, 540px) minmax(360px, 1fr);
+    grid-template-columns: minmax(360px, 540px) 200px minmax(360px, 1fr);
     gap: 32px; align-items: start;
   }
   .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
   .name-h1 { font-size: 76px; }
   @media (max-width: 1180px) {
-    .hero-grid { grid-template-columns: 200px 1fr; }
-    .hero-timeline { grid-column: 1 / -1; margin-top: 32px; }
+    .hero-grid { grid-template-columns: 1fr 200px; }
+    .hero-timeline { grid-column: 1 / -1; margin-top: 32px; margin-bottom: 0 !important; }
   }
   @media (max-width: 900px) {
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -560,18 +560,6 @@ function Portfolio() {
             </div>
 
             <section className="hero-grid" style={{alignItems:'start'}}>
-              <div className="hero-photo" style={{width:200,height:240,borderRadius:8,padding:4,
-                background:`linear-gradient(160deg,${P.paper},${P.cream})`,
-                boxShadow:`0 18px 40px -16px ${P.ink}33`}}>
-                <div style={{width:'100%',height:'100%',borderRadius:6,overflow:'hidden',
-                  background:`linear-gradient(135deg,${P.peach},${P.coral})`,
-                  display:'flex',alignItems:'center',justifyContent:'center'}}>
-                  {bio.photoUrl
-                    ? <img src={bio.photoUrl} alt={bio.name} style={{width:'100%',height:'100%',objectFit:'cover'}}/>
-                    : <span style={{fontSize:10,letterSpacing:'0.12em',color:P.paper,
-                        background:`${P.ink}33`,padding:'4px 10px',borderRadius:999}}>PHOTO</span>}
-                </div>
-              </div>
               <div style={{paddingTop:4}}>
                 {bio.status ? (
                   <div style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:11,letterSpacing:'0.1em',
@@ -594,6 +582,18 @@ function Portfolio() {
                   {(headerButtons||[]).map((b,i)=>(
                     <GradBtn key={i} href={b.url||'#'} primary={!!b.primary}>{b.label||''} {b.primary?'↗':'↗'}</GradBtn>
                   ))}
+                </div>
+              </div>
+              <div className="hero-photo" style={{width:200,height:240,borderRadius:8,padding:4,
+                background:`linear-gradient(160deg,${P.paper},${P.cream})`,
+                boxShadow:`0 18px 40px -16px ${P.ink}33`}}>
+                <div style={{width:'100%',height:'100%',borderRadius:6,overflow:'hidden',
+                  background:`linear-gradient(135deg,${P.peach},${P.coral})`,
+                  display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  {bio.photoUrl
+                    ? <img src={bio.photoUrl} alt={bio.name} style={{width:'100%',height:'100%',objectFit:'cover'}}/>
+                    : <span style={{fontSize:10,letterSpacing:'0.12em',color:P.paper,
+                        background:`${P.ink}33`,padding:'4px 10px',borderRadius:999}}>PHOTO</span>}
                 </div>
               </div>
 
