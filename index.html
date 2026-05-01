@@ -53,6 +53,38 @@
     .grid-4 { grid-template-columns: 1fr; }
     .name-h1 { font-size: 36px !important; }
   }
+
+  /* Experience timeline */
+  .exp-scroll {
+    display: flex; gap: 14px; overflow-x: auto; overflow-y: hidden;
+    padding: 6px 80px 14px 0;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(31,26,20,0.18) transparent;
+    -webkit-mask-image: linear-gradient(to right, black 0, black calc(100% - 80px), transparent 100%);
+            mask-image: linear-gradient(to right, black 0, black calc(100% - 80px), transparent 100%);
+  }
+  .exp-scroll::-webkit-scrollbar { height: 6px; }
+  .exp-scroll::-webkit-scrollbar-track { background: transparent; }
+  .exp-scroll::-webkit-scrollbar-thumb { background: rgba(31,26,20,0.18); border-radius: 999px; }
+  .exp-card { scroll-snap-align: start; transition: transform .2s ease; }
+  .exp-card:hover { transform: translateY(-2px); }
+  .exp-scroll.expanded {
+    overflow-x: visible; flex-wrap: wrap;
+    -webkit-mask-image: none; mask-image: none;
+    padding-right: 0;
+  }
+  @media (max-width: 720px) {
+    .exp-scroll {
+      flex-direction: column; max-height: 0; overflow: hidden; padding: 0;
+      transition: max-height .3s ease;
+      -webkit-mask-image: none; mask-image: none;
+    }
+    .exp-scroll.expanded { max-height: 1500px; padding: 6px 0 14px; gap: 10px; }
+    .exp-card { min-width: 0 !important; max-width: 100% !important; width: 100%; }
+    .exp-toggle { position: relative !important; right: auto !important; top: auto !important; margin-top: 8px; }
+    .exp-wrap { display: flex; flex-direction: column; align-items: flex-start; }
+  }
 </style>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
@@ -89,28 +121,57 @@ function tagColor(tag){
 const DEFAULT_BIO = {
   name:"Leena Markiet", role:"Service Designer & UX/UI",
   location:"Abu Dhabi, United Arab Emirates",
-  email:"leena@markiet.studo",
+  email:"leena@markiet.studo", photoUrl:"",
+  status:"Available for projects, summer 2026",
   paragraph:"I'm a service designer and UX/UI lead with 8+ years shaping end-to-end experiences for healthcare, public sector, and fintech. I love untangling messy systems, facilitating cross-functional teams, and turning insight into shipped product. Currently freelancing.",
-  skills:["Service Design","Journey Mapping","Workshop Facilitation","UX Research","UI Design","Digital Twins","Vibecoding","Figma","Stakeholder Management"],
   socials:[{label:"LinkedIn",url:"#"},{label:"Read.cv",url:"#"}],
 };
+const DEFAULT_SKILLS = ["Service Design","Journey Mapping","Workshop Facilitation","UX Research","UI Design","Digital Twins","Vibecoding","Figma","Stakeholder Management"];
+const DEFAULT_HEADER_BUTTONS = [
+  { label:"leena@markiet.studo", url:"mailto:leena@markiet.studo", primary:true },
+  { label:"Download CV", url:"#", primary:false },
+  { label:"LinkedIn", url:"#", primary:false },
+  { label:"Read.cv", url:"#", primary:false },
+];
+const DEFAULT_EXPERIENCE = [
+  { logoUrl:"", company:"Freelance", title:"Service Designer & UX Lead", startMonth:1, startYear:2024, endMonth:0, endYear:0, current:true,  description:"Shipping end-to-end design for healthcare and fintech clients." },
+  { logoUrl:"", company:"Verso",     title:"Design System Lead",         startMonth:6, startYear:2022, endMonth:12, endYear:2023, current:false, description:"Built a 240-component Figma library with token pipeline." },
+  { logoUrl:"", company:"Pilvi Bank", title:"UX/UI Designer",            startMonth:1, startYear:2020, endMonth:5,  endYear:2022, current:false, description:"Redesigned the daily banking app, reduced support load by 31%." },
+  { logoUrl:"", company:"City of Tampere", title:"Service Designer",     startMonth:8, startYear:2017, endMonth:12, endYear:2019, current:false, description:"Cross-departmental service blueprint and citizen permit portal." },
+];
 const DEFAULT_PROJECTS = [
-  {id:"p1",title:"Reimagining outpatient triage",client:"Nordic Health",role:"Lead Service Designer",year:"2025",tags:["Service Design","Healthcare","Research"],description:"End-to-end redesign of a triage flow used by 2,400 nurses across 14 hospitals.",cover:{hue:18,label:"Triage flow"}},
-  {id:"p2",title:"A calmer banking app",client:"Pilvi Bank",role:"UX/UI Designer",year:"2024",tags:["UX/UI","Fintech","Mobile"],description:"Reduced support tickets by 31% with a redesigned daily-banking experience.",cover:{hue:200,label:"Mobile banking"}},
-  {id:"p3",title:"Citizen permit service",client:"City of Tampere",role:"Service Designer",year:"2024",tags:["Service Design","Public Sector","Research"],description:"Cross-departmental service blueprint and digital application portal.",cover:{hue:140,label:"Permit service"}},
-  {id:"p4",title:"Design system from scratch",client:"Verso (in-house)",role:"Design System Lead",year:"2023",tags:["Design System","UI","Tooling"],description:"Built and shipped a 240-component Figma library with token pipeline.",cover:{hue:280,label:"Design system"}},
-  {id:"p5",title:"Onboarding for first-time investors",client:"Taimi Invest",role:"UX Designer",year:"2023",tags:["UX/UI","Fintech","Onboarding"],description:"Lifted activation by 22% with a friendlier, less jargon-heavy first-run.",cover:{hue:60,label:"Onboarding"}},
-  {id:"p6",title:"Workshops in a box",client:"Self-initiated",role:"Designer & Facilitator",year:"2023",tags:["Service Design","Facilitation","Toolkit"],description:"Open-source toolkit for journey-mapping workshops, used by 600+ teams.",cover:{hue:340,label:"Workshop toolkit"}},
-  {id:"p7",title:"Voice-first elderly care",client:"Hoiva Co.",role:"Service & UX Designer",year:"2022",tags:["Service Design","Voice UI","Accessibility"],description:"Voice companion piloted with 80 residents across three care homes.",cover:{hue:240,label:"Voice care"}},
-  {id:"p8",title:"Restaurant ops dashboard",client:"Kitchn",role:"UI Designer",year:"2022",tags:["UX/UI","B2B","Data"],description:"Dense, glanceable dashboard for restaurant managers running multi-site ops.",cover:{hue:120,label:"Ops dashboard"}},
+  {id:"p1",title:"Reimagining outpatient triage",client:"Nordic Health",role:"Lead Service Designer",year:"2025",tags:["Service Design","Healthcare","Research"],description:"End-to-end redesign of a triage flow used by 2,400 nurses across 14 hospitals.",cover:{hue:18,label:"Triage flow",imageUrl:""}},
+  {id:"p2",title:"A calmer banking app",client:"Pilvi Bank",role:"UX/UI Designer",year:"2024",tags:["UX/UI","Fintech","Mobile"],description:"Reduced support tickets by 31% with a redesigned daily-banking experience.",cover:{hue:200,label:"Mobile banking",imageUrl:""}},
+  {id:"p3",title:"Citizen permit service",client:"City of Tampere",role:"Service Designer",year:"2024",tags:["Service Design","Public Sector","Research"],description:"Cross-departmental service blueprint and digital application portal.",cover:{hue:140,label:"Permit service",imageUrl:""}},
+  {id:"p4",title:"Design system from scratch",client:"Verso (in-house)",role:"Design System Lead",year:"2023",tags:["Design System","UI","Tooling"],description:"Built and shipped a 240-component Figma library with token pipeline.",cover:{hue:280,label:"Design system",imageUrl:""}},
+  {id:"p5",title:"Onboarding for first-time investors",client:"Taimi Invest",role:"UX Designer",year:"2023",tags:["UX/UI","Fintech","Onboarding"],description:"Lifted activation by 22% with a friendlier, less jargon-heavy first-run.",cover:{hue:60,label:"Onboarding",imageUrl:""}},
+  {id:"p6",title:"Workshops in a box",client:"Self-initiated",role:"Designer & Facilitator",year:"2023",tags:["Service Design","Facilitation","Toolkit"],description:"Open-source toolkit for journey-mapping workshops, used by 600+ teams.",cover:{hue:340,label:"Workshop toolkit",imageUrl:""}},
+  {id:"p7",title:"Voice-first elderly care",client:"Hoiva Co.",role:"Service & UX Designer",year:"2022",tags:["Service Design","Voice UI","Accessibility"],description:"Voice companion piloted with 80 residents across three care homes.",cover:{hue:240,label:"Voice care",imageUrl:""}},
+  {id:"p8",title:"Restaurant ops dashboard",client:"Kitchn",role:"UI Designer",year:"2022",tags:["UX/UI","B2B","Data"],description:"Dense, glanceable dashboard for restaurant managers running multi-site ops.",cover:{hue:120,label:"Ops dashboard",imageUrl:""}},
 ];
 
 function loadData() {
   try {
     const s = localStorage.getItem('portfolio_data');
-    if (s) { const d = JSON.parse(s); return { bio:d.bio||DEFAULT_BIO, projects:d.projects||DEFAULT_PROJECTS }; }
+    if (s) {
+      const d = JSON.parse(s);
+      return {
+        bio: { ...DEFAULT_BIO, ...(d.bio||{}) },
+        skills: d.skills || DEFAULT_SKILLS,
+        headerButtons: d.headerButtons || DEFAULT_HEADER_BUTTONS,
+        experience: d.experience || DEFAULT_EXPERIENCE,
+        projects: d.projects || DEFAULT_PROJECTS,
+      };
+    }
   } catch(e) {}
-  return { bio:DEFAULT_BIO, projects:DEFAULT_PROJECTS };
+  return { bio:DEFAULT_BIO, skills:DEFAULT_SKILLS, headerButtons:DEFAULT_HEADER_BUTTONS,
+           experience:DEFAULT_EXPERIENCE, projects:DEFAULT_PROJECTS };
+}
+
+const MONTHS_SHORT = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function expDate(m, y) {
+  if (!y) return '—';
+  return (m ? MONTHS_SHORT[m] + ' ' : '') + y;
 }
 
 function useReorderable(initial, key) {
@@ -184,15 +245,20 @@ function Card({p,idx,dragProps}) {
         transition:'transform .18s ease,box-shadow .18s ease',
         boxShadow:hov?`0 18px 36px -16px ${P.ink}40`:`0 1px 0 ${P.ink}08`,
         display:'flex',flexDirection:'column',userSelect:'none'}}>
-      <div style={{position:'relative',aspectRatio:'4/3',background:COVERS[idx%COVERS.length]}}>
-        <div aria-hidden style={{position:'absolute',inset:0,
-          backgroundImage:`repeating-linear-gradient(135deg,${P.paper}22 0 12px,transparent 12px 24px)`}}/>
-        <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
-          <span style={{fontSize:10.5,letterSpacing:'0.08em',color:P.ink,textTransform:'uppercase',
-            padding:'5px 11px',borderRadius:999,background:`${P.paper}cc`,backdropFilter:'blur(2px)'}}>
-            {p.cover.label}
-          </span>
-        </div>
+      <div style={{position:'relative',aspectRatio:'4/3',background:COVERS[idx%COVERS.length],overflow:'hidden'}}>
+        {p.cover && p.cover.imageUrl
+          ? <img src={p.cover.imageUrl} alt={p.cover.label||p.title}
+              style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/>
+          : <>
+              <div aria-hidden style={{position:'absolute',inset:0,
+                backgroundImage:`repeating-linear-gradient(135deg,${P.paper}22 0 12px,transparent 12px 24px)`}}/>
+              <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <span style={{fontSize:10.5,letterSpacing:'0.08em',color:P.ink,textTransform:'uppercase',
+                  padding:'5px 11px',borderRadius:999,background:`${P.paper}cc`,backdropFilter:'blur(2px)'}}>
+                  {p.cover.label}
+                </span>
+              </div>
+            </>}
         <span style={{position:'absolute',top:8,left:8,fontSize:10,padding:'3px 8px',borderRadius:999,background:P.paper,color:P.ink}}>
           {String(idx+1).padStart(2,'0')}
         </span>
@@ -215,8 +281,75 @@ function Card({p,idx,dragProps}) {
   );
 }
 
+function ExperienceTimeline({experience}) {
+  if (!experience || !experience.length) return null;
+  const scrollRef = React.useRef(null);
+  const [expanded, setExpanded] = React.useState(false);
+
+  const monthYear = (m, y, current) => current ? 'Present' : expDate(m, y);
+  return (
+    <div className="exp-wrap" style={{position:'relative'}}>
+      <div className="exp-label" style={{fontSize:10,letterSpacing:'0.12em',textTransform:'uppercase',
+        color:P.forest,marginBottom:10,opacity:0.7}}>
+        Recent experience →
+      </div>
+      <div ref={scrollRef} className={`exp-scroll ${expanded?'expanded':''}`}>
+        {experience.map((x, i) => (
+          <article key={i} className="exp-card" style={{
+            background:`rgba(255,250,240,0.85)`,
+            backdropFilter:'blur(6px)',
+            border:`1px solid rgba(255,255,255,0.7)`,
+            borderRadius:10,
+            padding:'14px 14px 12px',
+            minWidth:220, maxWidth:240, flexShrink:0,
+            boxShadow:`0 8px 22px -16px ${P.ink}40`,
+          }}>
+            <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
+              <div style={{width:36,height:36,borderRadius:8,overflow:'hidden',
+                background:`linear-gradient(135deg,${P.peach},${P.coral})`,
+                display:'flex',alignItems:'center',justifyContent:'center',
+                fontSize:13,fontWeight:600,color:P.paper,flexShrink:0}}>
+                {x.logoUrl
+                  ? <img src={x.logoUrl} alt="" style={{width:'100%',height:'100%',objectFit:'cover'}}/>
+                  : (x.company||'?').charAt(0).toUpperCase()}
+              </div>
+              <div style={{minWidth:0,flex:1}}>
+                <div style={{fontSize:13,fontWeight:600,color:P.ink,whiteSpace:'nowrap',
+                  overflow:'hidden',textOverflow:'ellipsis'}}>{x.company||'Company'}</div>
+                <div style={{fontSize:10,letterSpacing:'0.04em',color:P.forest,
+                  whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>
+                  {expDate(x.startMonth, x.startYear)} – {monthYear(x.endMonth, x.endYear, x.current)}
+                </div>
+              </div>
+            </div>
+            <div style={{fontSize:12,fontWeight:500,color:P.ink,marginBottom:4,lineHeight:1.3}}>
+              {x.title||''}
+            </div>
+            <div style={{fontSize:11,color:'#3A332C',lineHeight:1.45}}>{x.description||''}</div>
+          </article>
+        ))}
+      </div>
+      {experience.length > 1 && (
+        <button onClick={()=>setExpanded(v=>!v)} className="exp-toggle"
+          style={{
+            position:'absolute',top:0,right:0,
+            background:'rgba(255,250,240,0.85)',
+            backdropFilter:'blur(6px)',
+            border:`1px solid rgba(255,255,255,0.7)`,
+            borderRadius:999,padding:'5px 12px',
+            fontSize:10,letterSpacing:'0.08em',textTransform:'uppercase',
+            color:P.forest,cursor:'pointer',fontFamily:'Inter,sans-serif',
+            boxShadow:`0 4px 10px -4px ${P.ink}30`,
+          }}>
+          {expanded ? 'Show less' : 'Read more →'}
+        </button>
+      )}
+    </div>
+  );
+}
+
 function Portfolio() {
-  const {bio,projects}=loadData();
+  const {bio,skills,headerButtons,experience,projects}=loadData();
   const {items,dragProps}=useReorderable(projects,'portfolio-v1-order');
   return (
     <div style={{width:'100%',minHeight:'100%',background:P.cream,color:P.ink,fontFamily:'Inter,system-ui,sans-serif'}}>
@@ -241,20 +374,24 @@ function Portfolio() {
           <div className="hero-photo" style={{width:200,height:240,borderRadius:8,padding:4,
             background:`linear-gradient(160deg,${P.paper},${P.cream})`,
             boxShadow:`0 18px 40px -16px ${P.ink}33`}}>
-            <div style={{width:'100%',height:'100%',borderRadius:6,
+            <div style={{width:'100%',height:'100%',borderRadius:6,overflow:'hidden',
               background:`linear-gradient(135deg,${P.peach},${P.coral})`,
               display:'flex',alignItems:'center',justifyContent:'center'}}>
-              <span style={{fontSize:10,letterSpacing:'0.12em',color:P.paper,
-                background:`${P.ink}33`,padding:'4px 10px',borderRadius:999}}>PHOTO</span>
+              {bio.photoUrl
+                ? <img src={bio.photoUrl} alt={bio.name} style={{width:'100%',height:'100%',objectFit:'cover'}}/>
+                : <span style={{fontSize:10,letterSpacing:'0.12em',color:P.paper,
+                    background:`${P.ink}33`,padding:'4px 10px',borderRadius:999}}>PHOTO</span>}
             </div>
           </div>
           <div style={{paddingTop:4}}>
-            <div style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:11,letterSpacing:'0.1em',
-              textTransform:'uppercase',color:P.forest,background:`${P.sage}66`,
-              padding:'6px 12px',borderRadius:999,whiteSpace:'nowrap',marginBottom:20}}>
-              <span style={{width:7,height:7,borderRadius:999,background:P.forest}}/>
-              Available for projects, summer 2026
-            </div>
+            {bio.status ? (
+              <div style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:11,letterSpacing:'0.1em',
+                textTransform:'uppercase',color:P.forest,background:`${P.sage}66`,
+                padding:'6px 12px',borderRadius:999,whiteSpace:'nowrap',marginBottom:20}}>
+                <span style={{width:7,height:7,borderRadius:999,background:P.forest}}/>
+                {bio.status}
+              </div>
+            ) : null}
             <h1 className="name-h1" style={{fontFamily:SERIF,fontWeight:400,lineHeight:1.0,
               margin:0,letterSpacing:'-0.025em',color:P.ink}}>
               {bio.name},<br/>
@@ -265,12 +402,18 @@ function Portfolio() {
             </h1>
             <p style={{maxWidth:600,marginTop:24,fontSize:16,lineHeight:1.55,color:P.ink}}>{bio.paragraph}</p>
             <div style={{display:'flex',gap:10,marginTop:28,flexWrap:'wrap'}}>
-              <GradBtn href={`mailto:${bio.email}`} primary>{bio.email} ↗</GradBtn>
-              <GradBtn href="#">Download CV ↓</GradBtn>
-              {bio.socials.map(s=><GradBtn key={s.label} href={s.url}>{s.label} ↗</GradBtn>)}
+              {(headerButtons||[]).map((b,i)=>(
+                <GradBtn key={i} href={b.url||'#'} primary={!!b.primary}>{b.label||''} {b.primary?'↗':'↗'}</GradBtn>
+              ))}
             </div>
           </div>
         </section>
+
+        {experience && experience.length > 0 && (
+          <div style={{position:'relative',marginTop:48}}>
+            <ExperienceTimeline experience={experience}/>
+          </div>
+        )}
       </div>
 
       {/* CONTENT */}
@@ -278,7 +421,7 @@ function Portfolio() {
         <section style={{marginBottom:64}}>
           <SectionLabel num="01" title="Toolkit"/>
           <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
-            {bio.skills.map(s=><span key={s} style={{
+            {(skills||[]).map(s=><span key={s} style={{
               fontSize:11,fontWeight:500,letterSpacing:'0.04em',
               padding:'7px 12px',borderRadius:999,whiteSpace:'nowrap',
               color:P.ink,
