@@ -118,12 +118,17 @@
     overflow-x: auto; overflow-y: hidden;
     padding: 4px 0 0;
     position: relative;
-    scroll-snap-type: x proximity;
-    /* hide scrollbar */
+    scroll-snap-type: none;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    -webkit-mask-image: linear-gradient(to right, black 0, black calc(100% - 70px), transparent 100%);
+            mask-image: linear-gradient(to right, black 0, black calc(100% - 70px), transparent 100%);
   }
   .exp-grid::-webkit-scrollbar { display: none; height: 0; width: 0; }
+  /* Full timeline view: no fade, full visibility */
+  .hero-screen-timeline .exp-grid {
+    -webkit-mask-image: none; mask-image: none;
+  }
 
   .exp-line {
     grid-row: 2; grid-column: 1 / -1;
@@ -381,21 +386,50 @@ function yearLabelFor(x) {
   return (m ? m + " '" : '') + (y ? String(y).slice(-2) : '');
 }
 
-function useWheelHorizontal(ref, deps) {
+// Smooth wheel-to-horizontal scroll: attach a wheel listener to a host element
+// (e.g. the entire hero) and forward vertical wheel into smooth horizontal
+// scroll on a target element resolved on each event (so it can pick the
+// compact vs full timeline depending on state).
+function useHostWheelToHorizontal(hostRef, getTargetEl, deps) {
   React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    const host = hostRef.current;
+    if (!host) return;
+    let activeEl = null;
+    let target = 0;
+    let raf = null;
+    const animate = () => {
+      if (!activeEl) { raf = null; return; }
+      const cur = activeEl.scrollLeft;
+      const diff = target - cur;
+      if (Math.abs(diff) < 0.5) {
+        activeEl.scrollLeft = target;
+        raf = null;
+        return;
+      }
+      // ease-out toward target
+      activeEl.scrollLeft = cur + diff * 0.16;
+      raf = requestAnimationFrame(animate);
+    };
     const onWheel = (e) => {
+      const t = getTargetEl();
+      if (!t) return;
+      // re-sync when target changes or user has scrolled it via other means
+      if (activeEl !== t) { activeEl = t; target = t.scrollLeft; }
       if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-      const canRight = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
-      const canLeft  = el.scrollLeft > 0;
+      const max = t.scrollWidth - t.clientWidth;
+      const canRight = target < max - 1;
+      const canLeft  = target > 0;
       if ((e.deltaY > 0 && canRight) || (e.deltaY < 0 && canLeft)) {
         e.preventDefault();
-        el.scrollLeft += e.deltaY;
+        target = Math.max(0, Math.min(max, target + e.deltaY * 0.9));
+        if (!raf) raf = requestAnimationFrame(animate);
       }
     };
-    el.addEventListener('wheel', onWheel, { passive: false });
-    return () => el.removeEventListener('wheel', onWheel);
+    host.addEventListener('wheel', onWheel, { passive: false });
+    return () => {
+      host.removeEventListener('wheel', onWheel);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, deps || []);
 }
 
@@ -438,10 +472,14 @@ function Portfolio() {
   const {bio,skills,headerButtons,experience,projects}=loadData();
   const {items,dragProps}=useReorderable(projects,'portfolio-v1-order');
   const [expanded, setExpanded] = React.useState(false);
+  const heroPadRef = React.useRef(null);
   const compactRef = React.useRef(null);
   const fullRef    = React.useRef(null);
-  useWheelHorizontal(compactRef);
-  useWheelHorizontal(fullRef, [expanded]);
+  // One wheel handler on the entire hero — vertical wheel becomes smooth
+  // horizontal scroll on whichever timeline is currently visible.
+  useHostWheelToHorizontal(heroPadRef,
+    () => expanded ? fullRef.current : compactRef.current,
+    [expanded]);
   React.useEffect(() => {
     if (!expanded) return;
     const onKey = (e) => { if (e.key === 'Escape') setExpanded(false); };
@@ -455,7 +493,7 @@ function Portfolio() {
     <div style={{width:'100%',minHeight:'100%',background:P.cream,color:P.ink,fontFamily:'Inter,system-ui,sans-serif'}}>
 
       {/* HERO */}
-      <div className="hero-pad" style={{background:heroGrad,position:'relative',overflow:'hidden'}}>
+      <div ref={heroPadRef} className="hero-pad" style={{background:heroGrad,position:'relative',overflow:'hidden'}}>
         <div aria-hidden className="blob-a" style={{position:'absolute',top:-120,right:-80,width:480,height:480,
           background:`radial-gradient(closest-side,${P.red}55,transparent 70%)`,filter:'blur(20px)',pointerEvents:'none',zIndex:0}}/>
         <div aria-hidden className="blob-b" style={{position:'absolute',bottom:-160,left:-120,width:520,height:520,
