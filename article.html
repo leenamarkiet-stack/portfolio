@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
+<script src="config.js"></script>
 <style>
   :root { --cream:#FFEDCE; --peach:#FFC193; --coral:#FF8383; --red:#FF3737;
     --sage:#C3CC9B; --forest:#546B41; --ink:#1F1A14; --paper:#FFFAF0; }
@@ -154,6 +155,50 @@
 <script>
 const P = { cream:'#FFEDCE', peach:'#FFC193', coral:'#FF8383', red:'#FF3737',
             sage:'#C3CC9B', forest:'#546B41', ink:'#1F1A14', paper:'#FFFAF0' };
+
+// ───── Visitor gate ─────
+async function sha256Hex(s){
+  const b=new TextEncoder().encode(s);const h=await crypto.subtle.digest('SHA-256',b);
+  return Array.from(new Uint8Array(h)).map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+(function maybeShowGate(){
+  const cfg=window.SITE_CONFIG||{};
+  const need = !!(cfg.visitorProtect && cfg.visitorHash);
+  if (!need || sessionStorage.getItem('visitor_auth')==='1') return;
+  document.body.innerHTML = `
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
+      padding:20px;background:linear-gradient(135deg,${P.cream} 0%,${P.peach} 60%,${P.coral} 100%);">
+      <div style="width:100%;max-width:380px;background:${P.paper};border-radius:14px;padding:32px;
+        box-shadow:0 20px 60px -20px rgba(0,0,0,0.25);">
+        <h1 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:32px;
+          margin:0 0 8px;letter-spacing:-0.01em;">Welcome</h1>
+        <p style="margin:0 0 24px;color:rgba(31,26,20,0.6);font-size:13px;">Enter password to view this portfolio.</p>
+        <form id="vgate-form">
+          <input id="vgate-pw" type="password" placeholder="Password" autofocus
+            style="width:100%;padding:11px 14px;border-radius:8px;border:1px solid ${P.ink}1f;
+              font-family:Inter,sans-serif;font-size:14px;outline:none;box-sizing:border-box;"/>
+          <div id="vgate-err" style="color:${P.red};font-size:12px;margin-top:10px;min-height:16px;"></div>
+          <button type="submit" style="width:100%;margin-top:14px;padding:12px;border:0;border-radius:999px;
+            background:linear-gradient(135deg,${P.coral},${P.red});color:${P.paper};
+            font-family:Inter,sans-serif;font-size:14px;font-weight:500;cursor:pointer;
+            box-shadow:0 8px 20px -8px ${P.red}90;">Enter</button>
+        </form>
+      </div>
+    </div>`;
+  document.getElementById('vgate-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw = document.getElementById('vgate-pw').value;
+    const h = await sha256Hex(pw);
+    if (h === cfg.visitorHash) {
+      sessionStorage.setItem('visitor_auth','1');
+      location.reload();
+    } else {
+      document.getElementById('vgate-err').textContent = 'Wrong password.';
+    }
+  });
+  // Stop the rest of the article script from running
+  throw new Error('locked');
+})();
 
 // Defaults — kept in sync with admin.html / index.html
 const DEFAULT_PROJECTS = [

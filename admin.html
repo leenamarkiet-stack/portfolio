@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif&display=swap">
+<script src="config.js"></script>
 <style>
   :root {
     --cream:#FFEDCE; --peach:#FFC193; --coral:#FF8383; --red:#FF3737;
@@ -174,6 +175,7 @@
       <button data-panel="header">Header Buttons</button>
       <button data-panel="experience">Work Experience</button>
       <button data-panel="projects">Projects</button>
+      <button data-panel="settings">Settings</button>
     </nav>
     <div class="sb-foot">
       <a href="index.html" target="_blank">View portfolio ↗</a>
@@ -268,6 +270,54 @@
 
       <div id="projects-list"></div>
       <div class="add-row"><button class="btn ghost tiny" onclick="addProject()">+ Add project</button></div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="panel-settings" class="panel">
+      <h2>Settings</h2>
+      <div class="panel-sub">Login passwords and visitor access for your published portfolio.</div>
+
+      <h3 style="font-size:14px;margin:18px 0 10px;letter-spacing:0.04em;">Admin password</h3>
+      <div class="panel-sub">The password you use to sign in to this admin page.</div>
+      <div class="field-row">
+        <div class="field"><label>New password</label><input id="set-admin-pw" type="password" autocomplete="new-password"></div>
+        <div class="field"><label>Confirm</label><input id="set-admin-pw2" type="password" autocomplete="new-password"></div>
+      </div>
+      <button class="btn ghost tiny" onclick="saveAdminPasswordLocal()">Save locally</button>
+      <div class="field-help" style="margin-top:6px;">Saving locally only changes the password on this device. Use <strong>Publish</strong> below to apply it everywhere.</div>
+
+      <h3 style="font-size:14px;margin:32px 0 10px;letter-spacing:0.04em;">Visitor password (gate the public portfolio)</h3>
+      <div class="panel-sub">If enabled, visitors must enter this password before they can view your portfolio.</div>
+      <div class="field" style="flex-direction:row;align-items:center;gap:14px;">
+        <label style="margin:0;">Require password to view portfolio</label>
+        <input id="set-visitor-on" type="checkbox" style="width:auto;">
+      </div>
+      <div class="field" id="set-visitor-pw-row">
+        <label>Visitor password</label>
+        <input id="set-visitor-pw" type="text" placeholder="e.g. summer2026">
+        <div class="field-help">Anyone with this password can view your portfolio. Leave the publish-step for it to apply for visitors on other devices.</div>
+      </div>
+      <button class="btn ghost tiny" onclick="saveVisitorLocal()">Save locally</button>
+
+      <h3 style="font-size:14px;margin:32px 0 10px;letter-spacing:0.04em;">Publish to website</h3>
+      <div class="panel-sub">Push the password settings above to your live site so they apply to every visitor. This commits a small <code>config.js</code> file to your GitHub repo via the API.</div>
+      <div class="field"><label>GitHub username</label>
+        <input id="gh-user" placeholder="leenamarkiet-stack">
+        <div class="field-help">The GitHub user/org that owns the portfolio repo.</div>
+      </div>
+      <div class="field"><label>Repository name</label>
+        <input id="gh-repo" placeholder="portfolio">
+      </div>
+      <div class="field"><label>Personal access token</label>
+        <input id="gh-token" type="password" placeholder="ghp_…">
+        <div class="field-help">Needs <code>repo</code> scope. <a href="https://github.com/settings/tokens/new?scopes=repo&description=portfolio-admin" target="_blank" rel="noreferrer">Create one →</a> Stored only on this device.</div>
+      </div>
+      <button class="btn primary" onclick="publishConfig()">Publish settings</button>
+      <div id="publish-status" class="field-help" style="margin-top:12px;min-height:18px;"></div>
+
+      <div class="save-bar">
+        <span class="save-status" id="set-status-msg">Saved ✓</span>
+      </div>
     </section>
 
     <!-- PROJECT EDITOR -->
@@ -382,8 +432,16 @@ if (!data.bio.photoUrl) data.bio.photoUrl = "";
 if (!data.bio.status) data.bio.status = DEFAULT_DATA.bio.status;
 
 // ───────────────────── Login ─────────────────────
-// Hash of "leena2026"  (SHA-256, hex)
-const PASSWORD_HASH = 'b3986620b18f97e4a9a3ac0fedd64ae3967791a63662f9caf07ac2b3f76bcc83';
+const FALLBACK_HASH = 'b3986620b18f97e4a9a3ac0fedd64ae3967791a63662f9caf07ac2b3f76bcc83'; // sha256("leena2026")
+function getAdminHashes() {
+  // Multiple acceptable hashes — local override and published, plus default
+  const list = [];
+  const local = localStorage.getItem('admin_hash_local');
+  if (local) list.push(local);
+  if (window.SITE_CONFIG && window.SITE_CONFIG.adminHash) list.push(window.SITE_CONFIG.adminHash);
+  list.push(FALLBACK_HASH);
+  return list;
+}
 async function sha256(s) {
   const buf = new TextEncoder().encode(s);
   const hash = await crypto.subtle.digest('SHA-256', buf);
@@ -399,7 +457,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const pw = document.getElementById('pw').value;
   const h = await sha256(pw);
-  if (h === PASSWORD_HASH) {
+  if (getAdminHashes().includes(h)) {
     sessionStorage.setItem('admin_auth', '1');
     showApp();
   } else {
@@ -796,12 +854,124 @@ document.getElementById('reset-btn').addEventListener('click', () => {
   renderAll();
 });
 
+// ───────────────────── SETTINGS ─────────────────────
+function loadSettingsForm() {
+  // Visitor toggle / password — local first, then published
+  const localProtect = localStorage.getItem('visitor_protect_local');
+  const localHashSrc = localStorage.getItem('visitor_pw_local'); // we keep the plaintext locally for editing
+  const cfg = window.SITE_CONFIG || {};
+  const protectOn = localProtect != null ? (localProtect === '1') : !!cfg.visitorProtect;
+  document.getElementById('set-visitor-on').checked = protectOn;
+  document.getElementById('set-visitor-pw').value = localHashSrc || '';
+  // GitHub creds (per device)
+  document.getElementById('gh-user').value = localStorage.getItem('gh_user') || 'leenamarkiet-stack';
+  document.getElementById('gh-repo').value = localStorage.getItem('gh_repo') || 'portfolio';
+  document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
+  toggleVisitorRow();
+}
+function toggleVisitorRow() {
+  const on = document.getElementById('set-visitor-on').checked;
+  document.getElementById('set-visitor-pw-row').style.display = on ? '' : 'none';
+}
+async function saveAdminPasswordLocal() {
+  const a = document.getElementById('set-admin-pw').value;
+  const b = document.getElementById('set-admin-pw2').value;
+  if (!a || a !== b) { setMsg('publish-status', a !== b ? 'Passwords do not match.' : 'Enter a password.', true); return; }
+  const h = await sha256(a);
+  localStorage.setItem('admin_hash_local', h);
+  document.getElementById('set-admin-pw').value = '';
+  document.getElementById('set-admin-pw2').value = '';
+  setMsg('publish-status', 'Admin password saved on this device. Click Publish to apply for everyone.', false);
+  flash('set-status-msg');
+}
+function saveVisitorLocal() {
+  const on = document.getElementById('set-visitor-on').checked;
+  const pw = document.getElementById('set-visitor-pw').value;
+  localStorage.setItem('visitor_protect_local', on ? '1' : '0');
+  if (pw) localStorage.setItem('visitor_pw_local', pw);
+  setMsg('publish-status', 'Visitor settings saved on this device. Click Publish to apply for everyone.', false);
+  flash('set-status-msg');
+}
+function setMsg(id, txt, isError) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = txt;
+  el.style.color = isError ? '#FF3737' : 'var(--forest)';
+}
+async function publishConfig() {
+  const status = document.getElementById('publish-status');
+  setMsg('publish-status', 'Publishing…', false);
+  const user  = document.getElementById('gh-user').value.trim();
+  const repo  = document.getElementById('gh-repo').value.trim();
+  const token = document.getElementById('gh-token').value.trim();
+  if (!user || !repo || !token) { setMsg('publish-status', 'Need GitHub user, repo, and token.', true); return; }
+  // remember (per device)
+  localStorage.setItem('gh_user', user);
+  localStorage.setItem('gh_repo', repo);
+  localStorage.setItem('gh_token', token);
+
+  // Build new config
+  const adminHash = localStorage.getItem('admin_hash_local')
+    || (window.SITE_CONFIG && window.SITE_CONFIG.adminHash)
+    || FALLBACK_HASH;
+  const visitorProtect = (localStorage.getItem('visitor_protect_local') || '0') === '1';
+  const visitorPlain   = localStorage.getItem('visitor_pw_local') || '';
+  const visitorHash    = visitorPlain ? await sha256(visitorPlain) : ((window.SITE_CONFIG && window.SITE_CONFIG.visitorHash) || '');
+
+  const content = `// site-config.js — generated by admin. Do not hand-edit.
+window.SITE_CONFIG = {
+  adminHash: ${JSON.stringify(adminHash)},
+  visitorProtect: ${visitorProtect ? 'true' : 'false'},
+  visitorHash: ${JSON.stringify(visitorHash)}
+};
+`;
+
+  try {
+    // Get the current sha (required for updates)
+    const path = 'config.js';
+    const apiBase = `https://api.github.com/repos/${encodeURIComponent(user)}/${encodeURIComponent(repo)}/contents/${encodeURIComponent(path)}`;
+    let sha;
+    const head = await fetch(apiBase, { headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github+json' } });
+    if (head.ok) {
+      const j = await head.json();
+      sha = j.sha;
+    } else if (head.status !== 404) {
+      throw new Error('Could not read existing file: ' + head.status);
+    }
+    // Encode content to base64 (UTF-8 safe)
+    const b64 = btoa(unescape(encodeURIComponent(content)));
+    const body = {
+      message: 'Update site config (admin/visitor passwords)',
+      content: b64,
+      branch: 'main',
+    };
+    if (sha) body.sha = sha;
+    const put = await fetch(apiBase, {
+      method: 'PUT',
+      headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!put.ok) {
+      const err = await put.text();
+      throw new Error('Publish failed: ' + put.status + ' ' + err);
+    }
+    setMsg('publish-status', 'Published! GitHub Pages will rebuild in ~1 minute. New password takes effect after that.', false);
+  } catch (e) {
+    console.error(e);
+    setMsg('publish-status', String(e.message || e), true);
+  }
+}
+document.addEventListener('change', (e) => {
+  if (e.target && e.target.id === 'set-visitor-on') toggleVisitorRow();
+});
+
 function renderAll() {
   renderBio();
   renderSkills();
   renderHeaderButtons();
   renderExperience();
   renderProjects();
+  loadSettingsForm();
   // Deep-link: ?edit=p3
   const params = new URLSearchParams(location.search);
   if (params.get('edit')) {

@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
+<script src="config.js"></script>
 <style>
   html, body { margin: 0; padding: 0; background: #FFEDCE; font-family: Inter, sans-serif; }
   *, *::before, *::after { box-sizing: border-box; }
@@ -665,7 +666,53 @@ function Portfolio() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<Portfolio/>);
+// ───── Visitor gate ─────
+async function sha256Hex(s){
+  const b=new TextEncoder().encode(s);const h=await crypto.subtle.digest('SHA-256',b);
+  return Array.from(new Uint8Array(h)).map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function VisitorGate({onPass}){
+  const [pw,setPw]=React.useState('');
+  const [err,setErr]=React.useState('');
+  const submit=async(e)=>{
+    e.preventDefault();
+    const cfg=window.SITE_CONFIG||{};
+    const expected=cfg.visitorHash||'';
+    const h=await sha256Hex(pw);
+    if(h===expected){
+      sessionStorage.setItem('visitor_auth','1');
+      onPass();
+    }else setErr('Wrong password.');
+  };
+  return (
+    <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',
+      padding:20,background:`linear-gradient(135deg,${P.cream} 0%,${P.peach} 60%,${P.coral} 100%)`}}>
+      <div style={{width:'100%',maxWidth:380,background:P.paper,borderRadius:14,padding:32,
+        boxShadow:'0 20px 60px -20px rgba(0,0,0,0.25)'}}>
+        <h1 style={{fontFamily:SERIF,fontWeight:400,fontSize:32,margin:'0 0 8px',letterSpacing:'-0.01em'}}>Welcome</h1>
+        <p style={{margin:'0 0 24px',color:'rgba(31,26,20,0.6)',fontSize:13}}>Enter password to view this portfolio.</p>
+        <form onSubmit={submit}>
+          <input type="password" value={pw} onChange={e=>setPw(e.target.value)} placeholder="Password" autoFocus
+            style={{width:'100%',padding:'11px 14px',borderRadius:8,border:`1px solid ${P.ink}1f`,
+              fontFamily:'inherit',fontSize:14,outline:'none'}}/>
+          {err && <div style={{color:P.red,fontSize:12,marginTop:10}}>{err}</div>}
+          <button type="submit" style={{width:'100%',marginTop:14,padding:12,border:0,borderRadius:999,
+            background:`linear-gradient(135deg,${P.coral},${P.red})`,color:P.paper,
+            fontFamily:'inherit',fontSize:14,fontWeight:500,cursor:'pointer',
+            boxShadow:`0 8px 20px -8px ${P.red}90`}}>Enter</button>
+        </form>
+      </div>
+    </div>
+  );
+}
+function Root(){
+  const cfg=window.SITE_CONFIG||{};
+  const needGate = !!(cfg.visitorProtect && cfg.visitorHash);
+  const [authed,setAuthed]=React.useState(!needGate || sessionStorage.getItem('visitor_auth')==='1');
+  if(!authed) return <VisitorGate onPass={()=>setAuthed(true)}/>;
+  return <Portfolio/>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Root/>);
 </script>
 </body>
 </html>
