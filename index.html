@@ -32,6 +32,14 @@
   .blob-b { animation: blob2 28s ease-in-out infinite; }
   .blob-c { animation: blob3 18s ease-in-out infinite; }
 
+  /* Gentle side-to-side sway, like the flower is drifting in a light breeze */
+  @keyframes flowerSway {
+    0%   { transform: rotate(75deg) translateX(0) translateY(0); }
+    50%  { transform: rotate(80deg) translateX(10px) translateY(-6px); }
+    100% { transform: rotate(75deg) translateX(0) translateY(0); }
+  }
+  .hero-flower-yellow { animation: flowerSway 6s ease-in-out infinite; transform-origin: 50% 85%; }
+
   /* Mobile responsive */
   .hero-pad { /* padding moved to .hero-screen so screens can slide */ }
   .content-pad { padding: 64px 64px 96px; }
@@ -592,7 +600,7 @@ function Portfolio() {
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-yellow.png" alt=""
           className="hero-flower hero-flower-yellow"
           style={{position:'absolute',bottom:40,right:80,width:260,height:'auto',
-            transform:'rotate(75deg)',pointerEvents:'none',zIndex:0,
+            pointerEvents:'none',zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-cream.png" alt=""
           className="hero-flower hero-flower-pansy"
