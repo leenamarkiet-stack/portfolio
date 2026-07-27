@@ -358,7 +358,10 @@ function GradBtn({href,primary,children}) {
     style={{...base,background:btnGrad,color:P.paper,border:`1px solid ${P.red}`,
     boxShadow:hov?`0 10px 24px -8px ${P.red}80`:`0 4px 10px -4px ${P.red}55`}}>{children}</a>;
   return <a href={href} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-    style={{...base,background:hov?'rgba(255,255,255,0.15)':'transparent',
+    style={{...base,
+    background:hov
+      ? 'linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.08))'
+      : 'linear-gradient(135deg,rgba(255,255,255,0.10),rgba(255,255,255,0.04))',
     color:'#3A4B2D',border:'1px solid rgba(255,255,255,0.92)'}}>{children}</a>;
 }
 
