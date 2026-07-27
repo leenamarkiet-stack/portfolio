@@ -620,9 +620,10 @@ function Portfolio() {
                   <p key={i} style={{margin:i===0?0:'14px 0 0',maxWidth:520,fontSize:16,lineHeight:1.55,color:P.ink}}>{para}</p>
                 ))}
                 <div style={{display:'flex',gap:10,marginTop:28,flexWrap:'wrap'}}>
-                  {(headerButtons||[]).map((b,i)=>(
-                    <GradBtn key={i} href={b.url||'#'} primary={!!b.primary}>{b.label||''} {b.primary?'↗':'↗'}</GradBtn>
-                  ))}
+                  {(headerButtons||[]).map((b,i)=>{
+                    const isDownload=/download|cv|resume|export/i.test(b.label||'');
+                    return <GradBtn key={i} href={b.url||'#'} primary={!!b.primary}>{b.label||''} {isDownload?'↓':'↗'}</GradBtn>;
+                  })}
                 </div>
               </div>
 
