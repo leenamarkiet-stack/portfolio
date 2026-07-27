@@ -670,10 +670,10 @@ function Portfolio() {
               </div>
 
               <div className="hero-photo" style={{width:200,height:240,borderRadius:8,padding:4,
-                background:`linear-gradient(160deg,${P.paper},${P.cream})`,
+                border:`4px solid ${P.cream}`,boxSizing:'border-box',
                 boxShadow:`0 18px 40px -16px ${P.ink}33`}}>
-                <div style={{width:'100%',height:'100%',borderRadius:6,overflow:'hidden',
-                  background:bio.photoUrl?`linear-gradient(160deg,${P.paper},${P.cream})`:'transparent',
+                <div style={{width:'100%',height:'100%',borderRadius:4,overflow:'hidden',
+                  background:'transparent',
                   display:'flex',alignItems:'center',justifyContent:'center'}}>
                   {bio.photoUrl
                     ? <img src={bio.photoUrl} alt={bio.name} style={{width:'100%',height:'100%',objectFit:'cover'}}/>
