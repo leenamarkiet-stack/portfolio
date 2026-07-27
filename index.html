@@ -78,6 +78,13 @@
     100% { margin-top: 0px; }
   }
   .dandelion-drift { animation: dandelionDrift 9s ease-in-out infinite; }
+  /* The puff head itself gently sways too, independent of the seeds and the cluster bob */
+  @keyframes puffSway {
+    0%   { transform: rotate(-2.5deg); }
+    50%  { transform: rotate(2.5deg); }
+    100% { transform: rotate(-2.5deg); }
+  }
+  .dandelion-puff-sway { animation: puffSway 7s ease-in-out infinite; transform-origin: 50% 90%; }
 
   /* Scroll reveal: elements fade + slide up into place as they enter the viewport */
   .reveal {
@@ -463,47 +470,49 @@ const DANDELION_SEEDS = [
   {n:7, key:'b0s7', left:155.6, top:75.1, w:22.4, h:28.8, fx:7.5, fy:-6.6, dur:23.1},
   {n:8, key:'b0s8', left:182.1, top:105.6, w:19.5, h:19.5, fx:9.0, fy:-4.4, dur:24.4},
   {n:9, key:'b0s9', left:125.1, top:120.6, w:28.1, h:20.5, fx:8.5, fy:-5.3, dur:25.7},
-  {n:1, key:'b1s1', left:199.0, top:-17.7, w:23.1, h:30.4, fx:11.9, fy:-14.8, dur:17.5},
-  {n:2, key:'b1s2', left:101.3, top:51.5, w:20.5, h:33.8, fx:7.3, fy:-17.5, dur:18.8},
-  {n:3, key:'b1s3', left:155.2, top:17.8, w:21.1, h:26.1, fx:10.7, fy:-15.7, dur:20.1},
-  {n:4, key:'b1s4', left:241.1, top:-52.8, w:22.1, h:26.8, fx:12.4, fy:-14.4, dur:21.4},
-  {n:5, key:'b1s5', left:241.5, top:6.8, w:23.5, h:22.7, fx:14.5, fy:-12.3, dur:22.7},
-  {n:6, key:'b1s6', left:146.7, top:75.4, w:23.9, h:16.4, fx:13.4, fy:-13.5, dur:24.0},
-  {n:7, key:'b1s7', left:192.6, top:46.6, w:19.0, h:24.5, fx:14.3, fy:-12.5, dur:25.3},
-  {n:8, key:'b1s8', left:227.6, top:85.4, w:16.6, h:16.6, fx:17.1, fy:-8.4, dur:14.6},
-  {n:9, key:'b1s9', left:152.8, top:105.9, w:23.9, h:17.4, fx:16.1, fy:-10.2, dur:15.9},
-  {n:1, key:'b2s1', left:238.5, top:-61.5, w:19.0, h:25.1, fx:17.6, fy:-21.8, dur:19.7},
-  {n:2, key:'b2s2', left:114.9, top:26.3, w:16.9, h:27.9, fx:10.8, fy:-25.8, dur:21.0},
-  {n:3, key:'b2s3', left:182.9, top:-17.8, w:17.4, h:21.5, fx:15.8, fy:-23.1, dur:22.3},
-  {n:4, key:'b2s4', left:291.3, top:-106.5, w:18.2, h:22.0, fx:18.3, fy:-21.2, dur:23.6},
-  {n:5, key:'b2s5', left:292.1, top:-32.4, w:19.3, h:18.7, fx:21.3, fy:-18.1, dur:24.9},
-  {n:6, key:'b2s6', left:172.9, top:52.6, w:19.7, h:13.5, fx:19.7, fy:-19.9, dur:14.2},
-  {n:7, key:'b2s7', left:229.5, top:18.1, w:15.7, h:20.2, fx:21.1, fy:-18.4, dur:15.5},
-  {n:8, key:'b2s8', left:273.1, top:65.3, w:13.6, h:13.6, fx:25.1, fy:-12.3, dur:16.8},
-  {n:9, key:'b2s9', left:180.5, top:91.3, w:19.7, h:14.3, fx:23.7, fy:-15.0, dur:18.1},
-  {n:1, key:'b3s1', left:278.1, top:-105.4, w:15.0, h:19.7, fx:23.2, fy:-28.8, dur:21.9},
-  {n:2, key:'b3s2', left:128.6, top:1.1, w:13.3, h:21.9, fx:14.3, fy:-34.1, dur:23.2},
-  {n:3, key:'b3s3', left:210.7, top:-53.5, w:13.6, h:16.9, fx:20.8, fy:-30.6, dur:24.5},
-  {n:4, key:'b3s4', left:341.5, top:-160.3, w:14.3, h:17.3, fx:24.1, fy:-28.1, dur:25.8},
-  {n:5, key:'b3s5', left:342.7, top:-71.6, w:15.2, h:14.7, fx:28.2, fy:-23.9, dur:15.1},
-  {n:6, key:'b3s6', left:199.0, top:29.8, w:15.5, h:10.6, fx:26.0, fy:-26.3, dur:16.4},
-  {n:7, key:'b3s7', left:266.5, top:-10.4, w:12.3, h:15.8, fx:27.9, fy:-24.3, dur:17.7},
-  {n:8, key:'b3s8', left:318.6, top:45.2, w:10.7, h:10.7, fx:33.2, fy:-16.3, dur:19.0},
-  {n:9, key:'b3s9', left:208.2, top:76.7, w:15.5, h:11.3, fx:31.3, fy:-19.8, dur:20.3},
-  {n:1, key:'b4s1', left:317.6, top:-149.3, w:10.9, h:14.3, fx:28.9, fy:-35.8, dur:24.1},
-  {n:2, key:'b4s2', left:142.2, top:-24.1, w:9.6, h:15.9, fx:17.8, fy:-42.4, dur:25.4},
-  {n:3, key:'b4s3', left:238.4, top:-89.1, w:9.9, h:12.3, fx:25.9, fy:-38.0, dur:14.7},
-  {n:4, key:'b4s4', left:391.8, top:-214.0, w:10.4, h:12.6, fx:30.0, fy:-34.9, dur:16.0},
-  {n:5, key:'b4s5', left:393.4, top:-110.8, w:11.0, h:10.7, fx:35.1, fy:-29.8, dur:17.3},
-  {n:6, key:'b4s6', left:225.1, top:7.0, w:11.2, h:7.7, fx:32.4, fy:-32.7, dur:18.6},
-  {n:7, key:'b4s7', left:303.4, top:-38.9, w:9.0, h:11.5, fx:34.7, fy:-30.2, dur:19.9},
-  {n:8, key:'b4s8', left:364.1, top:25.0, w:7.8, h:7.8, fx:41.3, fy:-20.3, dur:21.2},
-  {n:9, key:'b4s9', left:235.9, top:62.0, w:11.2, h:8.2, fx:38.9, fy:-24.6, dur:22.5},
+  {n:1, key:'b1s1', left:220.6, top:-44.1, w:22.8, h:30.1, fx:14.4, fy:-17.9, dur:17.5},
+  {n:2, key:'b1s2', left:108.2, top:35.6, w:20.2, h:33.4, fx:8.9, fy:-21.2, dur:18.8},
+  {n:3, key:'b1s3', left:170.1, top:-3.7, w:20.8, h:25.8, fx:13.0, fy:-19.0, dur:20.1},
+  {n:4, key:'b1s4', left:268.8, top:-84.7, w:21.8, h:26.5, fx:15.0, fy:-17.4, dur:21.4},
+  {n:5, key:'b1s5', left:269.4, top:-16.6, w:23.2, h:22.4, fx:17.5, fy:-14.9, dur:22.7},
+  {n:6, key:'b1s6', left:160.6, top:61.7, w:23.6, h:16.2, fx:16.2, fy:-16.3, dur:24.0},
+  {n:7, key:'b1s7', left:212.8, top:29.2, w:18.8, h:24.2, fx:17.4, fy:-15.1, dur:25.3},
+  {n:8, key:'b1s8', left:252.9, top:73.2, w:16.4, h:16.4, fx:20.6, fy:-10.1, dur:14.6},
+  {n:9, key:'b1s9', left:167.6, top:96.8, w:23.6, h:17.2, fx:19.4, fy:-12.3, dur:15.9},
+  {n:1, key:'b2s1', left:287.0, top:-121.0, w:18.5, h:24.3, fx:22.6, fy:-28.0, dur:19.7},
+  {n:2, key:'b2s2', left:130.4, top:-9.5, w:16.4, h:27.1, fx:13.9, fy:-33.2, dur:21.0},
+  {n:3, key:'b2s3', left:216.5, top:-66.3, w:16.9, h:20.9, fx:20.3, fy:-29.7, dur:22.3},
+  {n:4, key:'b2s4', left:353.6, top:-178.4, w:17.7, h:21.4, fx:23.5, fy:-27.3, dur:23.6},
+  {n:5, key:'b2s5', left:354.8, top:-85.1, w:18.8, h:18.2, fx:27.4, fy:-23.3, dur:24.9},
+  {n:6, key:'b2s6', left:204.0, top:21.7, w:19.1, h:13.1, fx:25.3, fy:-25.6, dur:14.2},
+  {n:7, key:'b2s7', left:275.1, top:-21.0, w:15.2, h:19.6, fx:27.2, fy:-23.6, dur:15.5},
+  {n:8, key:'b2s8', left:329.9, top:37.7, w:13.3, h:13.3, fx:32.3, fy:-15.9, dur:16.8},
+  {n:9, key:'b2s9', left:213.7, top:70.7, w:19.1, h:13.9, fx:30.4, fy:-19.2, dur:18.1},
+  {n:1, key:'b3s1', left:364.2, top:-211.3, w:14.1, h:18.6, fx:30.7, fy:-38.2, dur:21.9},
+  {n:2, key:'b3s2', left:155.9, top:-62.7, w:12.5, h:20.7, fx:18.9, fy:-45.2, dur:23.2},
+  {n:3, key:'b3s3', left:270.2, top:-139.7, w:12.9, h:16.0, fx:27.6, fy:-40.5, dur:24.5},
+  {n:4, key:'b3s4', left:452.3, top:-288.1, w:13.5, h:16.4, fx:31.9, fy:-37.2, dur:25.8},
+  {n:5, key:'b3s5', left:454.1, top:-165.4, w:14.4, h:13.9, fx:37.4, fy:-31.7, dur:15.1},
+  {n:6, key:'b3s6', left:254.3, top:-25.3, w:14.6, h:10.0, fx:34.5, fy:-34.8, dur:16.4},
+  {n:7, key:'b3s7', left:347.5, top:-80.0, w:11.6, h:15.0, fx:37.0, fy:-32.1, dur:17.7},
+  {n:8, key:'b3s8', left:419.6, top:-4.0, w:10.1, h:10.1, fx:44.0, fy:-21.6, dur:19.0},
+  {n:9, key:'b3s9', left:267.2, top:40.0, w:14.6, h:10.7, fx:41.4, fy:-26.2, dur:20.3},
+  {n:1, key:'b4s1', left:457.4, top:-321.4, w:9.8, h:12.9, fx:38.9, fy:-48.3, dur:24.1},
+  {n:2, key:'b4s2', left:186.5, top:-127.9, w:8.7, h:14.3, fx:24.0, fy:-57.2, dur:25.4},
+  {n:3, key:'b4s3', left:335.0, top:-229.3, w:8.9, h:11.1, fx:34.9, fy:-51.2, dur:14.7},
+  {n:4, key:'b4s4', left:571.6, top:-421.9, w:9.4, h:11.3, fx:40.4, fy:-47.0, dur:16.0},
+  {n:5, key:'b4s5', left:574.2, top:-263.4, w:9.9, h:9.6, fx:47.3, fy:-40.1, dur:17.3},
+  {n:6, key:'b4s6', left:314.9, top:-82.6, w:10.1, h:6.9, fx:43.6, fy:-44.0, dur:18.6},
+  {n:7, key:'b4s7', left:434.9, top:-152.2, w:8.1, h:10.4, fx:46.8, fy:-40.7, dur:19.9},
+  {n:8, key:'b4s8', left:528.1, top:-54.9, w:7.0, h:7.0, fx:55.7, fy:-27.3, dur:21.2},
+  {n:9, key:'b4s9', left:331.6, top:2.3, w:10.1, h:7.4, fx:52.4, fy:-33.1, dur:22.5},
+
 ];
 function DandelionCluster({style, className}) {
   return (
     <div aria-hidden className={className} style={{position:'absolute',width:220,height:344,...style}}>
       <img src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/dandelion-puff.png" alt=""
+        className="dandelion-puff-sway"
         style={{position:'absolute',left:1.7,top:105.6,width:112.7,height:237.4}}/>
       {DANDELION_SEEDS.map(s=>(
         <img key={s.key||s.n}
@@ -854,38 +863,52 @@ function Portfolio() {
             <filter id="wc-blur1"><feGaussianBlur stdDeviation="2.6"/></filter>
             <filter id="wc-blur2"><feGaussianBlur stdDeviation="1.2"/></filter>
           </defs>
-          {/* back bleed — tallest, softest, faintest */}
+          {/* back bleed — tallest, softest, faintest, irregular non-repeating rhythm */}
           <path filter="url(#wc-blur1)" opacity="0.4" fill={P.cream}
-            d="M0,38 C55,18 95,58 150,42 C210,26 250,68 320,48 C360,36 400,28 455,50
-               C500,68 540,34 600,40 C660,46 690,78 760,56 C810,40 830,30 890,46
-               C940,58 970,32 1030,42 C1090,50 1110,70 1170,48 C1220,32 1250,40 1300,34
-               C1350,28 1390,44 1440,36 L1440,100 L0,100 Z"/>
-          {/* mid layer — irregular, medium softness */}
+            d="M0,44 C30,20 50,52 85,36 C160,4 190,60 245,40
+               C270,32 285,44 310,50 C400,72 430,18 470,38
+               C495,50 505,46 525,40 C610,14 645,66 700,46
+               C735,34 750,52 780,50 C860,44 880,20 915,42
+               C940,58 960,50 985,44 C1050,28 1090,58 1140,40
+               C1175,28 1190,42 1220,38 C1290,30 1320,54 1370,40
+               C1400,32 1415,44 1440,38 L1440,100 L0,100 Z"/>
+          {/* mid layer — different irregular rhythm, no shared beat with the layer above */}
           <path filter="url(#wc-blur2)" opacity="0.62" fill={P.cream}
-            d="M0,52 C40,40 80,68 130,54 C190,40 220,70 280,58 C330,48 370,38 420,60
-               C460,76 510,46 570,54 C630,62 655,34 720,46 C770,54 800,72 860,58
-               C910,46 940,68 1000,56 C1060,44 1090,64 1150,54 C1200,44 1240,60 1290,50
-               C1340,40 1390,56 1440,48 L1440,100 L0,100 Z"/>
-          {/* front — sets the true boundary, jagged bristle-like edge */}
+            d="M0,58 C20,48 35,64 60,56 C130,32 155,72 200,58
+               C255,40 270,66 305,60 C330,56 340,64 365,62
+               C440,52 460,24 510,50 C545,68 560,58 590,54
+               C660,44 680,72 730,58 C760,50 775,60 800,58
+               C875,50 895,28 940,52 C970,68 985,60 1015,56
+               C1080,46 1100,70 1150,58 C1185,50 1200,60 1230,56
+               C1300,46 1325,66 1380,54 C1405,48 1420,58 1440,52 L1440,100 L0,100 Z"/>
+          {/* front — sets the true boundary; irregular jab-and-sweep bristle marks */}
           <path filter="url(#wc-blur2)" fill={P.cream}
-            d="M0,66 C25,60 45,72 70,64 C110,52 140,74 190,66 C230,60 250,48 300,70
-               C340,86 380,58 430,66 C470,74 490,52 540,62 C590,72 610,84 660,68
-               C700,56 720,76 770,66 C820,56 840,72 890,64 C935,58 955,74 1005,66
-               C1050,58 1075,76 1125,68 C1170,60 1195,48 1245,64
-               C1290,78 1320,56 1370,64 C1400,68 1420,60 1440,64 L1440,100 L0,100 Z"/>
-          {/* scattered drip blobs, like paint bleeding down at a few points */}
-          <ellipse cx="188" cy="74" rx="4" ry="7" fill={P.cream} opacity="0.85" filter="url(#wc-blur2)"/>
-          <ellipse cx="420" cy="78" rx="3.5" ry="6" fill={P.cream} opacity="0.75" filter="url(#wc-blur2)"/>
-          <ellipse cx="658" cy="80" rx="5" ry="8" fill={P.cream} opacity="0.8" filter="url(#wc-blur2)"/>
-          <ellipse cx="1000" cy="76" rx="3.5" ry="6" fill={P.cream} opacity="0.7" filter="url(#wc-blur2)"/>
-          <ellipse cx="1246" cy="72" rx="4" ry="7" fill={P.cream} opacity="0.8" filter="url(#wc-blur2)"/>
+            d="M0,72 C15,66 25,76 45,70 C90,56 105,82 140,72
+               C165,64 175,74 195,72 C260,64 285,42 320,68
+               C345,86 365,74 390,72 C420,68 435,80 460,74
+               C520,60 545,88 590,72 C615,62 630,76 655,74
+               C695,68 715,52 750,70 C775,84 790,72 815,70
+               C860,64 880,50 915,68 C935,80 950,72 970,70
+               C1030,62 1055,86 1100,72 C1125,62 1140,76 1165,72
+               C1200,66 1220,50 1255,70 C1280,84 1295,72 1320,70
+               C1365,64 1385,52 1420,66 C1432,71 1436,68 1440,70
+               L1440,100 L0,100 Z"/>
+          {/* scattered drip blobs, uneven placement like real paint bleeding down */}
+          <ellipse cx="132" cy="80" rx="3.5" ry="6" fill={P.cream} opacity="0.8" filter="url(#wc-blur2)"/>
+          <ellipse cx="330" cy="90" rx="5" ry="9" fill={P.cream} opacity="0.85" filter="url(#wc-blur2)"/>
+          <ellipse cx="470" cy="82" rx="3" ry="5" fill={P.cream} opacity="0.7" filter="url(#wc-blur2)"/>
+          <ellipse cx="605" cy="88" rx="4.5" ry="8" fill={P.cream} opacity="0.8" filter="url(#wc-blur2)"/>
+          <ellipse cx="825" cy="78" rx="3" ry="5.5" fill={P.cream} opacity="0.7" filter="url(#wc-blur2)"/>
+          <ellipse cx="990" cy="86" rx="4" ry="7" fill={P.cream} opacity="0.75" filter="url(#wc-blur2)"/>
+          <ellipse cx="1180" cy="80" rx="3.5" ry="6" fill={P.cream} opacity="0.8" filter="url(#wc-blur2)"/>
+          <ellipse cx="1330" cy="76" rx="3" ry="5" fill={P.cream} opacity="0.7" filter="url(#wc-blur2)"/>
         </svg>
       </div>
 
       {/* Dandelion sits outside hero-pad's clipped bounds, so its fluff can drift
           down past the watercolor divider into the section below. */}
       <DandelionCluster className="hero-flower-dandelion dandelion-drift"
-        style={{position:'absolute',bottom:-40,right:520,transform:'rotate(90deg) scale(1.35)',
+        style={{position:'absolute',bottom:10,right:520,transform:'rotate(90deg) scale(1.35)',
           transformOrigin:'50% 85%',pointerEvents:'none',zIndex:2,opacity:0.92,
           filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
       </div>
