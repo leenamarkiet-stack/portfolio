@@ -67,6 +67,7 @@
     .name-h1 { font-size: 44px !important; }
     .meta-bar { flex-direction: column; align-items: flex-start !important; gap: 8px; }
     .footer-bar { flex-direction: column; gap: 12px; align-items: flex-start !important; }
+    .bio-narrow-spacer { display: none; }
   }
   @media (max-width: 480px) {
     .grid-4 { grid-template-columns: 1fr; }
@@ -620,8 +621,9 @@ function Portfolio() {
               </div>
 
               <div className="bio-bottom">
+                <div className="bio-narrow-spacer" aria-hidden style={{float:'right',width:232,height:56}}/>
                 {bio.paragraph.split(/\n\s*\n/).map((para,i)=>(
-                  <p key={i} style={{margin:i===0?0:'14px 0 0',maxWidth:i===0?520:'none',fontSize:16,lineHeight:1.55,color:P.ink}}>{para}</p>
+                  <p key={i} style={{margin:i===0?0:'14px 0 0',fontSize:16,lineHeight:1.55,color:P.ink}}>{para}</p>
                 ))}
                 <div style={{display:'flex',gap:10,marginTop:28,flexWrap:'wrap'}}>
                   {(headerButtons||[]).map((b,i)=>{
