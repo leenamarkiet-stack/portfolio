@@ -255,7 +255,7 @@ const DEFAULT_BIO = {
   location:"Abu Dhabi, United Arab Emirates",
   email:"leena@markiet.studo", photoUrl:"",
   status:"Available for projects, summer 2026",
-  paragraph:"I'm a service designer and UX/UI lead with 8+ years shaping end-to-end experiences for healthcare, public sector, and fintech. I love untangling messy systems, facilitating cross-functional teams, and turning insight into shipped product. Currently freelancing.",
+  paragraph:"I am a Service Designer and Senior UX/UI Designer with experience designing complex enterprise and government software products, digital services, and customer experiences. My background combines service design, UX, business analysis, and stakeholder facilitation, enabling me to bridge business strategy, technical implementation, and user needs throughout the product lifecycle.\n\nI specialize in transforming complex business challenges into intuitive, scalable digital solutions. By combining systems thinking with user-centred design, I consider the broader service ecosystem—including users, workflows, business objectives, and technical constraints—to create experiences that are both highly usable and aligned with organizational goals.",
   socials:[{label:"LinkedIn",url:"#"},{label:"Read.cv",url:"#"}],
 };
 const DEFAULT_SKILLS = ["Service Design","Journey Mapping","Workshop Facilitation","UX Research","UI Design","Digital Twins","Vibecoding","Figma","Stakeholder Management"];
@@ -605,7 +605,9 @@ function Portfolio() {
               </div>
 
               <div className="bio-bottom">
-                <p style={{margin:0,fontSize:16,lineHeight:1.55,color:P.ink}}>{bio.paragraph}</p>
+                {bio.paragraph.split(/\n\s*\n/).map((para,i)=>(
+                  <p key={i} style={{margin:i===0?0:'14px 0 0',fontSize:16,lineHeight:1.55,color:P.ink}}>{para}</p>
+                ))}
                 <div style={{display:'flex',gap:10,marginTop:28,flexWrap:'wrap'}}>
                   {(headerButtons||[]).map((b,i)=>(
                     <GradBtn key={i} href={b.url||'#'} primary={!!b.primary}>{b.label||''} {b.primary?'↗':'↗'}</GradBtn>
