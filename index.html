@@ -59,6 +59,16 @@
   .hero-flower-pansy { animation: flowerSwayPansy 22s ease-in-out infinite; transform-origin: 50% 85%; }
   .footer-flower { animation: flowerSwayFooter 13s ease-in-out infinite; transform-origin: 50% 85%; }
 
+  /* Scroll reveal: elements fade + slide up into place as they enter the viewport */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity .6s cubic-bezier(0.16,1,0.3,1), transform .6s cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal.reveal-visible { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
   /* Mobile responsive */
   .hero-pad { /* padding moved to .hero-screen so screens can slide */ }
   .content-pad { padding: 64px 64px 96px; }
@@ -360,6 +370,34 @@ function isAdminSignedIn() {
   try { return localStorage.getItem('admin_auth') === '1'; } catch(e) { return false; }
 }
 
+// Fires once when the element scrolls into view; used to trigger the
+// fade+slide-up "reveal" animation on scroll instead of on page load.
+function useInView(options) {
+  const ref = React.useRef(null);
+  const [visible, setVisible] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === 'undefined') { setVisible(true); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { setVisible(true); io.unobserve(e.target); } });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px', ...options });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return [ref, visible];
+}
+
+function Reveal({children, delay = 0, as: Tag = 'div', className = '', style = {}}) {
+  const [ref, visible] = useInView();
+  return (
+    <Tag ref={ref} className={`reveal ${visible ? 'reveal-visible' : ''} ${className}`}
+      style={{...style, transitionDelay: visible ? `${delay}ms` : '0ms'}}>
+      {children}
+    </Tag>
+  );
+}
+
 function useReorderable(initial, key) {
   const ids = initial.map(i=>i.id);
   const [order, setOrder] = React.useState(() => {
@@ -640,13 +678,14 @@ function Portfolio() {
             <section className="hero-grid">
               <div className="bio-col">
                 <div className="bio-top" style={{paddingTop:24}}>
-                  <h1 className="name-h1" style={{fontFamily:SERIF,fontWeight:800,lineHeight:1.0,
+                  <h1 className="name-h1" style={{fontFamily:SERIF,fontWeight:800,
+                    display:'flex',flexDirection:'column',gap:2,
                     margin:0,letterSpacing:'-0.025em',color:P.ink}}>
-                    <span style={{display:'inline-block',background:`linear-gradient(90deg,${P.coral},${P.forest})`,
+                    <span style={{display:'block',lineHeight:1,background:`linear-gradient(90deg,${P.coral},${P.forest})`,
                       WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent'}}>
                       {bio.name}
-                    </span><br/>
-                    <em className="role-em" style={{display:'inline-block',marginTop:'-1.24em',fontFamily:SERIF,fontStyle:'normal',fontWeight:400,fontSize:'0.55em',
+                    </span>
+                    <em className="role-em" style={{display:'block',lineHeight:1,fontFamily:SERIF,fontStyle:'normal',fontWeight:400,fontSize:'0.55em',
                       background:`linear-gradient(90deg,${P.coral},${P.forest})`,
                       WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent'}}>
                       {formatRole(bio.role)}
