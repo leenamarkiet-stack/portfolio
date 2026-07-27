@@ -71,6 +71,13 @@
     animation: seedFloat var(--dur,12s) ease-in-out infinite;
     animation-delay: var(--delay,0s);
   }
+  /* Whole cluster gets a slow idle bob too, on top of each seed's own float */
+  @keyframes dandelionDrift {
+    0%   { margin-top: 0px; }
+    50%  { margin-top: -10px; }
+    100% { margin-top: 0px; }
+  }
+  .dandelion-drift { animation: dandelionDrift 9s ease-in-out infinite; }
 
   /* Scroll reveal: elements fade + slide up into place as they enter the viewport */
   .reveal {
@@ -442,22 +449,56 @@ function useReorderable(initial, key) {
 // Dandelion puff + 9 individually-cropped seeds, each floating on its own
 // gentle drift (direction computed from its position relative to the puff head)
 // so they feel alive instead of one static composite image.
+// 5 distance "bands" reusing the 9 seed crops, extrapolated progressively
+// further from the puff head. Both size (shrinks) and float amplitude (fx/fy,
+// grows) scale with distance, so far seeds look smaller and drift wider —
+// like they've been scattered further by the wind.
 const DANDELION_SEEDS = [
-  {n:1, left:159.5, top:26.2, w:27.2, h:35.8, fx:6.3, fy:-7.8, dur:11},
-  {n:2, left:87.7,  top:76.7, w:24.1, h:39.8, fx:3.9, fy:-9.2, dur:14},
-  {n:3, left:127.5, top:53.4, w:24.8, h:30.7, fx:5.6, fy:-8.3, dur:9.5},
-  {n:4, left:190.9, top:1.0,  w:26.0, h:31.5, fx:6.5, fy:-7.6, dur:13},
-  {n:5, left:190.9, top:46.0, w:27.6, h:26.7, fx:7.6, fy:-6.5, dur:10.5},
-  {n:6, left:120.6, top:98.2, w:28.1, h:19.3, fx:7.0, fy:-7.1, dur:15},
-  {n:7, left:155.6, top:75.1, w:22.4, h:28.8, fx:7.5, fy:-6.6, dur:8.5},
-  {n:8, left:182.1, top:105.6,w:19.5, h:19.5, fx:9.0, fy:-4.4, dur:12.5},
-  {n:9, left:125.1, top:120.6,w:28.1, h:20.5, fx:8.5, fy:-5.3, dur:16},
-  // Extra fluff — reuses existing seed crops, extrapolated further out from
-  // the puff head and slightly smaller, for a denser scattered look.
-  {n:2, key:'x1', left:110.5, top:39.4,  w:15.7, h:25.9, fx:2.7, fy:-6.5, dur:12},
-  {n:4, key:'x2', left:271.3, top:-81.7, w:16.9, h:20.5, fx:4.6, fy:-5.3, dur:17},
-  {n:6, key:'x3', left:163.3, top:63.5,  w:18.3, h:12.5, fx:4.9, fy:-5.0, dur:9},
-  {n:8, key:'x4', left:254.7, top:75.0,  w:12.7, h:12.7, fx:6.3, fy:-3.1, dur:13.5},
+  {n:1, key:'b0s1', left:159.5, top:26.2, w:27.2, h:35.8, fx:6.3, fy:-7.8, dur:15.3},
+  {n:2, key:'b0s2', left:87.7, top:76.7, w:24.1, h:39.8, fx:3.9, fy:-9.2, dur:16.6},
+  {n:3, key:'b0s3', left:127.5, top:53.4, w:24.8, h:30.7, fx:5.6, fy:-8.3, dur:17.9},
+  {n:4, key:'b0s4', left:190.9, top:1.0, w:26.0, h:31.5, fx:6.5, fy:-7.6, dur:19.2},
+  {n:5, key:'b0s5', left:190.9, top:46.0, w:27.6, h:26.7, fx:7.6, fy:-6.5, dur:20.5},
+  {n:6, key:'b0s6', left:120.6, top:98.2, w:28.1, h:19.3, fx:7.0, fy:-7.1, dur:21.8},
+  {n:7, key:'b0s7', left:155.6, top:75.1, w:22.4, h:28.8, fx:7.5, fy:-6.6, dur:23.1},
+  {n:8, key:'b0s8', left:182.1, top:105.6, w:19.5, h:19.5, fx:9.0, fy:-4.4, dur:24.4},
+  {n:9, key:'b0s9', left:125.1, top:120.6, w:28.1, h:20.5, fx:8.5, fy:-5.3, dur:25.7},
+  {n:1, key:'b1s1', left:199.0, top:-17.7, w:23.1, h:30.4, fx:11.9, fy:-14.8, dur:17.5},
+  {n:2, key:'b1s2', left:101.3, top:51.5, w:20.5, h:33.8, fx:7.3, fy:-17.5, dur:18.8},
+  {n:3, key:'b1s3', left:155.2, top:17.8, w:21.1, h:26.1, fx:10.7, fy:-15.7, dur:20.1},
+  {n:4, key:'b1s4', left:241.1, top:-52.8, w:22.1, h:26.8, fx:12.4, fy:-14.4, dur:21.4},
+  {n:5, key:'b1s5', left:241.5, top:6.8, w:23.5, h:22.7, fx:14.5, fy:-12.3, dur:22.7},
+  {n:6, key:'b1s6', left:146.7, top:75.4, w:23.9, h:16.4, fx:13.4, fy:-13.5, dur:24.0},
+  {n:7, key:'b1s7', left:192.6, top:46.6, w:19.0, h:24.5, fx:14.3, fy:-12.5, dur:25.3},
+  {n:8, key:'b1s8', left:227.6, top:85.4, w:16.6, h:16.6, fx:17.1, fy:-8.4, dur:14.6},
+  {n:9, key:'b1s9', left:152.8, top:105.9, w:23.9, h:17.4, fx:16.1, fy:-10.2, dur:15.9},
+  {n:1, key:'b2s1', left:238.5, top:-61.5, w:19.0, h:25.1, fx:17.6, fy:-21.8, dur:19.7},
+  {n:2, key:'b2s2', left:114.9, top:26.3, w:16.9, h:27.9, fx:10.8, fy:-25.8, dur:21.0},
+  {n:3, key:'b2s3', left:182.9, top:-17.8, w:17.4, h:21.5, fx:15.8, fy:-23.1, dur:22.3},
+  {n:4, key:'b2s4', left:291.3, top:-106.5, w:18.2, h:22.0, fx:18.3, fy:-21.2, dur:23.6},
+  {n:5, key:'b2s5', left:292.1, top:-32.4, w:19.3, h:18.7, fx:21.3, fy:-18.1, dur:24.9},
+  {n:6, key:'b2s6', left:172.9, top:52.6, w:19.7, h:13.5, fx:19.7, fy:-19.9, dur:14.2},
+  {n:7, key:'b2s7', left:229.5, top:18.1, w:15.7, h:20.2, fx:21.1, fy:-18.4, dur:15.5},
+  {n:8, key:'b2s8', left:273.1, top:65.3, w:13.6, h:13.6, fx:25.1, fy:-12.3, dur:16.8},
+  {n:9, key:'b2s9', left:180.5, top:91.3, w:19.7, h:14.3, fx:23.7, fy:-15.0, dur:18.1},
+  {n:1, key:'b3s1', left:278.1, top:-105.4, w:15.0, h:19.7, fx:23.2, fy:-28.8, dur:21.9},
+  {n:2, key:'b3s2', left:128.6, top:1.1, w:13.3, h:21.9, fx:14.3, fy:-34.1, dur:23.2},
+  {n:3, key:'b3s3', left:210.7, top:-53.5, w:13.6, h:16.9, fx:20.8, fy:-30.6, dur:24.5},
+  {n:4, key:'b3s4', left:341.5, top:-160.3, w:14.3, h:17.3, fx:24.1, fy:-28.1, dur:25.8},
+  {n:5, key:'b3s5', left:342.7, top:-71.6, w:15.2, h:14.7, fx:28.2, fy:-23.9, dur:15.1},
+  {n:6, key:'b3s6', left:199.0, top:29.8, w:15.5, h:10.6, fx:26.0, fy:-26.3, dur:16.4},
+  {n:7, key:'b3s7', left:266.5, top:-10.4, w:12.3, h:15.8, fx:27.9, fy:-24.3, dur:17.7},
+  {n:8, key:'b3s8', left:318.6, top:45.2, w:10.7, h:10.7, fx:33.2, fy:-16.3, dur:19.0},
+  {n:9, key:'b3s9', left:208.2, top:76.7, w:15.5, h:11.3, fx:31.3, fy:-19.8, dur:20.3},
+  {n:1, key:'b4s1', left:317.6, top:-149.3, w:10.9, h:14.3, fx:28.9, fy:-35.8, dur:24.1},
+  {n:2, key:'b4s2', left:142.2, top:-24.1, w:9.6, h:15.9, fx:17.8, fy:-42.4, dur:25.4},
+  {n:3, key:'b4s3', left:238.4, top:-89.1, w:9.9, h:12.3, fx:25.9, fy:-38.0, dur:14.7},
+  {n:4, key:'b4s4', left:391.8, top:-214.0, w:10.4, h:12.6, fx:30.0, fy:-34.9, dur:16.0},
+  {n:5, key:'b4s5', left:393.4, top:-110.8, w:11.0, h:10.7, fx:35.1, fy:-29.8, dur:17.3},
+  {n:6, key:'b4s6', left:225.1, top:7.0, w:11.2, h:7.7, fx:32.4, fy:-32.7, dur:18.6},
+  {n:7, key:'b4s7', left:303.4, top:-38.9, w:9.0, h:11.5, fx:34.7, fy:-30.2, dur:19.9},
+  {n:8, key:'b4s8', left:364.1, top:25.0, w:7.8, h:7.8, fx:41.3, fy:-20.3, dur:21.2},
+  {n:9, key:'b4s9', left:235.9, top:62.0, w:11.2, h:8.2, fx:38.9, fy:-24.6, dur:22.5},
 ];
 function DandelionCluster({style, className}) {
   return (
@@ -696,6 +737,9 @@ function Portfolio() {
     <div style={{width:'100%',minHeight:'100%',background:P.cream,color:P.ink,fontFamily:'Inter,system-ui,sans-serif'}}>
 
       {/* HERO */}
+      {/* Wrapper (no overflow:hidden) so the dandelion can drift past the hero's
+          clipped boundary into the section below, over the watercolor divider. */}
+      <div style={{position:'relative'}}>
       <div ref={heroPadRef} className="hero-pad" style={{background:heroGrad,position:'relative',overflow:'hidden'}}>
         <div aria-hidden className="blob-a" style={{position:'absolute',top:-120,right:-80,width:480,height:480,
           background:`radial-gradient(closest-side,${P.red}55,transparent 70%)`,filter:'blur(20px)',pointerEvents:'none',zIndex:0}}/>
@@ -709,10 +753,6 @@ function Portfolio() {
           style={{position:'absolute',bottom:96,right:260,width:260,height:'auto',
             pointerEvents:'none',zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
-        <DandelionCluster className="hero-flower-dandelion"
-          style={{bottom:70,right:520,transform:'rotate(90deg) scale(1.35)',
-            transformOrigin:'50% 85%',pointerEvents:'none',zIndex:0,opacity:0.92,
-            filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-cream.png" alt=""
           className="hero-flower hero-flower-pansy"
           style={{position:'absolute',top:-55,left:-80,width:260,height:'auto',
@@ -842,6 +882,14 @@ function Portfolio() {
         </svg>
       </div>
 
+      {/* Dandelion sits outside hero-pad's clipped bounds, so its fluff can drift
+          down past the watercolor divider into the section below. */}
+      <DandelionCluster className="hero-flower-dandelion dandelion-drift"
+        style={{position:'absolute',bottom:-40,right:520,transform:'rotate(90deg) scale(1.35)',
+          transformOrigin:'50% 85%',pointerEvents:'none',zIndex:2,opacity:0.92,
+          filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
+      </div>
+
       {/* CONTENT */}
       <div className="content-pad" style={{position:'relative',overflow:'hidden'}}>
         <section style={{marginBottom:64}}>
@@ -862,7 +910,7 @@ function Portfolio() {
             peeking up from the bottom-left corner. */}
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-pansy.png" alt=""
           className="footer-flower"
-          style={{position:'absolute',bottom:20,left:-120,width:420,height:'auto',
+          style={{position:'absolute',bottom:90,left:-120,width:420,height:'auto',
             pointerEvents:'none',opacity:0.85,zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
 
