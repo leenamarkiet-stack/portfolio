@@ -42,11 +42,11 @@
     100% { transform: rotate(72deg) translateX(-14px) translateY(-2px); }
   }
   @keyframes flowerSwayPansy {
-    0%   { transform: rotate(17deg) translateX(-14px) translateY(-2px); }
-    25%  { transform: rotate(20deg) translateX(0) translateY(-6px); }
-    50%  { transform: rotate(23deg) translateX(14px) translateY(-2px); }
-    75%  { transform: rotate(20deg) translateX(0) translateY(-6px); }
-    100% { transform: rotate(17deg) translateX(-14px) translateY(-2px); }
+    0%   { transform: rotate(19deg) translateX(-6px) translateY(-1px); }
+    25%  { transform: rotate(20deg) translateX(0) translateY(-3px); }
+    50%  { transform: rotate(21deg) translateX(6px) translateY(-1px); }
+    75%  { transform: rotate(20deg) translateX(0) translateY(-3px); }
+    100% { transform: rotate(19deg) translateX(-6px) translateY(-1px); }
   }
   @keyframes flowerSwayFooter {
     0%   { transform: rotate(97deg) translateX(-14px) translateY(-2px); }
@@ -56,7 +56,7 @@
     100% { transform: rotate(97deg) translateX(-14px) translateY(-2px); }
   }
   .hero-flower-yellow { animation: flowerSwayYellow 13s ease-in-out infinite; transform-origin: 50% 85%; }
-  .hero-flower-pansy { animation: flowerSwayPansy 13s ease-in-out infinite; transform-origin: 50% 85%; }
+  .hero-flower-pansy { animation: flowerSwayPansy 22s ease-in-out infinite; transform-origin: 50% 85%; }
   .footer-flower { animation: flowerSwayFooter 13s ease-in-out infinite; transform-origin: 50% 85%; }
 
   /* Mobile responsive */
@@ -623,7 +623,7 @@ function Portfolio() {
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-cream.png" alt=""
           className="hero-flower hero-flower-pansy"
-          style={{position:'absolute',top:30,left:-16,width:210,height:'auto',
+          style={{position:'absolute',top:30,left:-16,width:150,height:'auto',
             pointerEvents:'none',zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
 
