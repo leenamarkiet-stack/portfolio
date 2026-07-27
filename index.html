@@ -141,8 +141,8 @@
   .exp-panel { position: relative; min-width: 0; }
   .hero-timeline {
     align-self: start !important;
-    /* Align the whole timeline section (label + cards) with the top of the photo frame */
-    margin-top: 0;
+    /* Align the whole timeline section (label + cards) with the top of the name/photo */
+    margin-top: 24px;
   }
   .exp-label-row { display: flex; justify-content: space-between; align-items: center;
     margin-bottom: 10px; }
@@ -669,7 +669,7 @@ function Portfolio() {
                 </div>
               </div>
 
-              <div className="hero-photo" style={{width:200,height:240,borderRadius:8,padding:4,
+              <div className="hero-photo" style={{width:200,height:240,borderRadius:8,padding:4,marginTop:24,
                 border:`4px solid ${P.cream}`,boxSizing:'border-box',
                 boxShadow:`0 18px 40px -16px ${P.ink}33`}}>
                 <div style={{width:'100%',height:'100%',borderRadius:4,overflow:'hidden',
