@@ -112,14 +112,15 @@
   .exp-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
     color: #3A4B2D; opacity: 1; font-weight: 600; }
   .exp-toggle {
-    background: rgba(255,250,240,0.85); backdrop-filter: blur(6px);
-    border: 1px solid rgba(255,255,255,0.7); border-radius: 999px;
-    padding: 5px 11px; font-size: 10px; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--forest, #546B41);
+    background: linear-gradient(135deg,rgba(255,255,255,0.10),rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.92); border-radius: 999px;
+    padding: 5px 11px; font-size: 11px; font-weight: 500; letter-spacing: normal;
+    text-transform: none; color: #3A4B2D;
     cursor: pointer; font-family: Inter, sans-serif;
-    box-shadow: 0 4px 10px -4px rgba(31,26,20,0.18);
+    transition: transform .15s, background .15s;
   }
-  .exp-toggle:hover { background: rgba(255,250,240,0.95); }
+  .exp-toggle:hover { background: linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.08));
+    transform: translateY(-1px); }
 
   /* Grid-based timeline: cards row, markers row, years row.
      One continuous line spans the markers row across all columns. */
