@@ -49,7 +49,7 @@
      under the shorter text before the next row starts). */
   .bio-col    { grid-column: 1; grid-row: 1; }
   .hero-photo { grid-column: 2; grid-row: 1; }
-  .bio-bottom { margin-top: 24px; }
+  .bio-bottom { margin-top: 15px; }
   /* Extend the paragraph block width beyond bio-col's own column so later lines
      can reach the photo's right edge (232 = 32px gap + 200px photo width). */
   .bio-bottom-wide { width: calc(100% + 232px); }
@@ -625,7 +625,7 @@ function Portfolio() {
                       {formatRole(bio.role)}
                     </em>
                   </h1>
-                  <div style={{height:'2px',background:'rgba(255,255,255,0.92)',marginTop:6}}/>
+                  <div style={{height:'2px',background:'rgba(255,255,255,0.92)',marginTop:15}}/>
                 </div>
 
                 <div className="bio-bottom bio-bottom-wide">
