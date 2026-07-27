@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Manrope:wght@700&display=swap">
 <script src="config.js"></script>
 <style>
   html, body { margin: 0; padding: 0; background: #FFEDCE; font-family: Inter, sans-serif; }
@@ -232,6 +232,7 @@ const P = {
 const btnGrad  = `linear-gradient(135deg,${P.coral} 0%,${P.red} 100%)`;
 const heroGrad = `linear-gradient(135deg,${P.cream} 0%,${P.peach} 60%,${P.coral} 100%)`;
 const SERIF    = `"Instrument Serif", Georgia, serif`;
+const MANROPE  = `"Manrope", system-ui, sans-serif`;
 
 // Stable per-tag color: hash → palette
 const TAG_PALETTES = [
@@ -585,7 +586,7 @@ function Portfolio() {
                     {bio.status}
                   </div>
                 ) : null}
-                <h1 className="name-h1" style={{fontFamily:SERIF,fontWeight:400,lineHeight:1.0,
+                <h1 className="name-h1" style={{fontFamily:MANROPE,fontWeight:700,lineHeight:1.0,
                   margin:0,letterSpacing:'-0.025em',color:P.ink}}>
                   {bio.name},<br/>
                   <em style={{fontStyle:'italic',background:`linear-gradient(120deg,${P.red},${P.forest})`,
