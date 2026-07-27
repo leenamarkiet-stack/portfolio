@@ -260,10 +260,9 @@ const DEFAULT_BIO = {
 };
 const DEFAULT_SKILLS = ["Service Design","Journey Mapping","Workshop Facilitation","UX Research","UI Design","Digital Twins","Vibecoding","Figma","Stakeholder Management"];
 const DEFAULT_HEADER_BUTTONS = [
-  { label:"leena@markiet.studo", url:"mailto:leena@markiet.studo", primary:true },
+  { label:"leena@markiet.studo", url:"mailto:leena@markiet.studo", primary:false },
   { label:"Download CV", url:"#", primary:false },
   { label:"LinkedIn", url:"#", primary:false },
-  { label:"Read.cv", url:"#", primary:false },
 ];
 const DEFAULT_EXPERIENCE = [
   { logoUrl:"", company:"Freelance", title:"Service Designer & UX Lead", startMonth:1, startYear:2024, endMonth:0, endYear:0, current:true,  description:"Shipping end-to-end design for healthcare and fintech clients." },
@@ -348,8 +347,8 @@ function GradBtn({href,primary,children}) {
     style={{...base,background:btnGrad,color:P.paper,border:`1px solid ${P.red}`,
     boxShadow:hov?`0 10px 24px -8px ${P.red}80`:`0 4px 10px -4px ${P.red}55`}}>{children}</a>;
   return <a href={href} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-    style={{...base,background:hov?`linear-gradient(135deg,${P.paper},${P.cream})`:'transparent',
-    color:P.ink,border:`1px solid ${P.ink}30`}}>{children}</a>;
+    style={{...base,background:hov?'rgba(255,255,255,0.15)':'transparent',
+    color:P.ink,border:'1px solid rgba(255,255,255,0.92)'}}>{children}</a>;
 }
 
 function SectionLabel({title,hint}) {
