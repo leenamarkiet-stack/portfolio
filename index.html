@@ -719,14 +719,13 @@ function Portfolio() {
           position:'relative',zIndex:1,
           display:'flex',justifyContent:'space-between',alignItems:'center',
           fontSize:11,color:P.forest,letterSpacing:'0.06em',textTransform:'uppercase'}}>
-          <span>© {bio.name}, 2026</span>
           <a href="admin.html"
             style={{color:P.forest,textDecoration:'none',fontSize:10,opacity:0.45,transition:'opacity .15s'}}
             onMouseEnter={e=>e.currentTarget.style.opacity=1}
             onMouseLeave={e=>e.currentTarget.style.opacity=0.45}>
             ⚙ Admin
           </a>
-          <span>{bio.email}</span>
+          <span>© {bio.name}, 2026</span>
         </footer>
       </div>
     </div>
