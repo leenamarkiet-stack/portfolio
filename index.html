@@ -673,7 +673,7 @@ function Portfolio() {
                 background:`linear-gradient(160deg,${P.paper},${P.cream})`,
                 boxShadow:`0 18px 40px -16px ${P.ink}33`}}>
                 <div style={{width:'100%',height:'100%',borderRadius:6,overflow:'hidden',
-                  background:bio.photoUrl?`linear-gradient(160deg,${P.paper},${P.cream})`:`linear-gradient(135deg,${P.peach},${P.coral})`,
+                  background:bio.photoUrl?`linear-gradient(160deg,${P.paper},${P.cream})`:'transparent',
                   display:'flex',alignItems:'center',justifyContent:'center'}}>
                   {bio.photoUrl
                     ? <img src={bio.photoUrl} alt={bio.name} style={{width:'100%',height:'100%',objectFit:'cover'}}/>
