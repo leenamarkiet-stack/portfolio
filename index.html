@@ -837,14 +837,14 @@ function Portfolio() {
         <section style={{marginBottom:64}}>
           <SectionLabel title="Toolkit"/>
           <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
-            {(skills||[]).map(s=><span key={s} style={{
+            {(skills||[]).map((s,i)=><Reveal key={s} as="span" delay={i*40} style={{
               fontSize:11,fontWeight:500,letterSpacing:'0.04em',
               padding:'7px 12px',borderRadius:999,whiteSpace:'nowrap',
               color:P.ink,
               background:`linear-gradient(135deg,${P.cream} 0%,${P.peach} 100%)`,
               border:`1px solid ${P.peach}`,
               boxShadow:`0 4px 10px -4px ${P.peach}66`,
-            }}>{s}</span>)}
+            }}>{s}</Reveal>)}
           </div>
         </section>
 
@@ -859,7 +859,11 @@ function Portfolio() {
         <section style={{position:'relative',zIndex:1}}>
           <SectionLabel title="Selected work"/>
           <div className="grid-4">
-            {items.map((p,idx)=><Card key={p.id} p={p} idx={idx} dragProps={dragProps(p.id)}/>)}
+            {items.map((p,idx)=>(
+              <Reveal key={p.id} delay={idx*70}>
+                <Card p={p} idx={idx} dragProps={dragProps(p.id)}/>
+              </Reveal>
+            ))}
           </div>
         </section>
 
