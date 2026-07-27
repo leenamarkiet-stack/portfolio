@@ -125,7 +125,7 @@
     .bio-narrow-spacer { display: none; }
     .hero-flower-yellow { width: 130px !important; }
     .hero-flower-pansy { width: 110px !important; }
-    .hero-flower-dandelion { width: 110px !important; }
+    .hero-flower-dandelion { transform: rotate(90deg) scale(0.55) !important; }
     .footer-flower { width: 180px !important; left: -30px !important; bottom: -30px !important; }
   }
   @media (max-width: 480px) {
@@ -438,6 +438,36 @@ function useReorderable(initial, key) {
   return {items,dragProps,adminOn};
 }
 
+// Dandelion puff + 9 individually-cropped seeds, each floating on its own
+// gentle drift (direction computed from its position relative to the puff head)
+// so they feel alive instead of one static composite image.
+const DANDELION_SEEDS = [
+  {n:1, left:159.5, top:26.2, w:27.2, h:35.8, fx:6.3, fy:-7.8, dur:11},
+  {n:2, left:87.7,  top:76.7, w:24.1, h:39.8, fx:3.9, fy:-9.2, dur:14},
+  {n:3, left:127.5, top:53.4, w:24.8, h:30.7, fx:5.6, fy:-8.3, dur:9.5},
+  {n:4, left:190.9, top:1.0,  w:26.0, h:31.5, fx:6.5, fy:-7.6, dur:13},
+  {n:5, left:190.9, top:46.0, w:27.6, h:26.7, fx:7.6, fy:-6.5, dur:10.5},
+  {n:6, left:120.6, top:98.2, w:28.1, h:19.3, fx:7.0, fy:-7.1, dur:15},
+  {n:7, left:155.6, top:75.1, w:22.4, h:28.8, fx:7.5, fy:-6.6, dur:8.5},
+  {n:8, left:182.1, top:105.6,w:19.5, h:19.5, fx:9.0, fy:-4.4, dur:12.5},
+  {n:9, left:125.1, top:120.6,w:28.1, h:20.5, fx:8.5, fy:-5.3, dur:16},
+];
+function DandelionCluster({style, className}) {
+  return (
+    <div aria-hidden className={className} style={{position:'absolute',width:220,height:344,...style}}>
+      <img src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/dandelion-puff.png" alt=""
+        style={{position:'absolute',left:1.7,top:105.6,width:112.7,height:237.4}}/>
+      {DANDELION_SEEDS.map(s=>(
+        <img key={s.n}
+          src={`https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/dandelion-seed${s.n}.png`}
+          alt="" className="dandelion-seed"
+          style={{left:s.left,top:s.top,width:s.w,height:s.h,
+            '--fx':s.fx,'--fy':s.fy,'--dur':`${s.dur}s`,'--delay':`${(s.n*0.6)%4}s`}}/>
+      ))}
+    </div>
+  );
+}
+
 function GradBtn({href,primary,children}) {
   const [hov,setHov]=React.useState(false);
   const base={fontFamily:'Inter,sans-serif',fontSize:13,fontWeight:500,padding:'10px 16px',
@@ -672,10 +702,9 @@ function Portfolio() {
           style={{position:'absolute',bottom:96,right:260,width:260,height:'auto',
             pointerEvents:'none',zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
-        <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/dandelion.png" alt=""
-          className="hero-flower hero-flower-dandelion"
-          style={{position:'absolute',bottom:140,right:420,width:220,height:'auto',
-            transform:'rotate(90deg)',pointerEvents:'none',zIndex:0,opacity:0.92,
+        <DandelionCluster className="hero-flower-dandelion"
+          style={{bottom:20,right:520,transform:'rotate(90deg)',
+            transformOrigin:'50% 85%',pointerEvents:'none',zIndex:0,opacity:0.92,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-cream.png" alt=""
           className="hero-flower hero-flower-pansy"
