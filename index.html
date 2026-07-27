@@ -48,12 +48,13 @@
     75%  { transform: rotate(20deg) translateX(0) translateY(-3px); }
     100% { transform: rotate(19deg) translateX(-6px) translateY(-1px); }
   }
+  /* Pure horizontal-only motion — no rotation delta, since rotating a long
+     420px shape around a near-end pivot creates an arc with real vertical
+     displacement at the far tip, which read as "moving up and down". */
   @keyframes flowerSwayFooter {
-    0%   { transform: translateX(-16px) rotate(97deg); }
-    25%  { transform: translateX(0) rotate(100deg); }
-    50%  { transform: translateX(16px) rotate(103deg); }
-    75%  { transform: translateX(0) rotate(100deg); }
-    100% { transform: translateX(-16px) rotate(97deg); }
+    0%   { transform: translateX(-18px) rotate(100deg); }
+    50%  { transform: translateX(18px) rotate(100deg); }
+    100% { transform: translateX(-18px) rotate(100deg); }
   }
   .hero-flower-yellow { animation: flowerSwayYellow 13s ease-in-out infinite; transform-origin: 50% 85%; }
   .hero-flower-pansy { animation: flowerSwayPansy 22s ease-in-out infinite; transform-origin: 50% 85%; }
@@ -451,6 +452,12 @@ const DANDELION_SEEDS = [
   {n:7, left:155.6, top:75.1, w:22.4, h:28.8, fx:7.5, fy:-6.6, dur:8.5},
   {n:8, left:182.1, top:105.6,w:19.5, h:19.5, fx:9.0, fy:-4.4, dur:12.5},
   {n:9, left:125.1, top:120.6,w:28.1, h:20.5, fx:8.5, fy:-5.3, dur:16},
+  // Extra fluff — reuses existing seed crops, extrapolated further out from
+  // the puff head and slightly smaller, for a denser scattered look.
+  {n:2, key:'x1', left:110.5, top:39.4,  w:15.7, h:25.9, fx:2.7, fy:-6.5, dur:12},
+  {n:4, key:'x2', left:271.3, top:-81.7, w:16.9, h:20.5, fx:4.6, fy:-5.3, dur:17},
+  {n:6, key:'x3', left:163.3, top:63.5,  w:18.3, h:12.5, fx:4.9, fy:-5.0, dur:9},
+  {n:8, key:'x4', left:254.7, top:75.0,  w:12.7, h:12.7, fx:6.3, fy:-3.1, dur:13.5},
 ];
 function DandelionCluster({style, className}) {
   return (
@@ -458,7 +465,7 @@ function DandelionCluster({style, className}) {
       <img src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/dandelion-puff.png" alt=""
         style={{position:'absolute',left:1.7,top:105.6,width:112.7,height:237.4}}/>
       {DANDELION_SEEDS.map(s=>(
-        <img key={s.n}
+        <img key={s.key||s.n}
           src={`https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/dandelion-seed${s.n}.png`}
           alt="" className="dandelion-seed"
           style={{left:s.left,top:s.top,width:s.w,height:s.h,
@@ -703,7 +710,7 @@ function Portfolio() {
             pointerEvents:'none',zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
         <DandelionCluster className="hero-flower-dandelion"
-          style={{bottom:20,right:520,transform:'rotate(90deg)',
+          style={{bottom:70,right:520,transform:'rotate(90deg) scale(1.35)',
             transformOrigin:'50% 85%',pointerEvents:'none',zIndex:0,opacity:0.92,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-cream.png" alt=""
@@ -797,38 +804,41 @@ function Portfolio() {
         </div>
       </div>
 
-      {/* Watercolor-stroke divider: rough, irregular hand-painted brush edge instead of a hard line */}
-      <div aria-hidden style={{position:'relative',marginTop:-4,lineHeight:0,pointerEvents:'none'}}>
-        <svg viewBox="0 0 1440 140" preserveAspectRatio="none" style={{display:'block',width:'100%',height:118}}>
+      {/* Watercolor-stroke divider: rough, irregular hand-painted brush edge instead of a hard
+          line. Pulled up with a large negative margin so it genuinely bites into the hero's
+          coral gradient (a small overlap was invisible — its transparent zones are the same
+          cream as the page background, so it just read as dead space above Toolkit). */}
+      <div aria-hidden style={{position:'relative',marginTop:-72,lineHeight:0,pointerEvents:'none',zIndex:2}}>
+        <svg viewBox="0 0 1440 100" preserveAspectRatio="none" style={{display:'block',width:'100%',height:84}}>
           <defs>
-            <filter id="wc-blur1"><feGaussianBlur stdDeviation="3.2"/></filter>
-            <filter id="wc-blur2"><feGaussianBlur stdDeviation="1.4"/></filter>
+            <filter id="wc-blur1"><feGaussianBlur stdDeviation="2.6"/></filter>
+            <filter id="wc-blur2"><feGaussianBlur stdDeviation="1.2"/></filter>
           </defs>
           {/* back bleed — tallest, softest, faintest */}
-          <path filter="url(#wc-blur1)" opacity="0.35" fill={P.cream}
-            d="M0,55 C55,30 95,80 150,60 C210,38 250,95 320,68 C360,52 400,42 455,72
-               C500,96 540,50 600,58 C660,66 690,110 760,80 C810,58 830,44 890,66
-               C940,84 970,48 1030,60 C1090,72 1110,100 1170,70 C1220,46 1250,58 1300,50
-               C1350,42 1390,64 1440,52 L1440,140 L0,140 Z"/>
+          <path filter="url(#wc-blur1)" opacity="0.4" fill={P.cream}
+            d="M0,38 C55,18 95,58 150,42 C210,26 250,68 320,48 C360,36 400,28 455,50
+               C500,68 540,34 600,40 C660,46 690,78 760,56 C810,40 830,30 890,46
+               C940,58 970,32 1030,42 C1090,50 1110,70 1170,48 C1220,32 1250,40 1300,34
+               C1350,28 1390,44 1440,36 L1440,100 L0,100 Z"/>
           {/* mid layer — irregular, medium softness */}
-          <path filter="url(#wc-blur2)" opacity="0.55" fill={P.cream}
-            d="M0,74 C40,58 80,96 130,78 C190,58 220,100 280,84 C330,70 370,54 420,86
-               C460,110 510,66 570,78 C630,90 655,50 720,66 C770,78 800,102 860,84
-               C910,68 940,96 1000,80 C1060,64 1090,90 1150,76 C1200,64 1240,84 1290,70
-               C1340,58 1390,80 1440,68 L1440,140 L0,140 Z"/>
-          {/* front — crisp-ish rough edge, sets the true boundary, slightly irregular jagged bristle marks */}
+          <path filter="url(#wc-blur2)" opacity="0.62" fill={P.cream}
+            d="M0,52 C40,40 80,68 130,54 C190,40 220,70 280,58 C330,48 370,38 420,60
+               C460,76 510,46 570,54 C630,62 655,34 720,46 C770,54 800,72 860,58
+               C910,46 940,68 1000,56 C1060,44 1090,64 1150,54 C1200,44 1240,60 1290,50
+               C1340,40 1390,56 1440,48 L1440,100 L0,100 Z"/>
+          {/* front — sets the true boundary, jagged bristle-like edge */}
           <path filter="url(#wc-blur2)" fill={P.cream}
-            d="M0,92 C25,84 45,100 70,90 C110,74 140,104 190,94 C230,86 250,70 300,98
-               C340,120 380,80 430,92 C470,102 490,72 540,86 C590,100 610,116 660,96
-               C700,80 720,106 770,92 C820,78 840,100 890,90 C935,82 955,104 1005,92
-               C1050,82 1075,106 1125,94 C1170,84 1195,68 1245,90
-               C1290,110 1320,78 1370,88 C1400,94 1420,84 1440,90 L1440,140 L0,140 Z"/>
+            d="M0,66 C25,60 45,72 70,64 C110,52 140,74 190,66 C230,60 250,48 300,70
+               C340,86 380,58 430,66 C470,74 490,52 540,62 C590,72 610,84 660,68
+               C700,56 720,76 770,66 C820,56 840,72 890,64 C935,58 955,74 1005,66
+               C1050,58 1075,76 1125,68 C1170,60 1195,48 1245,64
+               C1290,78 1320,56 1370,64 C1400,68 1420,60 1440,64 L1440,100 L0,100 Z"/>
           {/* scattered drip blobs, like paint bleeding down at a few points */}
-          <ellipse cx="188" cy="102" rx="5" ry="9" fill={P.cream} opacity="0.85" filter="url(#wc-blur2)"/>
-          <ellipse cx="420" cy="106" rx="4" ry="7" fill={P.cream} opacity="0.75" filter="url(#wc-blur2)"/>
-          <ellipse cx="658" cy="108" rx="6" ry="11" fill={P.cream} opacity="0.8" filter="url(#wc-blur2)"/>
-          <ellipse cx="1000" cy="104" rx="4" ry="8" fill={P.cream} opacity="0.7" filter="url(#wc-blur2)"/>
-          <ellipse cx="1246" cy="100" rx="5" ry="9" fill={P.cream} opacity="0.8" filter="url(#wc-blur2)"/>
+          <ellipse cx="188" cy="74" rx="4" ry="7" fill={P.cream} opacity="0.85" filter="url(#wc-blur2)"/>
+          <ellipse cx="420" cy="78" rx="3.5" ry="6" fill={P.cream} opacity="0.75" filter="url(#wc-blur2)"/>
+          <ellipse cx="658" cy="80" rx="5" ry="8" fill={P.cream} opacity="0.8" filter="url(#wc-blur2)"/>
+          <ellipse cx="1000" cy="76" rx="3.5" ry="6" fill={P.cream} opacity="0.7" filter="url(#wc-blur2)"/>
+          <ellipse cx="1246" cy="72" rx="4" ry="7" fill={P.cream} opacity="0.8" filter="url(#wc-blur2)"/>
         </svg>
       </div>
 
