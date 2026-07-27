@@ -32,13 +32,26 @@
   .blob-b { animation: blob2 28s ease-in-out infinite; }
   .blob-c { animation: blob3 18s ease-in-out infinite; }
 
-  /* Gentle side-to-side sway, like the flower is drifting in a light breeze */
-  @keyframes flowerSway {
+  /* Gentle side-to-side sway, like the flowers are drifting in a light breeze.
+     Each flower keeps its own base rotation but wobbles the same amount. */
+  @keyframes flowerSwayYellow {
     0%   { transform: rotate(75deg) translateX(0) translateY(0); }
     50%  { transform: rotate(80deg) translateX(10px) translateY(-6px); }
     100% { transform: rotate(75deg) translateX(0) translateY(0); }
   }
-  .hero-flower-yellow { animation: flowerSway 6s ease-in-out infinite; transform-origin: 50% 85%; }
+  @keyframes flowerSwayPansy {
+    0%   { transform: rotate(20deg) translateX(0) translateY(0); }
+    50%  { transform: rotate(25deg) translateX(10px) translateY(-6px); }
+    100% { transform: rotate(20deg) translateX(0) translateY(0); }
+  }
+  @keyframes flowerSwayFooter {
+    0%   { transform: rotate(100deg) translateX(0) translateY(0); }
+    50%  { transform: rotate(105deg) translateX(10px) translateY(-6px); }
+    100% { transform: rotate(100deg) translateX(0) translateY(0); }
+  }
+  .hero-flower-yellow { animation: flowerSwayYellow 6s ease-in-out infinite; transform-origin: 50% 85%; }
+  .hero-flower-pansy { animation: flowerSwayPansy 6s ease-in-out infinite; transform-origin: 50% 85%; }
+  .footer-flower { animation: flowerSwayFooter 6s ease-in-out infinite; transform-origin: 50% 85%; }
 
   /* Mobile responsive */
   .hero-pad { /* padding moved to .hero-screen so screens can slide */ }
@@ -605,7 +618,7 @@ function Portfolio() {
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-cream.png" alt=""
           className="hero-flower hero-flower-pansy"
           style={{position:'absolute',top:-24,left:-16,width:210,height:'auto',
-            transform:'rotate(20deg)',pointerEvents:'none',zIndex:0,
+            pointerEvents:'none',zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
 
         <div className={`hero-stage ${expanded ? 'expanded' : ''}`} style={{position:'relative',zIndex:1}}>
@@ -713,7 +726,7 @@ function Portfolio() {
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-pansy.png" alt=""
           className="footer-flower"
           style={{position:'absolute',bottom:-150,left:-120,width:420,height:'auto',
-            transform:'rotate(100deg)',pointerEvents:'none',opacity:0.85,zIndex:0,
+            pointerEvents:'none',opacity:0.85,zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
 
         <section style={{position:'relative',zIndex:1}}>
