@@ -260,7 +260,6 @@ const DEFAULT_BIO = {
 };
 const DEFAULT_SKILLS = ["Service Design","Journey Mapping","Workshop Facilitation","UX Research","UI Design","Digital Twins","Vibecoding","Figma","Stakeholder Management"];
 const DEFAULT_HEADER_BUTTONS = [
-  { label:"leena@markiet.studo", url:"mailto:leena@markiet.studo", primary:false },
   { label:"Download CV", url:"#", primary:false },
   { label:"LinkedIn", url:"#", primary:false },
 ];
@@ -360,7 +359,7 @@ function GradBtn({href,primary,children}) {
     boxShadow:hov?`0 10px 24px -8px ${P.red}80`:`0 4px 10px -4px ${P.red}55`}}>{children}</a>;
   return <a href={href} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
     style={{...base,background:hov?'rgba(255,255,255,0.15)':'transparent',
-    color:P.ink,border:'1px solid rgba(255,255,255,0.92)'}}>{children}</a>;
+    color:'#3A4B2D',border:'1px solid rgba(255,255,255,0.92)'}}>{children}</a>;
 }
 
 function SectionLabel({title,hint}) {
