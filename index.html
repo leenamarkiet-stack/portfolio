@@ -74,7 +74,9 @@
     .meta-bar { flex-direction: column; align-items: flex-start !important; gap: 8px; }
     .footer-bar { flex-direction: column; gap: 12px; align-items: flex-start !important; }
     .bio-narrow-spacer { display: none; }
-    .hero-flower { width: 100px !important; }
+    .hero-flower-yellow { width: 130px !important; }
+    .hero-flower-pansy { width: 70px !important; }
+    .footer-flower { width: 80px !important; }
   }
   @media (max-width: 480px) {
     .grid-4 { grid-template-columns: 1fr; }
@@ -588,9 +590,14 @@ function Portfolio() {
           background:`radial-gradient(closest-side,${P.peach}88,transparent 70%)`,filter:'blur(28px)',pointerEvents:'none',zIndex:0}}/>
 
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-yellow.png" alt=""
-          className="hero-flower"
-          style={{position:'absolute',bottom:-24,right:24,width:160,height:'auto',
+          className="hero-flower hero-flower-yellow"
+          style={{position:'absolute',bottom:40,right:80,width:260,height:'auto',
             transform:'rotate(14deg)',pointerEvents:'none',zIndex:0,
+            filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
+        <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-pansy.png" alt=""
+          className="hero-flower hero-flower-pansy"
+          style={{position:'absolute',top:-18,left:-10,width:110,height:'auto',
+            transform:'rotate(-12deg)',pointerEvents:'none',zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
 
         <div className={`hero-stage ${expanded ? 'expanded' : ''}`} style={{position:'relative',zIndex:1}}>
@@ -679,7 +686,7 @@ function Portfolio() {
       </div>
 
       {/* CONTENT */}
-      <div className="content-pad">
+      <div className="content-pad" style={{position:'relative',overflow:'hidden'}}>
         <section style={{marginBottom:64}}>
           <SectionLabel title="Toolkit"/>
           <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
@@ -700,6 +707,12 @@ function Portfolio() {
             {items.map((p,idx)=><Card key={p.id} p={p} idx={idx} dragProps={dragProps(p.id)}/>)}
           </div>
         </section>
+
+        <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-cream.png" alt=""
+          className="footer-flower"
+          style={{position:'absolute',bottom:-20,left:-24,width:130,height:'auto',
+            transform:'rotate(-8deg)',pointerEvents:'none',opacity:0.9,
+            filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
 
         <footer className="footer-bar" style={{marginTop:96,paddingTop:24,borderTop:`1px solid ${P.ink}22`,
           display:'flex',justifyContent:'space-between',alignItems:'center',
