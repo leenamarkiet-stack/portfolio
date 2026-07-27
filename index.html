@@ -49,15 +49,27 @@
     100% { transform: rotate(19deg) translateX(-6px) translateY(-1px); }
   }
   @keyframes flowerSwayFooter {
-    0%   { transform: rotate(97deg) translateX(-14px) translateY(-2px); }
-    25%  { transform: rotate(100deg) translateX(0) translateY(-6px); }
-    50%  { transform: rotate(103deg) translateX(14px) translateY(-2px); }
-    75%  { transform: rotate(100deg) translateX(0) translateY(-6px); }
-    100% { transform: rotate(97deg) translateX(-14px) translateY(-2px); }
+    0%   { transform: translateX(-16px) rotate(97deg); }
+    25%  { transform: translateX(0) rotate(100deg); }
+    50%  { transform: translateX(16px) rotate(103deg); }
+    75%  { transform: translateX(0) rotate(100deg); }
+    100% { transform: translateX(-16px) rotate(97deg); }
   }
   .hero-flower-yellow { animation: flowerSwayYellow 13s ease-in-out infinite; transform-origin: 50% 85%; }
   .hero-flower-pansy { animation: flowerSwayPansy 22s ease-in-out infinite; transform-origin: 50% 85%; }
   .footer-flower { animation: flowerSwayFooter 24s ease-in-out infinite; transform-origin: 50% 85%; }
+
+  /* Individual dandelion seeds drift independently — direction/duration set per-seed via CSS vars */
+  @keyframes seedFloat {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    50%  { transform: translate(calc(var(--fx,8) * 1px), calc(var(--fy,-8) * 1px)) rotate(7deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+  }
+  .dandelion-seed {
+    position: absolute; pointer-events: none;
+    animation: seedFloat var(--dur,12s) ease-in-out infinite;
+    animation-delay: var(--delay,0s);
+  }
 
   /* Scroll reveal: elements fade + slide up into place as they enter the viewport */
   .reveal {
@@ -153,7 +165,7 @@
   .hero-timeline {
     align-self: start !important;
     /* Align the whole timeline section (label + cards) with the top of the name/photo */
-    margin-top: 24px;
+    margin-top: 14px;
   }
   .exp-label-row { display: flex; justify-content: space-between; align-items: center;
     margin-bottom: 10px; }
@@ -667,7 +679,7 @@ function Portfolio() {
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-cream.png" alt=""
           className="hero-flower hero-flower-pansy"
-          style={{position:'absolute',top:-30,left:-50,width:260,height:'auto',
+          style={{position:'absolute',top:-55,left:-80,width:260,height:'auto',
             pointerEvents:'none',zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
 
@@ -683,7 +695,7 @@ function Portfolio() {
 
             <section className="hero-grid">
               <div className="bio-col">
-                <div className="bio-top" style={{paddingTop:24}}>
+                <div className="bio-top" style={{paddingTop:14}}>
                   <h1 className="name-h1" style={{fontFamily:SERIF,fontWeight:800,
                     display:'flex',flexDirection:'column',gap:2,
                     margin:0,letterSpacing:'-0.025em',color:P.ink}}>
@@ -714,7 +726,7 @@ function Portfolio() {
                 </div>
               </div>
 
-              <div className="hero-photo" style={{width:200,height:240,borderRadius:8,padding:4,marginTop:24,
+              <div className="hero-photo" style={{width:200,height:240,borderRadius:8,padding:4,marginTop:14,
                 border:`4px solid ${P.cream}`,boxSizing:'border-box',
                 boxShadow:`0 18px 40px -16px ${P.ink}33`}}>
                 <div style={{width:'100%',height:'100%',borderRadius:4,overflow:'hidden',
@@ -756,15 +768,38 @@ function Portfolio() {
         </div>
       </div>
 
-      {/* Watercolor-stroke divider: soft, irregular brush edge instead of a hard line */}
-      <div aria-hidden style={{position:'relative',marginTop:-2,lineHeight:0,pointerEvents:'none'}}>
-        <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{display:'block',width:'100%',height:76}}>
-          <path d="M0,38 C90,55 160,18 240,32 C320,46 380,12 460,28 C540,44 610,20 690,34
-                   C770,48 830,14 910,30 C990,46 1050,16 1130,30 C1210,44 1280,18 1360,32
-                   C1400,39 1420,42 1440,38 L1440,90 L0,90 Z" fill={P.cream} opacity="0.5"/>
-          <path d="M0,52 C100,32 170,60 250,46 C330,32 400,58 480,44 C560,30 620,54 700,42
-                   C780,30 850,56 930,44 C1010,32 1080,52 1160,42 C1240,32 1310,50 1390,40
-                   L1440,44 L1440,90 L0,90 Z" fill={P.cream}/>
+      {/* Watercolor-stroke divider: rough, irregular hand-painted brush edge instead of a hard line */}
+      <div aria-hidden style={{position:'relative',marginTop:-4,lineHeight:0,pointerEvents:'none'}}>
+        <svg viewBox="0 0 1440 140" preserveAspectRatio="none" style={{display:'block',width:'100%',height:118}}>
+          <defs>
+            <filter id="wc-blur1"><feGaussianBlur stdDeviation="3.2"/></filter>
+            <filter id="wc-blur2"><feGaussianBlur stdDeviation="1.4"/></filter>
+          </defs>
+          {/* back bleed — tallest, softest, faintest */}
+          <path filter="url(#wc-blur1)" opacity="0.35" fill={P.cream}
+            d="M0,55 C55,30 95,80 150,60 C210,38 250,95 320,68 C360,52 400,42 455,72
+               C500,96 540,50 600,58 C660,66 690,110 760,80 C810,58 830,44 890,66
+               C940,84 970,48 1030,60 C1090,72 1110,100 1170,70 C1220,46 1250,58 1300,50
+               C1350,42 1390,64 1440,52 L1440,140 L0,140 Z"/>
+          {/* mid layer — irregular, medium softness */}
+          <path filter="url(#wc-blur2)" opacity="0.55" fill={P.cream}
+            d="M0,74 C40,58 80,96 130,78 C190,58 220,100 280,84 C330,70 370,54 420,86
+               C460,110 510,66 570,78 C630,90 655,50 720,66 C770,78 800,102 860,84
+               C910,68 940,96 1000,80 C1060,64 1090,90 1150,76 C1200,64 1240,84 1290,70
+               C1340,58 1390,80 1440,68 L1440,140 L0,140 Z"/>
+          {/* front — crisp-ish rough edge, sets the true boundary, slightly irregular jagged bristle marks */}
+          <path filter="url(#wc-blur2)" fill={P.cream}
+            d="M0,92 C25,84 45,100 70,90 C110,74 140,104 190,94 C230,86 250,70 300,98
+               C340,120 380,80 430,92 C470,102 490,72 540,86 C590,100 610,116 660,96
+               C700,80 720,106 770,92 C820,78 840,100 890,90 C935,82 955,104 1005,92
+               C1050,82 1075,106 1125,94 C1170,84 1195,68 1245,90
+               C1290,110 1320,78 1370,88 C1400,94 1420,84 1440,90 L1440,140 L0,140 Z"/>
+          {/* scattered drip blobs, like paint bleeding down at a few points */}
+          <ellipse cx="188" cy="102" rx="5" ry="9" fill={P.cream} opacity="0.85" filter="url(#wc-blur2)"/>
+          <ellipse cx="420" cy="106" rx="4" ry="7" fill={P.cream} opacity="0.75" filter="url(#wc-blur2)"/>
+          <ellipse cx="658" cy="108" rx="6" ry="11" fill={P.cream} opacity="0.8" filter="url(#wc-blur2)"/>
+          <ellipse cx="1000" cy="104" rx="4" ry="8" fill={P.cream} opacity="0.7" filter="url(#wc-blur2)"/>
+          <ellipse cx="1246" cy="100" rx="5" ry="9" fill={P.cream} opacity="0.8" filter="url(#wc-blur2)"/>
         </svg>
       </div>
 
