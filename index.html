@@ -82,7 +82,7 @@
   /* Scroll reveal: elements fade + slide up into place as they enter the viewport */
   .reveal {
     opacity: 0; transform: translateY(24px);
-    transition: opacity .6s cubic-bezier(0.16,1,0.3,1), transform .6s cubic-bezier(0.16,1,0.3,1);
+    transition: opacity 1.3s cubic-bezier(0.16,1,0.3,1), transform 1.3s cubic-bezier(0.16,1,0.3,1);
   }
   .reveal.reveal-visible { opacity: 1; transform: translateY(0); }
   @media (prefers-reduced-motion: reduce) {
@@ -895,7 +895,7 @@ function Portfolio() {
         <section style={{marginBottom:64}}>
           <SectionLabel title="Toolkit"/>
           <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
-            {(skills||[]).map((s,i)=><Reveal key={s} as="span" delay={i*40} style={{
+            {(skills||[]).map((s,i)=><Reveal key={s} as="span" delay={i*90} style={{
               fontSize:11,fontWeight:500,letterSpacing:'0.04em',
               padding:'7px 12px',borderRadius:999,whiteSpace:'nowrap',
               color:P.ink,
@@ -918,7 +918,7 @@ function Portfolio() {
           <SectionLabel title="Selected work"/>
           <div className="grid-4">
             {items.map((p,idx)=>(
-              <Reveal key={p.id} delay={idx*70}>
+              <Reveal key={p.id} delay={idx*140}>
                 <Card p={p} idx={idx} dragProps={dragProps(p.id)}/>
               </Reveal>
             ))}
