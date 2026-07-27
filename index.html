@@ -351,15 +351,10 @@ function GradBtn({href,primary,children}) {
     color:P.ink,border:`1px solid ${P.ink}30`}}>{children}</a>;
 }
 
-function SectionLabel({num,title,hint}) {
+function SectionLabel({title,hint}) {
   return (
     <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:24,gap:16}}>
-      <div style={{display:'flex',alignItems:'baseline',gap:16}}>
-        <span style={{fontSize:11,letterSpacing:'0.1em',fontWeight:600,
-          background:`linear-gradient(135deg,${P.coral},${P.red})`,
-          WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent'}}>{num}</span>
-        <h2 style={{fontFamily:SERIF,fontWeight:400,fontSize:32,margin:0,letterSpacing:'-0.01em',color:P.ink}}>{title}</h2>
-      </div>
+      <h2 style={{fontFamily:SERIF,fontWeight:400,fontSize:32,margin:0,letterSpacing:'-0.01em',color:P.ink}}>{title}</h2>
       {hint&&<span style={{fontSize:10,letterSpacing:'0.1em',color:P.forest,textTransform:'uppercase',whiteSpace:'nowrap'}}>{hint}</span>}
     </div>
   );
@@ -653,7 +648,7 @@ function Portfolio() {
       {/* CONTENT */}
       <div className="content-pad">
         <section style={{marginBottom:64}}>
-          <SectionLabel num="01" title="Toolkit"/>
+          <SectionLabel title="Toolkit"/>
           <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
             {(skills||[]).map(s=><span key={s} style={{
               fontSize:11,fontWeight:500,letterSpacing:'0.04em',
@@ -667,7 +662,7 @@ function Portfolio() {
         </section>
 
         <section>
-          <SectionLabel num="02" title="Selected work"/>
+          <SectionLabel title="Selected work"/>
           <div className="grid-4">
             {items.map((p,idx)=><Card key={p.id} p={p} idx={idx} dragProps={dragProps(p.id)}/>)}
           </div>
