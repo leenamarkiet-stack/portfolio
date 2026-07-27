@@ -35,19 +35,25 @@
   /* Gentle side-to-side sway, like the flowers are drifting in a light breeze.
      Each flower keeps its own base rotation but wobbles the same amount. */
   @keyframes flowerSwayYellow {
-    0%   { transform: rotate(75deg) translateX(0) translateY(0); }
-    50%  { transform: rotate(80deg) translateX(10px) translateY(-6px); }
-    100% { transform: rotate(75deg) translateX(0) translateY(0); }
+    0%   { transform: rotate(72deg) translateX(-14px) translateY(-2px); }
+    25%  { transform: rotate(75deg) translateX(0) translateY(-6px); }
+    50%  { transform: rotate(78deg) translateX(14px) translateY(-2px); }
+    75%  { transform: rotate(75deg) translateX(0) translateY(-6px); }
+    100% { transform: rotate(72deg) translateX(-14px) translateY(-2px); }
   }
   @keyframes flowerSwayPansy {
-    0%   { transform: rotate(20deg) translateX(0) translateY(0); }
-    50%  { transform: rotate(25deg) translateX(10px) translateY(-6px); }
-    100% { transform: rotate(20deg) translateX(0) translateY(0); }
+    0%   { transform: rotate(17deg) translateX(-14px) translateY(-2px); }
+    25%  { transform: rotate(20deg) translateX(0) translateY(-6px); }
+    50%  { transform: rotate(23deg) translateX(14px) translateY(-2px); }
+    75%  { transform: rotate(20deg) translateX(0) translateY(-6px); }
+    100% { transform: rotate(17deg) translateX(-14px) translateY(-2px); }
   }
   @keyframes flowerSwayFooter {
-    0%   { transform: rotate(100deg) translateX(0) translateY(0); }
-    50%  { transform: rotate(105deg) translateX(10px) translateY(-6px); }
-    100% { transform: rotate(100deg) translateX(0) translateY(0); }
+    0%   { transform: rotate(97deg) translateX(-14px) translateY(-2px); }
+    25%  { transform: rotate(100deg) translateX(0) translateY(-6px); }
+    50%  { transform: rotate(103deg) translateX(14px) translateY(-2px); }
+    75%  { transform: rotate(100deg) translateX(0) translateY(-6px); }
+    100% { transform: rotate(97deg) translateX(-14px) translateY(-2px); }
   }
   .hero-flower-yellow { animation: flowerSwayYellow 6s ease-in-out infinite; transform-origin: 50% 85%; }
   .hero-flower-pansy { animation: flowerSwayPansy 6s ease-in-out infinite; transform-origin: 50% 85%; }
@@ -612,7 +618,7 @@ function Portfolio() {
 
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-yellow.png" alt=""
           className="hero-flower hero-flower-yellow"
-          style={{position:'absolute',bottom:40,right:180,width:260,height:'auto',
+          style={{position:'absolute',bottom:96,right:260,width:260,height:'auto',
             pointerEvents:'none',zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-cream.png" alt=""
