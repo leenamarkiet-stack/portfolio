@@ -57,7 +57,7 @@
   }
   .hero-flower-yellow { animation: flowerSwayYellow 13s ease-in-out infinite; transform-origin: 50% 85%; }
   .hero-flower-pansy { animation: flowerSwayPansy 22s ease-in-out infinite; transform-origin: 50% 85%; }
-  .footer-flower { animation: flowerSwayFooter 13s ease-in-out infinite; transform-origin: 50% 85%; }
+  .footer-flower { animation: flowerSwayFooter 24s ease-in-out infinite; transform-origin: 50% 85%; }
 
   /* Scroll reveal: elements fade + slide up into place as they enter the viewport */
   .reveal {
@@ -113,6 +113,7 @@
     .bio-narrow-spacer { display: none; }
     .hero-flower-yellow { width: 130px !important; }
     .hero-flower-pansy { width: 110px !important; }
+    .hero-flower-dandelion { width: 110px !important; }
     .footer-flower { width: 180px !important; left: -30px !important; bottom: -30px !important; }
   }
   @media (max-width: 480px) {
@@ -659,6 +660,11 @@ function Portfolio() {
           style={{position:'absolute',bottom:96,right:260,width:260,height:'auto',
             pointerEvents:'none',zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
+        <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/dandelion.png" alt=""
+          className="hero-flower hero-flower-dandelion"
+          style={{position:'absolute',bottom:140,right:420,width:220,height:'auto',
+            transform:'rotate(90deg)',pointerEvents:'none',zIndex:0,opacity:0.92,
+            filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-cream.png" alt=""
           className="hero-flower hero-flower-pansy"
           style={{position:'absolute',top:-30,left:-50,width:260,height:'auto',
@@ -695,7 +701,7 @@ function Portfolio() {
                 </div>
 
                 <div className="bio-bottom bio-bottom-wide">
-                  <div className="bio-narrow-spacer" aria-hidden style={{float:'right',width:232,height:56}}/>
+                  <div className="bio-narrow-spacer" aria-hidden style={{float:'right',width:232,height:105}}/>
                   {bio.paragraph.split(/\n\s*\n/).map((para,i)=>(
                     <p key={i} style={{margin:i===0?0:'14px 0 0',fontSize:16,lineHeight:1.55,color:P.ink}}>{para}</p>
                   ))}
