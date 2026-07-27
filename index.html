@@ -620,7 +620,7 @@ function Portfolio() {
 
               <div className="bio-bottom">
                 {bio.paragraph.split(/\n\s*\n/).map((para,i)=>(
-                  <p key={i} style={{margin:i===0?0:'14px 0 0',maxWidth:520,fontSize:16,lineHeight:1.55,color:P.ink}}>{para}</p>
+                  <p key={i} style={{margin:i===0?0:'14px 0 0',maxWidth:i===0?520:'none',fontSize:16,lineHeight:1.55,color:P.ink}}>{para}</p>
                 ))}
                 <div style={{display:'flex',gap:10,marginTop:28,flexWrap:'wrap'}}>
                   {(headerButtons||[]).map((b,i)=>{
