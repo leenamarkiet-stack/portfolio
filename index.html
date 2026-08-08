@@ -548,7 +548,9 @@ function GradBtn({href,primary,children}) {
 function SectionLabel({title,hint}) {
   return (
     <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:24,gap:16}}>
-      <h2 style={{fontFamily:SERIF,fontWeight:400,fontSize:32,margin:0,letterSpacing:'-0.01em',color:'#C97A3D'}}>{title}</h2>
+      <h2 style={{fontFamily:SERIF,fontWeight:400,fontSize:32,margin:0,letterSpacing:'-0.01em',
+        background:'linear-gradient(90deg,#C97A3D,#A15920,#6B3A14)',
+        WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent'}}>{title}</h2>
       {hint&&<span style={{fontSize:10,letterSpacing:'0.1em',color:P.forest,textTransform:'uppercase',whiteSpace:'nowrap'}}>{hint}</span>}
     </div>
   );
