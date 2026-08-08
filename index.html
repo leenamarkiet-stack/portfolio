@@ -98,7 +98,7 @@
 
   /* Mobile responsive */
   .hero-pad { /* padding moved to .hero-screen so screens can slide */ }
-  .content-pad { padding: 64px 64px 96px; }
+  .content-pad { padding: 48px 64px 96px; }
   .hero-grid {
     display: grid;
     grid-template-columns: minmax(360px, 540px) 200px minmax(360px, 1fr);
@@ -310,7 +310,7 @@ const P = {
   yellowBloom:'#FBEFC6', tanBloom:'#F5E1C3'
 };
 const btnGrad  = `linear-gradient(135deg,${P.coral} 0%,${P.red} 100%)`;
-const heroGrad = `linear-gradient(135deg,${P.cream} 0%,${P.yellowBloom} 60%,${P.yellowBloom} 100%)`;
+const heroGrad = `linear-gradient(165deg,${P.cream} 0%,${P.yellowBloom} 45%,${P.yellowBloom} 75%,${P.cream} 100%)`;
 const SERIF    = `"Playfair Display", Georgia, serif`;
 const MANROPE  = `"Manrope", system-ui, sans-serif`;
 
@@ -548,7 +548,7 @@ function GradBtn({href,primary,children}) {
 function SectionLabel({title,hint}) {
   return (
     <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:24,gap:16}}>
-      <h2 style={{fontFamily:SERIF,fontWeight:400,fontSize:32,margin:0,letterSpacing:'-0.01em',color:P.ink}}>{title}</h2>
+      <h2 style={{fontFamily:SERIF,fontWeight:400,fontSize:32,margin:0,letterSpacing:'-0.01em',color:'#C97A3D'}}>{title}</h2>
       {hint&&<span style={{fontSize:10,letterSpacing:'0.1em',color:P.forest,textTransform:'uppercase',whiteSpace:'nowrap'}}>{hint}</span>}
     </div>
   );
@@ -860,7 +860,7 @@ function Portfolio() {
           line. Pulled up with a large negative margin so it genuinely bites into the hero's
           coral gradient (a small overlap was invisible — its transparent zones are the same
           cream as the page background, so it just read as dead space above Toolkit). */}
-      <div aria-hidden style={{position:'relative',marginTop:-72,lineHeight:0,pointerEvents:'none',zIndex:2}}>
+      <div aria-hidden style={{position:'relative',marginTop:-80,lineHeight:0,pointerEvents:'none',zIndex:2}}>
         <svg viewBox="0 0 1440 100" preserveAspectRatio="none" style={{display:'block',width:'100%',height:84}}>
           <defs>
             <filter id="wc-blur1"><feGaussianBlur stdDeviation="2.6"/></filter>
@@ -925,9 +925,9 @@ function Portfolio() {
               fontSize:11,fontWeight:500,letterSpacing:'0.04em',
               padding:'7px 12px',borderRadius:999,whiteSpace:'nowrap',
               color:P.ink,
-              background:`linear-gradient(135deg,${P.cream} 0%,${P.peach} 100%)`,
-              border:`1px solid ${P.peach}`,
-              boxShadow:`0 4px 10px -4px ${P.peach}66`,
+              background:'linear-gradient(135deg,#F1EAFE 0%,#BCB4EC 100%)',
+              border:'1px solid #BCB4EC',
+              boxShadow:'0 4px 10px -4px #BCB4EC66',
             }}>{s}</Reveal>)}
           </div>
         </section>
