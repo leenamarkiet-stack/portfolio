@@ -135,6 +135,7 @@
     .hero-grid { grid-template-columns: 1fr; gap: 24px; }
     .hero-photo { width: 140px !important; height: 168px !important; }
     .name-h1 { font-size: 44px !important; }
+    .signature-img { height: 49px !important; }
     .meta-bar { flex-direction: column; align-items: flex-start !important; gap: 8px; }
     .footer-bar { flex-direction: column; gap: 12px; align-items: flex-start !important; }
     .bio-narrow-spacer { display: none; }
@@ -146,6 +147,7 @@
   @media (max-width: 480px) {
     .grid-4 { grid-template-columns: 1fr; }
     .name-h1 { font-size: 36px !important; }
+    .signature-img { height: 40px !important; }
   }
 
   /* Hero slide stage: screen 1 (original hero) and screen 2 (full timeline) */
@@ -784,10 +786,9 @@ function Portfolio() {
                   <h1 className="name-h1" style={{fontFamily:SERIF,fontWeight:800,
                     display:'flex',flexDirection:'column',gap:2,
                     margin:0,letterSpacing:'-0.025em',color:P.ink}}>
-                    <span style={{display:'block',lineHeight:1,background:`linear-gradient(90deg,${P.coral},${P.forest})`,
-                      WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent'}}>
-                      {bio.name}
-                    </span>
+                    <img src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/signature.png"
+                      alt={bio.name} className="signature-img"
+                      style={{display:'block',height:84,width:'auto'}}/>
                     <em className="role-em" style={{display:'block',lineHeight:1,fontFamily:'"Lora",Georgia,serif',fontStyle:'normal',fontWeight:500,fontSize:'0.55em',
                       background:`linear-gradient(90deg,${P.coral},${P.forest})`,
                       WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent'}}>
