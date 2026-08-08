@@ -305,10 +305,13 @@
 
 const P = {
   cream:'#FFEDCE', peach:'#FFC193', coral:'#FF8383', red:'#FF3737',
-  sage:'#C3CC9B', forest:'#546B41', ink:'#1F1A14', paper:'#FFFAF0'
+  sage:'#C3CC9B', forest:'#546B41', ink:'#1F1A14', paper:'#FFFAF0',
+  // Sampled from the yellow flower and top-left (cream) flower — used to make
+  // the top of the hero read as creamy-yellow instead of orange.
+  yellowBloom:'#F9E8B9', creamBloom:'#F9F1E5'
 };
 const btnGrad  = `linear-gradient(135deg,${P.coral} 0%,${P.red} 100%)`;
-const heroGrad = `linear-gradient(135deg,${P.cream} 0%,${P.peach} 82%,${P.coral} 100%)`;
+const heroGrad = `linear-gradient(135deg,${P.creamBloom} 0%,${P.yellowBloom} 55%,${P.peach} 88%,${P.coral} 100%)`;
 const SERIF    = `"Playfair Display", Georgia, serif`;
 const MANROPE  = `"Manrope", system-ui, sans-serif`;
 
