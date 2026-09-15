@@ -796,7 +796,10 @@ function Portfolio() {
             pointerEvents:'none',zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
 
-        <div className={`hero-stage ${expanded ? 'expanded' : ''}`} style={{position:'relative',zIndex:1}}>
+        {/* Above the bleeding bottom blobs (zIndex 2). hero-pad has position:relative
+            with no z-index, so it creates no stacking context of its own and these
+            children compete directly with those blobs. */}
+        <div className={`hero-stage ${expanded ? 'expanded' : ''}`} style={{position:'relative',zIndex:4}}>
 
           {/* Screen 1 — original hero */}
           <div className="hero-screen">
@@ -925,6 +928,11 @@ function Portfolio() {
         <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-forgetmenot.png" alt="" className="footer-bloom"
           style={{position:'absolute',bottom:30,left:-150,width:235,height:'auto',
             '--rot':'90deg','--dur':'26s',pointerEvents:'none',opacity:0.9,zIndex:0,
+            filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
+
+        <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-pansy.png" alt="" className="footer-bloom"
+          style={{position:'absolute',bottom:88,left:196,width:262,height:'auto',
+            '--rot':'112deg','--dur':'28s',pointerEvents:'none',opacity:0.88,zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
 
         <div aria-hidden className="footer-cluster"
