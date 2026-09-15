@@ -146,7 +146,7 @@
     .hero-grid { grid-template-columns: 1fr; gap: 24px; }
     .hero-photo { width: 140px !important; height: 168px !important; }
     .name-h1 { font-size: 44px !important; }
-    .signature-img { height: 49px !important; }
+    .signature-img { width: 420px !important; height: auto !important; }
     .meta-bar { flex-direction: column; align-items: flex-start !important; gap: 8px; }
     .footer-bar { flex-direction: column; gap: 12px; align-items: flex-start !important; }
     .bio-narrow-spacer { display: none; }
@@ -160,7 +160,7 @@
   @media (max-width: 480px) {
     .grid-4 { grid-template-columns: 1fr; }
     .name-h1 { font-size: 36px !important; }
-    .signature-img { height: 40px !important; }
+    .signature-img { width: 300px !important; height: auto !important; }
   }
 
   /* Hero slide stage: screen 1 (original hero) and screen 2 (full timeline) */
@@ -353,14 +353,17 @@ const DEFAULT_BIO = {
 };
 const DEFAULT_SKILLS = ["Service Design","Journey Mapping","Workshop Facilitation","UX Research","UI Design","Digital Twins","Vibecoding","Figma","Stakeholder Management"];
 const DEFAULT_HEADER_BUTTONS = [
-  { label:"Download CV", url:"#", primary:false },
+  { label:"Download CV", url:"leena-markiet-cv.pdf", primary:false },
   { label:"LinkedIn", url:"#", primary:false },
 ];
 const DEFAULT_EXPERIENCE = [
-  { logoUrl:"", company:"Freelance", title:"Service Designer & UX Lead", startMonth:1, startYear:2024, endMonth:0, endYear:0, current:true,  description:"Shipping end-to-end design for healthcare and fintech clients." },
-  { logoUrl:"", company:"Verso",     title:"Design System Lead",         startMonth:6, startYear:2022, endMonth:12, endYear:2023, current:false, description:"Built a 240-component Figma library with token pipeline." },
-  { logoUrl:"", company:"Pilvi Bank", title:"UX/UI Designer",            startMonth:1, startYear:2020, endMonth:5,  endYear:2022, current:false, description:"Redesigned the daily banking app, reduced support load by 31%." },
-  { logoUrl:"", company:"City of Tampere", title:"Service Designer",     startMonth:8, startYear:2017, endMonth:12, endYear:2019, current:false, description:"Cross-departmental service blueprint and citizen permit portal." },
+  { logoUrl:"", company:"Space42", title:"Senior UX/UI Designer", startMonth:8, startYear:2024, endMonth:0, endYear:0, current:true, description:"Experience strategy and product design for complex, data-driven government and enterprise platforms \u2014 real-time data, analytics, digital twins and AI-driven insights." },
+  { logoUrl:"", company:"Wio Bank", title:"Service Designer (freelance)", startMonth:2, startYear:2024, endMonth:2, endYear:2024, current:false, description:"Restructured a customer-service knowledge base onto a new platform to improve discoverability and response speed." },
+  { logoUrl:"", company:"Fortum", title:"Service Designer", startMonth:3, startYear:2023, endMonth:10, endYear:2023, current:false, description:"Nordic UX & Concepts team: customer insight, journey mapping and data-led improvements across B2C and B2B digital channels." },
+  { logoUrl:"", company:"MSL", title:"Educational & Service Designer", startMonth:1, startYear:2020, endMonth:3, endYear:2023, current:false, description:"Grew the consultancy from educational design into organisational service design \u2014 interviews, surveys, personas and customer-centric processes for non-profits." },
+  { logoUrl:"", company:"MTK", title:"Member Service Planner", startMonth:10, startYear:2017, endMonth:7, endYear:2018, current:false, description:"Member-perspective service development: new communication pilots, video and podcast content, and improved legal counselling." },
+  { logoUrl:"", company:"MTK Regional", title:"Specialist (Agronomist)", startMonth:9, startYear:2014, endMonth:10, endYear:2017, current:false, description:"Secured \u20ac100k of EU funding for young-farmer development, running Startup Weekend Helsinki Food, excursions and entrepreneurship training." },
+  { logoUrl:"", company:"Pro Luomu", title:"Project Planner", startMonth:1, startYear:2013, endMonth:6, endYear:2014, current:false, description:"Project planning for the Finnish Organic Food Association." },
 ];
 const DEFAULT_PROJECTS = [
   {id:"p1",title:"Reimagining outpatient triage",client:"Nordic Health",role:"Lead Service Designer",year:"2025",tags:["Service Design","Healthcare","Research"],description:"End-to-end redesign of a triage flow used by 2,400 nurses across 14 hospitals.",cover:{hue:18,label:"Triage flow",imageUrl:""}},
@@ -542,15 +545,21 @@ function DandelionCluster({style, className}) {
   );
 }
 
-function GradBtn({href,primary,children}) {
+function GradBtn({href,primary,download,children}) {
   const [hov,setHov]=React.useState(false);
   const base={fontFamily:'Inter,sans-serif',fontSize:13,fontWeight:500,padding:'10px 16px',
     borderRadius:999,textDecoration:'none',display:'inline-block',
     transition:'transform .15s,box-shadow .15s',transform:hov?'translateY(-1px)':'none'};
-  if(primary) return <a href={href} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+  // A download link saves the file in place; anything pointing off-site opens in
+  // a new tab so the visitor does not lose the page.
+  const external=!download && /^https?:/i.test(href||'');
+  const link={href,
+    ...(download?{download:''}:{}),
+    ...(external?{target:'_blank',rel:'noopener noreferrer'}:{})};
+  if(primary) return <a {...link} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
     style={{...base,background:btnGrad,color:P.paper,border:`1px solid ${P.red}`,
     boxShadow:hov?`0 10px 24px -8px ${P.red}80`:`0 4px 10px -4px ${P.red}55`}}>{children}</a>;
-  return <a href={href} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+  return <a {...link} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
     style={{...base,
     background:hov
       ? 'linear-gradient(135deg,rgba(255,255,255,0.32),rgba(255,255,255,0.16))'
@@ -815,9 +824,9 @@ function Portfolio() {
                   <h1 className="name-h1" style={{fontFamily:SERIF,fontWeight:800,
                     display:'flex',flexDirection:'column',gap:2,
                     margin:0,letterSpacing:'-0.025em',color:P.ink}}>
-                    <img src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/signature.png"
+                    <img src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/signature.png?v=2"
                       alt={bio.name} className="signature-img"
-                      style={{display:'block',height:84,width:'auto'}}/>
+                      style={{display:'block',width:540,maxWidth:'100%',height:'auto'}}/>
                     <em className="role-em" style={{display:'block',lineHeight:1,fontFamily:'"Lora",Georgia,serif',fontStyle:'normal',fontWeight:500,fontSize:'0.55em',
                       background:'linear-gradient(90deg,#7C8C6E,#546B41,#33452A)',
                       WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent'}}>
@@ -835,7 +844,7 @@ function Portfolio() {
                   <div style={{display:'flex',gap:10,marginTop:28,flexWrap:'wrap'}}>
                     {(headerButtons||[]).map((b,i)=>{
                       const isDownload=/download|cv|resume|export/i.test(b.label||'');
-                      return <GradBtn key={i} href={b.url||'#'} primary={!!b.primary}>{b.label||''} {isDownload?'↓':'↗'}</GradBtn>;
+                      return <GradBtn key={i} href={b.url||'#'} primary={!!b.primary} download={isDownload}>{b.label||''} {isDownload?'↓':'↗'}</GradBtn>;
                     })}
                   </div>
                 </div>
