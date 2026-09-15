@@ -330,13 +330,13 @@ const MANROPE  = `"Manrope", system-ui, sans-serif`;
 // Stable per-tag color: hash → palette
 const TAG_PALETTES = [
   { bg:`${P.sage}55`,   fg:P.forest, br:`${P.forest}33` },
-  { bg:`${P.peach}66`,  fg:'#8B4513', br:`${P.coral}55` },
-  { bg:`${P.coral}33`,  fg:'#A02020', br:`${P.red}44` },
-  { bg:`${P.cream}cc`,  fg:'#7A5C2F', br:`${P.peach}88` },
+  { bg:'rgba(245,225,195,0.70)', fg:'#7A5C2F', br:`${P.tanBloom}88` },
+  { bg:'#E9E6F8',       fg:'#544A85', br:'#D5CFF0' },
+  { bg:`${P.cream}cc`,  fg:'#7A5C2F', br:`${P.tanBloom}88` },
   { bg:'#D9E4C7',       fg:P.forest, br:`${P.sage}88` },
-  { bg:'#FFE0E0',       fg:'#8A2A2A', br:`${P.coral}66` },
-  { bg:'#F5DCC0',       fg:P.forest, br:`${P.peach}88` },
-  { bg:'#E8D5B7',       fg:'#5C3A0F', br:`${P.peach}66` },
+  { bg:'#F7E3E9',       fg:'#8A5A66', br:'#EFCBD9' },
+  { bg:'#E3EAF8',       fg:'#43587A', br:'#C1D0EE' },
+  { bg:'#EFE6D6',       fg:'#5C3A0F', br:`${P.tanBloom}66` },
 ];
 function tagColor(tag){
   let h=0; for(let i=0;i<tag.length;i++) h=(h*31+tag.charCodeAt(i))>>>0;
@@ -366,7 +366,7 @@ const DEFAULT_EXPERIENCE = [
   { logoUrl:"", company:"Pro Luomu", title:"Project Planner", startMonth:1, startYear:2013, endMonth:6, endYear:2014, current:false, description:"Project planning for the Finnish Organic Food Association." },
 ];
 const DEFAULT_PROJECTS = [
-  {id:"p9",title:"Development of a card game to support dialogue training",client:"Association of Rural Culture and Education (MSL)",role:"Educational & Service Designer",year:"2022",tags:["Service Design","Facilitation","Toolkit"],description:"A card-based toolkit that compressed Sitra's Time Out dialogue method into a 2–3 hour training session.",cover:{hue:140,label:"Dialogue toolkit",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png"}},
+  {id:"p9",title:"Development of a card game to support dialogue training",client:"Association of Rural Culture and Education (MSL)",role:"Educational & Service Designer",year:"2021",tags:["Service Design","Facilitation","Toolkit"],description:"A card-based toolkit that compressed Sitra's Time Out dialogue method into a 2–3 hour training session.",cover:{hue:140,label:"Dialogue toolkit",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png"}},
   {id:"p10",title:"Service concept development for B2C and B2B electricity products",client:"Fortum (Customer Solutions)",role:"Service Designer",year:"2023",tags:["Service Design","UX Research","Energy"],description:"Two service concepts for a Nordic energy provider, where research kept surfacing the same gap between what the business wanted to build and the simplicity customers asked for.",cover:{hue:200,label:"Electricity services",imageUrl:""}},
 ];
 
@@ -642,13 +642,14 @@ function yearLabelFor(x) {
   return (m ? m + " '" : '') + (y ? String(y).slice(-2) : '');
 }
 
-// Smooth wheel-to-horizontal scroll: attach a wheel listener to a host element
-// (e.g. the entire hero) and forward vertical wheel into smooth horizontal
-// scroll on a target element resolved on each event (so it can pick the
-// compact vs full timeline depending on state).
-function useHostWheelToHorizontal(hostRef, getTargetEl, deps) {
+// Smooth wheel-to-horizontal scroll, bound to the timeline itself rather than
+// the whole hero: a vertical wheel only turns into horizontal scrolling while
+// the pointer is over the timeline, so the rest of the page scrolls normally.
+// Once the timeline hits either end the event is left alone, letting the page
+// take over instead of trapping the scroll.
+function useWheelToHorizontal(getEl, deps) {
   React.useEffect(() => {
-    const host = hostRef.current;
+    const host = getEl();
     if (!host) return;
     let activeEl = null;
     let target = 0;
@@ -667,7 +668,7 @@ function useHostWheelToHorizontal(hostRef, getTargetEl, deps) {
       raf = requestAnimationFrame(animate);
     };
     const onWheel = (e) => {
-      const t = getTargetEl();
+      const t = host;
       if (!t) return;
       // re-sync when target changes or user has scrolled it via other means
       if (activeEl !== t) { activeEl = t; target = t.scrollLeft; }
@@ -755,9 +756,9 @@ function Portfolio() {
   const heroPadRef = React.useRef(null);
   const compactRef = React.useRef(null);
   const fullRef    = React.useRef(null);
-  // One wheel handler on the entire hero — vertical wheel becomes smooth
-  // horizontal scroll on whichever timeline is currently visible.
-  useHostWheelToHorizontal(heroPadRef,
+  // Wheel-to-horizontal is bound to whichever timeline is visible, not to the
+  // hero, so it only engages while the pointer is actually over the timeline.
+  useWheelToHorizontal(
     () => expanded ? fullRef.current : compactRef.current,
     [expanded]);
   useScrollEdgeAttrs(compactRef, []);

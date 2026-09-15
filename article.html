@@ -9,7 +9,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap">
 <script src="config.js"></script>
 <style>
-  :root { --cream:#FFEDCE; --peach:#FFC193; --coral:#FF8383; --red:#FF3737;
+  :root { --cream:#F7EBDC; --yellowBloom:#FBEFC6; --tanBloom:#F5E1C3;
+    --lilac:#E9E6F8; --stem:#7C8C6E; --stemDeep:#546B41; --stemDark:#33452A;
     --sage:#C3CC9B; --forest:#546B41; --ink:#1F1A14; --paper:#FFFAF0; }
   *,*::before,*::after { box-sizing: border-box; }
   html, body { margin:0; padding:0; background: var(--cream); color: var(--ink);
@@ -23,7 +24,7 @@
 
   /* Header */
   .hd { padding:14px 48px; position:sticky; top:0; z-index:100;
-    background:rgba(255,237,206,0.92); backdrop-filter:blur(8px);
+    background:rgba(247,235,220,0.92); backdrop-filter:blur(8px);
     border-bottom:1px solid rgba(0,0,0,0.08);
     display:flex; justify-content:space-between; align-items:center; gap:12px; }
   .hd a { color: var(--forest); text-decoration:none; font-size:11px;
@@ -34,7 +35,7 @@
 
   /* Hero */
   .hero { padding:48px 64px 36px;
-    background: linear-gradient(135deg, var(--cream) 0%, var(--peach) 60%, var(--coral) 100%);
+    background: linear-gradient(135deg, var(--cream) 0%, var(--yellowBloom) 55%, var(--tanBloom) 100%);
     position:relative; overflow:hidden; }
   .hero-content { position:relative; max-width:760px; }
   .hero-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
@@ -65,7 +66,7 @@
   .section { margin-bottom: 64px; }
   .section-head { display:flex; align-items:baseline; gap:14px; margin-bottom: 14px; }
   .section-num { font-size:11px; letter-spacing:0.1em; font-weight:600;
-    background: linear-gradient(135deg, var(--coral), var(--red));
+    background: linear-gradient(135deg, var(--stem), var(--stemDeep), var(--stemDark));
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .section-h2 { font-family:'Playfair Display',Georgia,serif; font-weight:400;
     font-size:28px; letter-spacing:-0.01em; margin:0; color: var(--ink); }
@@ -78,7 +79,7 @@
   .layout-media-right { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
   .main-image-wrap { position:relative; aspect-ratio: 4/3; max-height: 380px;
     border-radius:8px; overflow:hidden; border:1px solid rgba(0,0,0,0.08);
-    background:#fff; cursor:zoom-in; transition: transform .2s ease; }
+    background:var(--paper); cursor:zoom-in; transition: transform .2s ease; }
   .main-image-wrap:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -16px rgba(0,0,0,0.3); }
   .main-image-wrap img { width:100%; height:100%; object-fit:cover; }
   .main-image-cap { font-size:11px; color: var(--forest); margin-top:6px;
@@ -88,7 +89,7 @@
   .extra-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top: 24px; }
   .extra-item { display:flex; flex-direction:column; gap:6px; }
   .extra-thumb { aspect-ratio: 4/3; max-height: 180px; border-radius:6px; overflow:hidden;
-    border:1px solid rgba(0,0,0,0.08); background:#fff;
+    border:1px solid rgba(0,0,0,0.08); background:var(--paper);
     cursor:zoom-in; transition: transform .2s ease; }
   .extra-thumb:hover { transform: translateY(-2px); box-shadow: 0 10px 22px -14px rgba(0,0,0,0.3); }
   .extra-thumb img { width:100%; height:100%; object-fit:cover; }
@@ -101,8 +102,8 @@
     display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; }
   .outro-end { font-size:11px; letter-spacing:0.08em; color:#5C544A; text-transform:uppercase; }
   .cta { font-size:13px; font-weight:500; padding:10px 18px; border-radius:999px;
-    background: linear-gradient(135deg, var(--coral), var(--red)); color: var(--paper);
-    text-decoration:none; box-shadow:0 8px 20px -8px rgba(255,55,55,0.5); }
+    background: linear-gradient(135deg, var(--stem), var(--stemDeep)); color: var(--paper);
+    text-decoration:none; box-shadow:0 8px 20px -8px rgba(84,107,65,0.45); }
 
   /* Related projects */
   .related { padding: 56px 0 0; }
@@ -127,7 +128,7 @@
   .related-cover .ph-yr {
     position:absolute; top:8px; right:8px;
     font-size:10px; font-weight:500; padding:3px 8px; border-radius:999px;
-    color: var(--paper); background: linear-gradient(135deg, var(--coral), var(--red));
+    color: var(--paper); background: linear-gradient(135deg, var(--stem), var(--stemDeep));
   }
   .related-body { padding: 12px 14px 14px; display:flex; flex-direction:column; gap:6px; flex:1; }
   .related-title { font-family:'Playfair Display',Georgia,serif; font-weight:400;
@@ -188,7 +189,7 @@
 </div>
 
 <script>
-const P = { cream:'#FFEDCE', peach:'#FFC193', coral:'#FF8383', red:'#FF3737',
+const P = { cream:'#F7EBDC', peach:'#F5E1C3', coral:'#C3CC9B', red:'#546B41',
             sage:'#C3CC9B', forest:'#546B41', ink:'#1F1A14', paper:'#FFFAF0' };
 
 // ───── Visitor gate ─────
@@ -237,7 +238,7 @@ async function sha256Hex(s){
 
 // Defaults — kept in sync with admin.html / index.html
 const DEFAULT_PROJECTS = [
-  {id:"p9",title:"Development of a card game to support dialogue training",client:"Association of Rural Culture and Education (MSL)",role:"Educational & Service Designer",year:"2022",tags:["Service Design","Facilitation","Toolkit"],description:"A card-based toolkit that compressed Sitra's Time Out dialogue method into a 2–3 hour training session.",cover:{hue:140,label:"Dialogue toolkit",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png"},caseStudy:{overview:"At the Association of Rural Culture and Education we trained member organisations in dialogue skills using the Time Out method developed by The Finnish Innovation Fund Sitra. The method worked, but it took longer than organisations had, and the practice sessions were too comfortable to prepare anyone for a real room.",team:"",duration:"",heroImage:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png",sections:[{heading:"The challenge",body:"• In practice sessions, participants tended to share similar backgrounds, ideologies or life situations. The discussion scenarios did not reflect real-life situations, so facilitation was never rehearsed in a sufficiently challenging atmosphere.\n\n• The key contents of Time Out needed to fit into roughly 2–3 hours, the average time organisations had available.\n\n• The training needed to be more lightweight overall.",layout:"text-only",images:[]},{heading:"What was designed",body:"• Game modes for building good dialogue, including monitoring and analysing discussion dynamics.\n\n• Facilitator's guide cards for steering the discussion, holding the key content of Time Out dialogue in a concise form.\n\n• Conversation style cards: green cards for building good dialogue, red cards for creating friction and challenge, specifically to support facilitation practice.\n\n• Citizen cards, bringing more diversity into the discussion and letting participants understand and present the perspectives that arise from people's backgrounds or values.\n\n• Role cards to shift mindset, prompting a more comprehensive examination of the topic and disrupting the traditional discussion dynamics of established groups such as a board of directors.",layout:"text-only",images:[]}]}},
+  {id:"p9",title:"Development of a card game to support dialogue training",client:"Association of Rural Culture and Education (MSL)",role:"Educational & Service Designer",year:"2021",tags:["Service Design","Facilitation","Toolkit"],description:"A card-based toolkit that compressed Sitra's Time Out dialogue method into a 2–3 hour training session.",cover:{hue:140,label:"Dialogue toolkit",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png"},caseStudy:{overview:"At the Association of Rural Culture and Education we trained member organisations in dialogue skills using the Time Out method developed by The Finnish Innovation Fund Sitra. The method worked, but it took longer than organisations had, and the practice sessions were too comfortable to prepare anyone for a real room.",team:"",duration:"",heroImage:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png",sections:[{heading:"The challenge",body:"• In practice sessions, participants tended to share similar backgrounds, ideologies or life situations. The discussion scenarios did not reflect real-life situations, so facilitation was never rehearsed in a sufficiently challenging atmosphere.\n\n• The key contents of Time Out needed to fit into roughly 2–3 hours, the average time organisations had available.\n\n• The training needed to be more lightweight overall.",layout:"text-only",images:[]},{heading:"What was designed",body:"• Game modes for building good dialogue, including monitoring and analysing discussion dynamics.\n\n• Facilitator's guide cards for steering the discussion, holding the key content of Time Out dialogue in a concise form.\n\n• Conversation style cards: green cards for building good dialogue, red cards for creating friction and challenge, specifically to support facilitation practice.\n\n• Citizen cards, bringing more diversity into the discussion and letting participants understand and present the perspectives that arise from people's backgrounds or values.\n\n• Role cards to shift mindset, prompting a more comprehensive examination of the topic and disrupting the traditional discussion dynamics of established groups such as a board of directors.",layout:"text-only",images:[]}]}},
   {id:"p10",title:"Service concept development for B2C and B2B electricity products",client:"Fortum (Customer Solutions)",role:"Service Designer",year:"2023",tags:["Service Design","UX Research","Energy"],description:"Two service concepts for a Nordic energy provider, where research kept surfacing the same gap between what the business wanted to build and the simplicity customers asked for.",cover:{hue:200,label:"Electricity services",imageUrl:""},caseStudy:{overview:"I worked in Fortum's Nordic UX and Concepts team on two connected service concepts: Price Freeze, an add-on for spot-price customers, and a bundled offering for digital add-on services. In both, my role was to keep customer needs in focus while the business pushed towards more customisation, more automation and more packaging.",team:"",duration:"",heroImage:"",sections:[{heading:"Price Freeze",body:"Price Freeze is an add-on aimed at spot-price customers who want to secure a fixed price for one or two months without committing to a 12 or 24 month fixed contract. Offers go out by SMS and email a minimum of 2–4 times a year, depending on the country.\n\nThe service generates significant revenue through monthly fees and, in principle, answers a real need for peace of mind and flexibility. In practice it caused a lot of disappointment, because the fixed prices offered were too high.\n\nThe objective was to improve the service further. My responsibility was to protect and improve the value customers actually experienced — which was a challenge among business developers, whose focus was on more customisation options, more features, enabling freezes directly in the app rather than by SMS or phone, and automating offer generation.",layout:"text-only",images:[]},{heading:"What I did",body:"• Gathering and organising customer feedback and requirements from the customer service and CX teams.\n\n• Working with the business developer to design an electronic survey (Forsta) sent to current and former customers across the Nordic countries.\n\n• Designing alternative service offerings that could be tested through the survey, along with testing interest in additional features and functionality.\n\n• Working with a UX designer to plan the essential functionality and interface of a potential application (Figma).\n\n• Analysing survey results and open-ended responses, and producing an analysis of needed improvements — pricing, features and process elements — shared with the validation board and the Head of Digital Customer Operations.",layout:"text-only",images:[]},{heading:"What the research showed",body:"The research revealed a strong contradiction between the direction business developers wanted to take the product — more customisation, more automation — and what customers clearly wanted, which was simplicity.\n\nMuch of the disappointment traced back to pricing. Freeze offers are bound to electricity futures, which may not reflect current prices, and customers did not understand why a company that also produces electricity would offer such a high price. Changing that pricing model is difficult.\n\nI was also thrown into the project without preparation, and neither my team lead nor the business developer had a shared understanding of the service designer's role or the project's scope. Establishing that took as much work as the research itself.",layout:"text-only",images:[]},{heading:"Bundled offers",body:"Fortum had built a helper tool offering tailored recommendations for additional services based on a customer's answers to a short quiz. Alongside it, business stakeholders pushed hard to introduce pre-packaged offers, hoping to increase wallet share and make selection easier. This gave the project a very strong business focus.\n\nThe difficulty is that not all electricity-related services apply to every customer. I was not the project lead, which limited how much I could shape how the project ran.\n\nCustomer interviews were pivotal. Before I joined, an A/B test had been run without the necessary customer research, and the online smoke test results were far from what the business had hoped for.",layout:"text-only",images:[]},{heading:"My responsibilities",body:"• Customer recruitment.\n\n• Interview questions, interviews, transcripts and usability testing.\n\n• Analysing the interview material.\n\n• Summarising and drawing conclusions, and presenting development suggestions to the UX/UI designer, with whom I brainstormed alternative solutions.\n\n• Exploring ways to build and present the offers, and giving feedback to the UX designer.\n\nWe worked iteratively: if a few interviews or user tests indicated an issue, we produced a new version of the mock-up attempting an improvement or an alternative approach.",layout:"text-only",images:[]},{heading:"Testing the models",body:"Recurring challenges:\n\n• How to offer the right amount of information on a limited screen, and make customers interested in and able to understand new digital add-on services.\n\n• How to build just three bundled packages that would serve every customer type.\n\n• Willingness to pay. Business stakeholders believed strongly in the “Netflix model” of three bundles, but when the origin of electricity was packaged together with smart services, willingness to pay was lower than for the same services bought separately. Many customers considered several services unnecessary, especially if they did not heat with electricity or own a large detached house.\n\nWe began, on the business unit's decision, with that Netflix model: three fixed offers side by side. As a challenger we researched modularity — customers selecting the services relevant to them to build a personalised package, following the quiz tool, with a discount level depending on how many add-ons they chose. This let customers tailor their offer, but some found it not simple enough.",layout:"text-only",images:[]},{heading:"What we learned",body:"We ended up leaning towards a partly modular approach: the customer chooses a spot or fixed contract, then whether they want renewable energy. Those two questions did the most segmenting work — spot suited risk-takers and EV owners, and the energy source choice was strongly tied to the customer's values. It also kept the number of packages shown from growing unmanageable.\n\nSelling renewable energy to as many customers as possible mattered commercially, and we learned that bundling it with smart features backfired: customers who valued renewable energy would not select it, because they felt they were paying for services they would never use. Keeping origin separate made pricing more transparent and gave it the emphasis it needed.\n\nThe interviews also showed that only EV owners and electric heating customers were interested in the app-based services at all. Others found them nice or interesting, but there was no willingness to pay unless consumption was very high.\n\nBefore more extensive testing, we were leaning towards two packages: Basic, aimed at apartment owners, and Smart, for villa owners and EV users.",layout:"text-only",images:[]}]}},
 ];
 
@@ -337,13 +338,13 @@ const sectionsHTML = (cs.sections || []).map(renderSection).join('');
 // Related projects: pick the next ~3 projects after the current one (wrap around)
 const TAG_PALETTES = [
   { bg:'rgba(195,204,155,0.45)', fg:'#546B41' },
-  { bg:'rgba(255,193,147,0.45)', fg:'#8B4513' },
-  { bg:'rgba(255,131,131,0.25)', fg:'#A02020' },
-  { bg:'rgba(255,237,206,0.85)', fg:'#7A5C2F' },
+  { bg:'rgba(245,225,195,0.70)', fg:'#7A5C2F' },
+  { bg:'#E9E6F8',                fg:'#544A85' },
+  { bg:'rgba(247,235,220,0.85)', fg:'#7A5C2F' },
   { bg:'#D9E4C7',                fg:'#546B41' },
-  { bg:'#FFE0E0',                fg:'#8A2A2A' },
-  { bg:'#F5DCC0',                fg:'#546B41' },
-  { bg:'#E8D5B7',                fg:'#5C3A0F' },
+  { bg:'#F7E3E9',                fg:'#8A5A66' },
+  { bg:'#E3EAF8',                fg:'#43587A' },
+  { bg:'#EFE6D6',                fg:'#5C3A0F' },
 ];
 function relatedTagColor(tag) {
   let h = 0; for (let i = 0; i < tag.length; i++) h = (h*31 + tag.charCodeAt(i)) >>> 0;
