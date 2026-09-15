@@ -61,7 +61,15 @@
   }
   .hero-flower-yellow { animation: flowerSwayYellow 13s ease-in-out infinite; transform-origin: 50% 85%; }
   .hero-flower-pansy { animation: flowerSwayPansy 22s ease-in-out infinite; transform-origin: 50% 85%; }
-  .footer-flower { animation: flowerSwayFooter 24s ease-in-out infinite; transform-origin: 50% 85%; }
+  /* Shared gentle drift for the bottom blooms. Rotation is held constant via
+     --rot so only translateX animates — rotating a large shape about a near-end
+     pivot swings its far tip through an arc that reads as vertical bobbing. */
+  @keyframes bloomSway {
+    0%   { transform: translateX(-9px) rotate(var(--rot,0deg)); }
+    50%  { transform: translateX(9px) rotate(var(--rot,0deg)); }
+    100% { transform: translateX(-9px) rotate(var(--rot,0deg)); }
+  }
+  .footer-bloom { animation: bloomSway var(--dur,22s) ease-in-out infinite; transform-origin: 50% 85%; }
 
   /* Individual dandelion seeds drift independently — direction/duration set per-seed via CSS vars */
   @keyframes seedFloat {
@@ -101,7 +109,7 @@
 
   /* Mobile responsive */
   .hero-pad { /* padding moved to .hero-screen so screens can slide */ }
-  .content-pad { padding: 48px 64px 96px; }
+  .content-pad { padding: 48px 64px 250px; }
   .hero-grid {
     display: grid;
     grid-template-columns: minmax(360px, 540px) 200px minmax(360px, 1fr);
@@ -134,7 +142,7 @@
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 720px) {
-    .content-pad { padding: 40px 20px 64px; }
+    .content-pad { padding: 40px 20px 150px; }
     .hero-grid { grid-template-columns: 1fr; gap: 24px; }
     .hero-photo { width: 140px !important; height: 168px !important; }
     .name-h1 { font-size: 44px !important; }
@@ -145,7 +153,9 @@
     .hero-flower-yellow { width: 130px !important; }
     .hero-flower-pansy { width: 110px !important; }
     .hero-flower-dandelion { transform: rotate(90deg) scale(0.55) !important; }
-    .footer-flower { width: 180px !important; left: -30px !important; bottom: -30px !important; }
+    .footer-cluster { width: 320px !important; right: -50px !important; bottom: -40px !important; }
+    .footer-cluster .footer-bloom { width: 150px !important; }
+    .footer-bloom { width: 180px !important; }
   }
   @media (max-width: 480px) {
     .grid-4 { grid-template-columns: 1fr; }
@@ -336,7 +346,7 @@ function tagColor(tag){
 const DEFAULT_BIO = {
   name:"Leena Markiet", role:"Service Designer & UX/UI",
   location:"Abu Dhabi, United Arab Emirates",
-  email:"leena@markiet.studo", photoUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/leena-profile-photo.png?v=8",
+  email:"leena@markiet.studo", photoUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/leena-profile-photo.png?v=9",
   status:"Available for projects, summer 2026",
   paragraph:"I am a Service Designer and Senior UX/UI Designer with experience designing complex enterprise and government software products, digital services, and customer experiences. My background combines service design, UX, business analysis, and stakeholder facilitation, enabling me to bridge business strategy, technical implementation, and user needs throughout the product lifecycle.\n\nI specialize in transforming complex business challenges into intuitive, scalable digital solutions. By combining systems thinking with user-centred design, I consider the broader service ecosystem—including users, workflows, business objectives, and technical constraints—to create experiences that are both highly usable and aligned with organizational goals.",
   socials:[{label:"LinkedIn",url:"#"},{label:"Read.cv",url:"#"}],
@@ -885,7 +895,7 @@ function Portfolio() {
       </div>
 
       {/* CONTENT */}
-      <div className="content-pad" style={{position:'relative',overflow:'hidden'}}>
+      <div className="content-pad" style={{position:'relative',zIndex:3,overflow:'hidden'}}>
         <section style={{marginBottom:64}}>
           <SectionLabel title="Toolkit"/>
           <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
@@ -902,11 +912,31 @@ function Portfolio() {
 
         {/* Placed before the cards (and z-index:0) so it paints BEHIND the project grid,
             peeking up from the bottom-left corner. */}
-        <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-pansy.png" alt=""
-          className="footer-flower"
-          style={{position:'absolute',bottom:90,left:-120,width:420,height:'auto',
-            pointerEvents:'none',opacity:0.85,zIndex:0,
+        {/* Bottom decoration. Painted before the cards at zIndex 0 so the blooms
+            sit behind the grid. The forget-me-not lies sideways at the left
+            (rotated 90deg, stem trailing off-canvas); the other four overlap in
+            a cluster at the right, largest behind. */}
+        <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-forgetmenot.png" alt="" className="footer-bloom"
+          style={{position:'absolute',bottom:30,left:-150,width:235,height:'auto',
+            '--rot':'90deg','--dur':'26s',pointerEvents:'none',opacity:0.9,zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
+
+        <div aria-hidden className="footer-cluster"
+          style={{position:'absolute',right:-30,bottom:34,width:470,height:270,
+            pointerEvents:'none',zIndex:0}}>
+          <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-poppy.png" alt="" className="footer-bloom"
+            style={{position:'absolute',right:-10,bottom:10,width:245,height:'auto',
+              '--rot':'-8deg','--dur':'21s',opacity:0.90,filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
+          <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-blush.png" alt="" className="footer-bloom"
+            style={{position:'absolute',right:150,bottom:-18,width:212,height:'auto',
+              '--rot':'6deg','--dur':'24s',opacity:0.92,filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
+          <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-anemone.png" alt="" className="footer-bloom"
+            style={{position:'absolute',right:268,bottom:28,width:175,height:'auto',
+              '--rot':'10deg','--dur':'23s',opacity:0.88,filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
+          <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-pink.png" alt="" className="footer-bloom"
+            style={{position:'absolute',right:58,bottom:-40,width:196,height:'auto',
+              '--rot':'-4deg','--dur':'19s',opacity:0.95,filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
+        </div>
 
         <section style={{position:'relative',zIndex:1}}>
           <SectionLabel title="Selected work"/>
