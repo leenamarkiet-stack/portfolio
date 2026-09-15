@@ -374,6 +374,7 @@ const DEFAULT_PROJECTS = [
   {id:"p6",title:"Workshops in a box",client:"Self-initiated",role:"Designer & Facilitator",year:"2023",tags:["Service Design","Facilitation","Toolkit"],description:"Open-source toolkit for journey-mapping workshops, used by 600+ teams.",cover:{hue:340,label:"Workshop toolkit",imageUrl:""}},
   {id:"p7",title:"Voice-first elderly care",client:"Hoiva Co.",role:"Service & UX Designer",year:"2022",tags:["Service Design","Voice UI","Accessibility"],description:"Voice companion piloted with 80 residents across three care homes.",cover:{hue:240,label:"Voice care",imageUrl:""}},
   {id:"p8",title:"Restaurant ops dashboard",client:"Kitchn",role:"UI Designer",year:"2022",tags:["UX/UI","B2B","Data"],description:"Dense, glanceable dashboard for restaurant managers running multi-site ops.",cover:{hue:120,label:"Ops dashboard",imageUrl:""}},
+  {id:"p9",title:"Development of a card game to support dialogue training",client:"Association of Rural Culture and Education (MSL)",role:"Educational & Service Designer",year:"2022",tags:["Service Design","Facilitation","Toolkit"],description:"A card-based toolkit that compressed Sitra's Time Out dialogue method into a 2–3 hour training session.",cover:{hue:140,label:"Dialogue toolkit",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png"}}
 ];
 
 function loadData() {
@@ -608,7 +609,7 @@ function Card({p,idx,dragProps}) {
       <div style={{position:'relative',aspectRatio:'4/3',background:COVERS[idx%COVERS.length],overflow:'hidden'}}>
         {p.cover && p.cover.imageUrl
           ? <img src={p.cover.imageUrl} alt={p.cover.label||p.title}
-              style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/>
+              style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'contain'}}/>
           : <>
               <div aria-hidden style={{position:'absolute',inset:0,
                 backgroundImage:`repeating-linear-gradient(135deg,${P.paper}22 0 12px,transparent 12px 24px)`}}/>

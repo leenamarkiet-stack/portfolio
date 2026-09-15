@@ -51,10 +51,12 @@
 
   /* Hero image (optional) */
   .hero-img-wrap { padding: 0 64px; }
-  .hero-img { aspect-ratio: 16/6; max-height: 360px; width:100%;
+  /* contain, not cover: hero art is often a transparent PNG that should be shown
+     whole, with the page fill visible behind it rather than cropped to a band. */
+  .hero-img { aspect-ratio: 16/7; max-height: 420px; width:100%;
     border-radius: 0 0 8px 8px; overflow:hidden;
     border:1px solid rgba(0,0,0,0.06); border-top:none; cursor:zoom-in; }
-  .hero-img img { width:100%; height:100%; object-fit:cover; }
+  .hero-img img { width:100%; height:100%; object-fit:contain; }
 
   /* Body */
   .body { padding: 56px 64px 80px; }
@@ -68,7 +70,7 @@
   .section-h2 { font-family:'Playfair Display',Georgia,serif; font-weight:400;
     font-size:28px; letter-spacing:-0.01em; margin:0; color: var(--ink); }
   .section-body { font-size:15px; line-height:1.65; color:#3A332C; max-width:640px;
-    margin: 0 0 18px; }
+    margin: 0 0 18px; white-space: pre-wrap; }
 
   /* Layouts */
   .layout-media { display:grid; gap:28px; align-items:start; }
@@ -241,6 +243,7 @@ const DEFAULT_PROJECTS = [
     {heading:"Synthesis",body:"How insights became opportunities.",layout:"media-left",images:[{label:"Opportunity map",url:""},{label:"Workshop output",url:""}]},
     {heading:"Design & Delivery",body:"What shipped.",layout:"media-left",images:[{label:"Final UI 01",url:""},{label:"Final UI 02",url:""}]},
    ]}},
+  {id:"p9",title:"Development of a card game to support dialogue training",client:"Association of Rural Culture and Education (MSL)",role:"Educational & Service Designer",year:"2022",tags:["Service Design","Facilitation","Toolkit"],description:"A card-based toolkit that compressed Sitra's Time Out dialogue method into a 2–3 hour training session.",cover:{hue:140,label:"Dialogue toolkit",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png"},caseStudy:{overview:"At the Association of Rural Culture and Education we trained member organisations in dialogue skills using the Time Out method developed by The Finnish Innovation Fund Sitra. The method worked, but it took longer than organisations had, and the practice sessions were too comfortable to prepare anyone for a real room.",team:"",duration:"",heroImage:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png",sections:[{heading:"The challenge",body:"• In practice sessions, participants tended to share similar backgrounds, ideologies or life situations. The discussion scenarios did not reflect real-life situations, so facilitation was never rehearsed in a sufficiently challenging atmosphere.\n\n• The key contents of Time Out needed to fit into roughly 2–3 hours, the average time organisations had available.\n\n• The training needed to be more lightweight overall.",layout:"text-only",images:[]},{heading:"What was designed",body:"• Game modes for building good dialogue, including monitoring and analysing discussion dynamics.\n\n• Facilitator's guide cards for steering the discussion, holding the key content of Time Out dialogue in a concise form.\n\n• Conversation style cards: green cards for building good dialogue, red cards for creating friction and challenge, specifically to support facilitation practice.\n\n• Citizen cards, bringing more diversity into the discussion and letting participants understand and present the perspectives that arise from people's backgrounds or values.\n\n• Role cards to shift mindset, prompting a more comprehensive examination of the topic and disrupting the traditional discussion dynamics of established groups such as a board of directors.",layout:"text-only",images:[]}]}}
 ];
 
 function loadData() {
