@@ -92,11 +92,14 @@
   .layout-media { display:grid; gap:28px; align-items:start; }
   .layout-media-left  { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
   .layout-media-right { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
-  .main-image-wrap { position:relative; aspect-ratio: 4/3; max-height: 380px;
+  /* No fixed aspect: case study art ranges from tall phone mock-ups to wide
+     tables, and a fixed frame letterboxes one or the other. */
+  .main-image-wrap { position:relative; max-height: 440px;
     border-radius:8px; overflow:hidden; border:1px solid rgba(0,0,0,0.08);
     background:var(--paper); cursor:zoom-in; transition: transform .2s ease; }
   .main-image-wrap:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -16px rgba(0,0,0,0.3); }
-  .main-image-wrap img { width:100%; height:100%; object-fit:contain; }
+  .main-image-wrap img { display:block; width:100%; height:auto;
+    max-height:440px; object-fit:contain; }
   .main-image-cap { font-size:11px; color: var(--forest); margin-top:6px;
     letter-spacing:0.04em; }
 
