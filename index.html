@@ -336,7 +336,7 @@ function tagColor(tag){
 const DEFAULT_BIO = {
   name:"Leena Markiet", role:"Service Designer & UX/UI",
   location:"Abu Dhabi, United Arab Emirates",
-  email:"leena@markiet.studo", photoUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/leena-profile-photo.png?v=7",
+  email:"leena@markiet.studo", photoUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/leena-profile-photo.png?v=8",
   status:"Available for projects, summer 2026",
   paragraph:"I am a Service Designer and Senior UX/UI Designer with experience designing complex enterprise and government software products, digital services, and customer experiences. My background combines service design, UX, business analysis, and stakeholder facilitation, enabling me to bridge business strategy, technical implementation, and user needs throughout the product lifecycle.\n\nI specialize in transforming complex business challenges into intuitive, scalable digital solutions. By combining systems thinking with user-centred design, I consider the broader service ecosystem—including users, workflows, business objectives, and technical constraints—to create experiences that are both highly usable and aligned with organizational goals.",
   socials:[{label:"LinkedIn",url:"#"},{label:"Read.cv",url:"#"}],
@@ -552,7 +552,7 @@ function SectionLabel({title,hint}) {
   return (
     <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:24,gap:16}}>
       <h2 style={{fontFamily:SERIF,fontWeight:400,fontSize:32,margin:0,letterSpacing:'-0.01em',
-        background:'linear-gradient(90deg,#C97A3D,#A15920,#6B3A14)',
+        background:'linear-gradient(90deg,#7C8C6E,#546B41,#33452A)',
         WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent'}}>{title}</h2>
       {hint&&<span style={{fontSize:10,letterSpacing:'0.1em',color:P.forest,textTransform:'uppercase',whiteSpace:'nowrap'}}>{hint}</span>}
     </div>
@@ -800,7 +800,7 @@ function Portfolio() {
                       alt={bio.name} className="signature-img"
                       style={{display:'block',height:84,width:'auto'}}/>
                     <em className="role-em" style={{display:'block',lineHeight:1,fontFamily:'"Lora",Georgia,serif',fontStyle:'normal',fontWeight:500,fontSize:'0.55em',
-                      background:'linear-gradient(90deg,#C97A3D,#A15920,#6B3A14)',
+                      background:'linear-gradient(90deg,#7C8C6E,#546B41,#33452A)',
                       WebkitBackgroundClip:'text',backgroundClip:'text',WebkitTextFillColor:'transparent'}}>
                       {formatRole(bio.role)}
                     </em>
