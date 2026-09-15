@@ -31,7 +31,7 @@
     letter-spacing:0.1em; text-transform:uppercase; }
   .hd a:hover { color: var(--ink); }
 
-  .container { max-width: 1080px; margin: 0 auto; }
+  .container { max-width: 1240px; margin: 0 auto; }
 
   /* Hero */
   .hero { padding:48px 64px 36px;
@@ -90,23 +90,23 @@
 
   /* Layouts */
   .layout-media { display:grid; gap:28px; align-items:start; }
-  .layout-media-left  { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
-  .layout-media-right { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
+  .layout-media-left  { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr); }
+  .layout-media-right { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.25fr); }
   /* No fixed aspect: case study art ranges from tall phone mock-ups to wide
      tables, and a fixed frame letterboxes one or the other. */
-  .main-image-wrap { position:relative; max-height: 440px;
+  .main-image-wrap { position:relative; max-height: 620px;
     border-radius:8px; overflow:hidden; border:1px solid rgba(0,0,0,0.08);
     background:var(--plate, var(--paper)); cursor:zoom-in; transition: transform .2s ease; }
   .main-image-wrap:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -16px rgba(0,0,0,0.3); }
   .main-image-wrap img { display:block; width:100%; height:auto;
-    max-height:440px; object-fit:contain; }
+    max-height:620px; object-fit:contain; }
   .main-image-cap { font-size:11px; color: var(--forest); margin-top:6px;
     letter-spacing:0.04em; }
 
   /* Smaller image grid */
   .extra-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top: 24px; }
   .extra-item { display:flex; flex-direction:column; gap:6px; }
-  .extra-thumb { aspect-ratio: 4/3; max-height: 180px; border-radius:6px; overflow:hidden;
+  .extra-thumb { aspect-ratio: 4/3; max-height: 240px; border-radius:6px; overflow:hidden;
     border:1px solid rgba(0,0,0,0.08); background:var(--plate, var(--paper));
     cursor:zoom-in; transition: transform .2s ease; }
   .extra-thumb:hover { transform: translateY(-2px); box-shadow: 0 10px 22px -14px rgba(0,0,0,0.3); }
@@ -165,7 +165,7 @@
   .lb { position:fixed; inset:0; background: rgba(0,0,0,0.92); z-index:9999;
     display:none; align-items:center; justify-content:center; padding:24px; cursor:zoom-out; }
   .lb.show { display:flex; }
-  .lb img { max-width:95vw; max-height:90vh; border-radius:6px; }
+  .lb img { width:96vw; height:92vh; object-fit:contain; border-radius:6px; }
   .lb-cap { position:absolute; bottom:18px; left:50%; transform:translateX(-50%);
     color:#fff; font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
     background: rgba(255,255,255,0.1); padding:6px 12px; border-radius:999px; }
