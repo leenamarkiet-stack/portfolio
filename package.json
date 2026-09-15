@@ -1,0 +1,20 @@
+{
+  "name": "leena-markiet-portfolio",
+  "version": "1.0.0",
+  "description": "Private source for leenamarkiet.github.io portfolio",
+  "main": "config.js",
+  "scripts": {
+    "build": "./build.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "staticrypt": "^3.5.4"
+  },
+  "private": true
+}

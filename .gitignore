@@ -1,0 +1,4 @@
+node_modules/
+dist/
+encrypted/
+.staticrypt.json
