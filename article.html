@@ -96,7 +96,7 @@
      tables, and a fixed frame letterboxes one or the other. */
   .main-image-wrap { position:relative; max-height: 440px;
     border-radius:8px; overflow:hidden; border:1px solid rgba(0,0,0,0.08);
-    background:var(--paper); cursor:zoom-in; transition: transform .2s ease; }
+    background:var(--plate, var(--paper)); cursor:zoom-in; transition: transform .2s ease; }
   .main-image-wrap:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -16px rgba(0,0,0,0.3); }
   .main-image-wrap img { display:block; width:100%; height:auto;
     max-height:440px; object-fit:contain; }
@@ -107,7 +107,7 @@
   .extra-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top: 24px; }
   .extra-item { display:flex; flex-direction:column; gap:6px; }
   .extra-thumb { aspect-ratio: 4/3; max-height: 180px; border-radius:6px; overflow:hidden;
-    border:1px solid rgba(0,0,0,0.08); background:var(--paper);
+    border:1px solid rgba(0,0,0,0.08); background:var(--plate, var(--paper));
     cursor:zoom-in; transition: transform .2s ease; }
   .extra-thumb:hover { transform: translateY(-2px); box-shadow: 0 10px 22px -14px rgba(0,0,0,0.3); }
   .extra-thumb img { width:100%; height:100%; object-fit:contain; }
@@ -298,6 +298,18 @@ const bioEmail = (data && data.bio && data.bio.email) || 'leena@markiet.studo';
 document.title = `${project.title} — Leena Markiet`;
 const hue = (project.cover && project.cover.hue) || 18;
 
+// Pale washes sampled from the page's flowers, used as the plate behind case
+// study art. They show through transparent PNGs and fill any gap a contained
+// image leaves, so a screenshot never sits on a bare white rectangle.
+const PLATES = [
+  'linear-gradient(135deg,#FDF8EA,#F8F1DE)',  // poppy
+  'linear-gradient(135deg,#F3F6FC,#E9EFFA)',  // forget-me-not
+  'linear-gradient(135deg,#FCF4F7,#F7EAEF)',  // pink
+  'linear-gradient(135deg,#F6F8EF,#EDF1E2)',  // stem sage
+  'linear-gradient(135deg,#FAF6F0,#F4ECE1)',  // anemone
+  'linear-gradient(135deg,#F7F5FD,#EFEBF9)',  // lilac
+];
+
 function renderBody(text) {
   const blocks = String(text).split(/\n\s*\n/).filter(b => b.trim());
   let html = '';
@@ -345,7 +357,7 @@ function renderSection(sec, i) {
   if (layout === 'gallery') {
     const items = imgs.map((im, j) => `
       <div>
-        <div class="extra-thumb">${imgOrPh(im.url, im.label, hue + j*22)}</div>
+        <div class="extra-thumb" style="--plate:${PLATES[(i + j + 1) % PLATES.length]}">${imgOrPh(im.url, im.label, hue + j*22)}</div>
         ${im.label ? `<div class="extra-cap" style="margin-top:6px;">${escapeHtml(im.label)}</div>` : ''}
       </div>`).join('');
     return `<section class="section">${headHTML}${bodyHTML}
@@ -355,7 +367,7 @@ function renderSection(sec, i) {
   // media-left or media-right
   const mainHTML = main ? `
     <div>
-      <div class="main-image-wrap">${imgOrPh(main.url, main.label, hue)}</div>
+      <div class="main-image-wrap" style="--plate:${PLATES[i % PLATES.length]}">${imgOrPh(main.url, main.label, hue)}</div>
       ${main.label ? `<div class="main-image-cap">${escapeHtml(main.label)}</div>` : ''}
     </div>` : '';
 
@@ -369,7 +381,7 @@ function renderSection(sec, i) {
     <div class="extra-grid">
       ${extras.map((im, j) => `
         <div class="extra-item">
-          <div class="extra-thumb">${imgOrPh(im.url, im.label, hue + (j+1)*30)}</div>
+          <div class="extra-thumb" style="--plate:${PLATES[(i + j + 1) % PLATES.length]}">${imgOrPh(im.url, im.label, hue + (j+1)*30)}</div>
           ${im.label ? `<div class="extra-cap">${escapeHtml(im.label)}</div>` : ''}
         </div>`).join('')}
     </div>` : '';
