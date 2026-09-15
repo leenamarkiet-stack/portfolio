@@ -430,10 +430,12 @@ function useInView(options) {
   return [ref, visible];
 }
 
-function Reveal({children, delay = 0, as: Tag = 'div', className = '', style = {}}) {
+// ...rest is forwarded so callers can attach handlers and ARIA attributes to the
+// revealed element; without it those props were silently dropped.
+function Reveal({children, delay = 0, as: Tag = 'div', className = '', style = {}, ...rest}) {
   const [ref, visible] = useInView();
   return (
-    <Tag ref={ref} className={`reveal ${visible ? 'reveal-visible' : ''} ${className}`}
+    <Tag ref={ref} {...rest} className={`reveal ${visible ? 'reveal-visible' : ''} ${className}`}
       style={{...style, transitionDelay: visible ? `${delay}ms` : '0ms'}}>
       {children}
     </Tag>
@@ -753,6 +755,20 @@ function Portfolio() {
   const {bio,skills,headerButtons,experience,projects}=loadData();
   const {items,dragProps}=useReorderable(projects,'portfolio-v1-order');
   const [expanded, setExpanded] = React.useState(false);
+  // Toolkit badges double as filters for the project grid. Tags and skills are
+  // not written identically ("Facilitation" vs "Workshop Facilitation"), so a
+  // badge matches when either string contains the other.
+  const [activeSkill, setActiveSkill] = React.useState(null);
+  const skillMatches = React.useCallback((skill, p) => {
+    const a = String(skill).toLowerCase();
+    return (p.tags||[]).some(t => {
+      const b = String(t).toLowerCase();
+      return a === b || a.includes(b) || b.includes(a);
+    });
+  }, []);
+  const countFor = React.useCallback(
+    (skill) => (projects||[]).filter(p => skillMatches(skill, p)).length,
+    [projects, skillMatches]);
   const heroPadRef = React.useRef(null);
   const compactRef = React.useRef(null);
   const fullRef    = React.useRef(null);
@@ -912,14 +928,37 @@ function Portfolio() {
         <section style={{marginBottom:64}}>
           <SectionLabel title="Toolkit"/>
           <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
-            {(skills||[]).map((s,i)=><Reveal key={s} as="span" delay={i*90} style={{
-              fontSize:11,fontWeight:500,letterSpacing:'0.04em',
-              padding:'7px 12px',borderRadius:999,whiteSpace:'nowrap',
-              color:P.ink,
-              background:'linear-gradient(135deg,#F1EAFE 0%,#F9F8FF 100%)',
-              border:'1px solid #F9F8FF',
-              boxShadow:'0 4px 10px -4px #F9F8FF66',
-            }}>{s}</Reveal>)}
+            {(skills||[]).map((s,i)=>{
+              const n = countFor(s);
+              const on = activeSkill === s;
+              // A badge with nothing behind it would filter to an empty grid,
+              // so it stays visible but reads as unavailable.
+              const dim = n === 0;
+              return <Reveal key={s} as="span" delay={i*90}
+                role={dim ? undefined : 'button'}
+                tabIndex={dim ? undefined : 0}
+                aria-pressed={dim ? undefined : on}
+                title={dim ? 'No projects tagged with this yet'
+                           : (on ? 'Show all projects' : `Show ${n} project${n===1?'':'s'}`)}
+                onClick={dim ? undefined : ()=>setActiveSkill(on ? null : s)}
+                onKeyDown={dim ? undefined : (e)=>{
+                  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveSkill(on ? null : s); }
+                }}
+                style={{
+                fontSize:11,fontWeight:500,letterSpacing:'0.04em',
+                padding:'7px 12px',borderRadius:999,whiteSpace:'nowrap',
+                color: on ? P.paper : P.ink,
+                opacity: dim ? 0.45 : 1,
+                cursor: dim ? 'default' : 'pointer',
+                background: on
+                  ? 'linear-gradient(135deg,#7C8C6E 0%,#546B41 100%)'
+                  : 'linear-gradient(135deg,#F1EAFE 0%,#F9F8FF 100%)',
+                border: on ? '1px solid #546B41' : '1px solid #F9F8FF',
+                boxShadow: on ? '0 6px 14px -6px rgba(84,107,65,0.5)' : '0 4px 10px -4px #F9F8FF66',
+                transition:'background .15s, color .15s, box-shadow .15s',
+                userSelect:'none',
+              }}>{s}</Reveal>;
+            })}
           </div>
         </section>
 
@@ -958,8 +997,21 @@ function Portfolio() {
 
         <section style={{position:'relative',zIndex:1}}>
           <SectionLabel title="Selected work"/>
+          {activeSkill && (
+            <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:14,
+              fontSize:12,color:P.forest}}>
+              <span>Filtered by <strong style={{fontWeight:600}}>{activeSkill}</strong></span>
+              <button onClick={()=>setActiveSkill(null)}
+                style={{fontFamily:'inherit',fontSize:11,letterSpacing:'0.04em',
+                  padding:'4px 10px',borderRadius:999,cursor:'pointer',
+                  color:P.forest,background:'transparent',
+                  border:`1px solid ${P.forest}55`}}>
+                Clear ×
+              </button>
+            </div>
+          )}
           <div className="grid-4">
-            {items.map((p,idx)=>(
+            {items.filter(p => !activeSkill || skillMatches(activeSkill, p)).map((p,idx)=>(
               <Reveal key={p.id} delay={idx*140}>
                 <Card p={p} idx={idx} dragProps={dragProps(p.id)}/>
               </Reveal>
