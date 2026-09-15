@@ -11,7 +11,7 @@
 <style>
   /* A touch lighter than the front page: case studies are long reads, and the
      text sits on this ground for much longer. */
-  :root { --cream:#FBF4E9; --yellowBloom:#FDF7E1; --tanBloom:#F9EEDF;
+  :root { --cream:#FDFAF5; --yellowBloom:#FEFBEF; --tanBloom:#FCF5EC;
     --lilac:#E9E6F8; --stem:#7C8C6E; --stemDeep:#546B41; --stemDark:#33452A;
     --sage:#C3CC9B; --forest:#546B41; --ink:#1F1A14; --paper:#FFFAF0; }
   *,*::before,*::after { box-sizing: border-box; }
@@ -26,7 +26,7 @@
 
   /* Header */
   .hd { padding:14px 48px; position:sticky; top:0; z-index:100;
-    background:rgba(251,244,233,0.92); backdrop-filter:blur(8px);
+    background:rgba(253,250,245,0.92); backdrop-filter:blur(8px);
     border-bottom:1px solid rgba(0,0,0,0.08);
     display:flex; justify-content:space-between; align-items:center; gap:12px; }
   .hd a { color: var(--forest); text-decoration:none; font-size:11px;
@@ -50,8 +50,10 @@
   .hero-inner.no-art { grid-template-columns: 1fr; }
   .hero-inner .hero-content { max-width:none; }
   .hero-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
-  .hero-tag { font-size:11px; padding:4px 10px; border-radius:999px;
-    background:rgba(255,250,240,0.85); color: var(--ink); font-weight:500; }
+  .hero-tag { font-size:11px; padding:5px 12px; border-radius:999px;
+    background:linear-gradient(135deg,#F1EAFE 0%,#F9F8FF 100%);
+    border:1px solid #F9F8FF; box-shadow:0 4px 10px -4px #F9F8FF66;
+    color: var(--ink); font-weight:500; letter-spacing:0.04em; }
   .hero-h1 { font-family:'Playfair Display',Georgia,serif; font-weight:400;
     font-size:52px; line-height:1.05; letter-spacing:-0.02em; margin:0; color: var(--ink); }
   .hero-overview { margin:18px 0 0; font-size:16px; line-height:1.55; color: var(--ink); max-width:640px; }
