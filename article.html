@@ -9,7 +9,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap">
 <script src="config.js"></script>
 <style>
-  :root { --cream:#F7EBDC; --yellowBloom:#FBEFC6; --tanBloom:#F5E1C3;
+  /* A touch lighter than the front page: case studies are long reads, and the
+     text sits on this ground for much longer. */
+  :root { --cream:#FBF4E9; --yellowBloom:#FDF7E1; --tanBloom:#F9EEDF;
     --lilac:#E9E6F8; --stem:#7C8C6E; --stemDeep:#546B41; --stemDark:#33452A;
     --sage:#C3CC9B; --forest:#546B41; --ink:#1F1A14; --paper:#FFFAF0; }
   *,*::before,*::after { box-sizing: border-box; }
@@ -24,7 +26,7 @@
 
   /* Header */
   .hd { padding:14px 48px; position:sticky; top:0; z-index:100;
-    background:rgba(247,235,220,0.92); backdrop-filter:blur(8px);
+    background:rgba(251,244,233,0.92); backdrop-filter:blur(8px);
     border-bottom:1px solid rgba(0,0,0,0.08);
     display:flex; justify-content:space-between; align-items:center; gap:12px; }
   .hd a { color: var(--forest); text-decoration:none; font-size:11px;
@@ -520,7 +522,6 @@ document.getElementById('root').innerHTML = `
     ${sectionsHTML}
     <div class="outro">
       <span class="outro-end">End of case study</span>
-      <a class="cta" href="mailto:${escapeHtml(bioEmail)}">Talk about a project like this →</a>
     </div>
     ${relatedHTML}
   </div>
