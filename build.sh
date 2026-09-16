@@ -26,6 +26,11 @@ mkdir -p "$OUT"
 # Assets the pages reference, plus the published settings file.
 cp ./*.png "$OUT"/
 cp ./*.pdf "$OUT"/
+# SVG so animated artwork (e.g. the ASDS loading animation) reaches the site;
+# nullglob keeps the build working while none exist.
+shopt -s nullglob
+svgs=(./*.svg); [ ${#svgs[@]} -gt 0 ] && cp "${svgs[@]}" "$OUT"/
+shopt -u nullglob
 cp config.js "$OUT"/
 
 # Strip the absolute source-repo URLs (and their cache-busting query strings,
