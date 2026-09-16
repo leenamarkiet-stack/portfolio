@@ -18,7 +18,8 @@
   ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg,#C79E2F,#A67F24); }
   ::-webkit-scrollbar-corner { background: #F3E4CE; }
 
-  html, body { margin: 0; padding: 0; background: #FFEDCE; font-family: Inter, sans-serif; }
+  html, body { margin: 0; padding: 0; background: #FFEDCE; font-family: Inter, sans-serif;
+    overflow-x: hidden; }
   *, *::before, *::after { box-sizing: border-box; }
   @keyframes blob1 {
     0%   { transform: translate(0, 0) scale(1); }
@@ -150,12 +151,19 @@
   @media (max-width: 900px) {
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
   }
+  /* Experience moves below the work on phones. The timeline sits in the hero
+     grid and the projects sit in a different container, so CSS ordering cannot
+     reach across them; the block is rendered once per breakpoint and only one
+     is ever displayed. */
+  .mobile-experience { display: none; }
   @media (max-width: 720px) {
+    .hero-timeline { display: none; }
+    .mobile-experience { display: block; }
     .content-pad { padding: 16px 20px 150px; }
     .hero-grid { grid-template-columns: 1fr; gap: 24px; }
     .hero-photo { width: 140px !important; height: 168px !important; }
     .name-h1 { font-size: 44px !important; }
-    .signature-img { width: 420px !important; height: auto !important; }
+    .signature-img { width: 100% !important; max-width: 420px !important; height: auto !important; }
     .meta-bar { flex-direction: column; align-items: flex-start !important; gap: 8px; }
     .footer-bar { flex-direction: column; gap: 12px; align-items: flex-start !important; }
     .bio-narrow-spacer { display: none; }
@@ -169,7 +177,7 @@
   @media (max-width: 480px) {
     .grid-4 { grid-template-columns: 1fr; }
     .name-h1 { font-size: 36px !important; }
-    .signature-img { width: 300px !important; height: auto !important; }
+    .signature-img { width: 100% !important; max-width: 300px !important; height: auto !important; }
   }
 
   /* Hero slide stage: screen 1 (original hero) and screen 2 (full timeline) */
@@ -289,7 +297,13 @@
   .exp-card-mini.is-study .exp-card-logo { background: #DCD4F6; color: #3B3270; }
   .exp-card-mini.is-study .exp-card-title { color: #3B3270; }
   .exp-dot.is-study { background: #BCB4EC; box-shadow: 0 0 0 3px rgba(188,180,236,0.35); }
-  .exp-card-head { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+  .exp-card-dates { display: none; }
+  @media (max-width: 720px) {
+    .exp-card-dates { display: block; font-size: 11px; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--forest, #546B41); margin-top: 2px; }
+    .exp-card-mini.is-study .exp-card-dates { color: #6A5FA8; }
+  }
+  .exp-card-head { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 8px; }
   .exp-card-logo { width: 30px; height: 30px; border-radius: 7px; overflow: hidden;
     background: #F1EAFE;
     display: flex; align-items: center; justify-content: center;
@@ -785,6 +799,7 @@ function TimelineGrid({experience, refTo}) {
             </div>
             <div style={{minWidth:0,flex:1}}>
               <div className="exp-card-co">{x.company||'Company'}</div>
+              <div className="exp-card-dates">{yearLabelFor(x)}</div>
             </div>
           </div>
           <div className="exp-card-title">{x.title||''}</div>
@@ -1072,6 +1087,13 @@ function Portfolio() {
             ))}
           </div>
         </section>
+
+        {hasExp && (
+          <section className="mobile-experience" style={{position:'relative',zIndex:1,marginTop:56}}>
+            <SectionLabel title="Experience"/>
+            <TimelineGrid experience={experience}/>
+          </section>
+        )}
 
         <footer className="footer-bar" style={{marginTop:96,paddingTop:24,borderTop:`1px solid ${P.ink}22`,
           position:'relative',zIndex:1,
