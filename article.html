@@ -114,17 +114,20 @@
      belongs to: text sections keep one gap between them, figures keep one gap
      between them, and the art starts at the top of the page rather than
      wherever the first illustrated section happens to begin. */
-  .body-rails { display:grid; gap:28px; align-items:start;
+  .body-rails { display:grid; gap:56px; align-items:start;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   /* A study with no section art has no rail to balance against, but letting the
      prose run the full container width gives it a measure twice as long as
      every other case study. Cap it instead. */
   .body-rails.no-media { grid-template-columns: minmax(0, 680px); }
+  @media (max-width: 1080px) { .body-rails { gap: 36px; } }
   .text-rail > .section:last-child { margin-bottom: 0; }
   /* A table shrinks to its content, so the figure is exactly as wide as the
      image and the caption wraps to that width instead of the rail. */
   .media-fig { display: table; max-width: 100%; }
-  .media-rail > .media-fig { margin-bottom: 26px; }
+  /* One vertical rhythm for the page: the gap between figures is the same 44px
+     that separates two text sections, so the rails read as one grid. */
+  .media-rail > .media-fig { margin-bottom: 44px; }
   .media-rail > .media-fig:last-child { margin-bottom: 0; }
   /* When a study carries more art than prose, the surplus figures come off the
      bottom of the rail and pair up side by side under both columns, rather than
@@ -600,7 +603,10 @@ document.getElementById('root').innerHTML = `
 // to shorten the stack without shrinking the art or inventing copy. On a narrow
 // screen the rails become one column, so each figure folds back into the section
 // it illustrates rather than collecting at the foot of the page.
-const MOBILE_RAILS = window.matchMedia('(max-width: 720px)');
+// Must match the breakpoint where the CSS collapses .body-rails to one column,
+// or between the two widths the figures stay in a rail that is now stacked under
+// the prose — every image at the foot of the page.
+const MOBILE_RAILS = window.matchMedia('(max-width: 760px)');
 const RAIL_OVERHANG = 360;
 
 function railElements() {
