@@ -9,6 +9,15 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,800;1,400&family=Manrope:wght@400;700&family=Fredoka:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap">
 <script src="config.js"></script>
 <style>
+  /* Scrollbars in the page palette rather than the browser default white. */
+  * { scrollbar-width: thin; scrollbar-color: #C9A227 #F3E4CE; }
+  ::-webkit-scrollbar { width: 11px; height: 11px; }
+  ::-webkit-scrollbar-track { background: #F3E4CE; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg,#D4AF37,#B8902B);
+    border-radius: 999px; border: 2px solid #F3E4CE; }
+  ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg,#C79E2F,#A67F24); }
+  ::-webkit-scrollbar-corner { background: #F3E4CE; }
+
   html, body { margin: 0; padding: 0; background: #FFEDCE; font-family: Inter, sans-serif; }
   *, *::before, *::after { box-sizing: border-box; }
   @keyframes blob1 {
@@ -357,7 +366,7 @@ const DEFAULT_BIO = {
 const DEFAULT_SKILLS = ["Service Design","Journey Mapping","Workshop Facilitation","UX Research","UI Design","Digital Twins","Vibecoding","Figma","Stakeholder Management"];
 const DEFAULT_HEADER_BUTTONS = [
   { label:"Download CV", url:"leena-markiet-cv.pdf", primary:false },
-  { label:"LinkedIn", url:"#", primary:false },
+  { label:"LinkedIn", url:"https://www.linkedin.com/in/leenamarkiet", primary:false },
 ];
 const DEFAULT_EXPERIENCE = [
   { logoUrl:"", company:"Space42", title:"Senior UX/UI Designer", startMonth:8, startYear:2024, endMonth:0, endYear:0, current:true, description:"Experience strategy and product design for complex, data-driven government and enterprise platforms \u2014 real-time data, analytics, digital twins and AI-driven insights." },
@@ -578,8 +587,8 @@ function GradBtn({href,primary,download,children}) {
   return <a {...link} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
     style={{...base,
     background:hov
-      ? 'linear-gradient(135deg,rgba(255,255,255,0.32),rgba(255,255,255,0.16))'
-      : 'linear-gradient(135deg,rgba(255,255,255,0.22),rgba(255,255,255,0.10))',
+      ? 'linear-gradient(135deg,rgba(255,255,255,0.58),rgba(255,255,255,0.36))'
+      : 'linear-gradient(135deg,rgba(255,255,255,0.44),rgba(255,255,255,0.26))',
     color:'#3A4B2D',border:'1px solid rgba(255,255,255,0.92)'}}>{children}</a>;
 }
 
@@ -966,14 +975,14 @@ function Portfolio() {
                 style={{
                 fontSize:11,fontWeight: on ? 600 : 500,letterSpacing:'0.04em',
                 padding:'7px 12px',borderRadius:999,whiteSpace:'nowrap',
-                color: on ? '#2E2558' : P.ink,
+                color: on ? P.paper : P.ink,
                 opacity: dim ? 0.45 : 1,
                 cursor: dim ? 'default' : 'pointer',
                 background: on
-                  ? 'linear-gradient(135deg,#C3B8F3 0%,#A599E9 100%)'
+                  ? 'linear-gradient(135deg,#7260D0 0%,#5B49BE 100%)'
                   : 'linear-gradient(135deg,#F1EAFE 0%,#F9F8FF 100%)',
-                border: on ? '1px solid #8F80E4' : '1px solid #F9F8FF',
-                boxShadow: on ? '0 6px 14px -6px rgba(143,128,228,0.55)' : '0 4px 10px -4px #F9F8FF66',
+                border: on ? '1px solid rgba(255,255,255,0.92)' : '1px solid #F9F8FF',
+                boxShadow: on ? '0 6px 14px -6px rgba(91,73,190,0.50)' : '0 4px 10px -4px #F9F8FF66',
                 transition:'background .15s, color .15s, box-shadow .15s',
                 userSelect:'none',
               }}>{s}</Reveal>;

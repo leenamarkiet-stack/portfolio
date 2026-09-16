@@ -61,6 +61,7 @@ for f in index.html article.html admin.html; do
 done
 
 npx staticrypt "$OUT/index.html" "$OUT/article.html" \
+  --template staticrypt-template.html \
   --password "$STATICRYPT_PASSWORD" \
   --short \
   --remember 30 \
