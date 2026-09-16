@@ -211,14 +211,14 @@
   .exp-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
     color: #3A4B2D; opacity: 1; font-weight: 600; }
   .exp-toggle {
-    background: linear-gradient(135deg,rgba(255,255,255,0.10),rgba(255,255,255,0.04));
+    background: linear-gradient(135deg,rgba(255,255,255,0.44),rgba(255,255,255,0.26));
     border: 1px solid rgba(255,255,255,0.92); border-radius: 999px;
     padding: 5px 11px; font-size: 11px; font-weight: 500; letter-spacing: normal;
     text-transform: none; color: #3A4B2D;
     cursor: pointer; font-family: Inter, sans-serif;
     transition: transform .15s, background .15s;
   }
-  .exp-toggle:hover { background: linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.08));
+  .exp-toggle:hover { background: linear-gradient(135deg,rgba(255,255,255,0.58),rgba(255,255,255,0.36));
     transform: translateY(-1px); }
 
   /* Grid-based timeline: cards row, markers row, years row.
@@ -307,7 +307,7 @@
     width: 10px; height: 10px; border-radius: 50%; background: #fff;
     box-shadow: 0 0 0 3px rgba(255,237,206,0.7);
   }
-  .exp-year-label {
+  .exp-year-label { white-space: nowrap;
     grid-row: 3; text-align: center;
     font-size: 10px; color: #3A4B2D;
     letter-spacing: 0.06em; text-transform: uppercase;
@@ -674,11 +674,20 @@ function Card({p,idx,dragProps}) {
   );
 }
 
+// The timeline label carries the span, not just the start: "Sep '18 - Dec '20".
+// A current role ends in "Now"; a single-month engagement collapses to one date.
 function yearLabelFor(x) {
-  if (x.current) return 'Now';
-  const m = MONTHS_SHORT[x.startMonth || 0];
-  const y = x.startYear || '';
-  return (m ? m + " '" : '') + (y ? String(y).slice(-2) : '');
+  const stamp = (m, y) => {
+    const mm = MONTHS_SHORT[m || 0];
+    const yy = y ? String(y).slice(-2) : '';
+    return (mm ? mm + " '" : '') + yy;
+  };
+  const from = stamp(x.startMonth, x.startYear);
+  if (x.current) return from ? from + ' \u2013 Now' : 'Now';
+  const to = stamp(x.endMonth, x.endYear);
+  if (!to) return from;
+  if (to === from) return from;
+  return from + ' \u2013 ' + to;
 }
 
 // Smooth wheel-to-horizontal scroll, bound to the timeline itself rather than
