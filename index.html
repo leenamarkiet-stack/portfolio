@@ -142,16 +142,31 @@
   .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
   .name-h1 { font-size: 76px; }
   @media (max-width: 1180px) {
-    .hero-grid { grid-template-columns: minmax(0, 1fr); }
+    .hero-flower-yellow { top: 300px !important; bottom: auto !important;
+      right: 8px !important; width: 190px !important; }
+    .hero-flower-dandelion { top: 330px !important; bottom: auto !important;
+      right: 190px !important; transform: rotate(90deg) scale(0.85) !important; }
+    .hero-grid { grid-template-columns: minmax(0, 1fr) 200px; }
     .hero-timeline, .bio-col { min-width: 0; }
-    .bio-col { grid-column: 1; grid-row: auto; }
-    .hero-photo { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 4px; }
+    .bio-col { grid-column: 1; grid-row: 1; }
+    .hero-photo { grid-column: 2; grid-row: 1; }
     .bio-bottom-wide { width: 100%; }
     .bio-narrow-spacer { display: none; }
-    .hero-timeline { grid-column: 1; grid-row: auto; margin-top: 32px; padding-left: 0; }
+    .hero-timeline { grid-column: 1 / -1; grid-row: auto; margin-top: 32px; padding-left: 0; }
+  }
+  /* Only the mobile layout stacks the photo under the text. */
+  @media (max-width: 720px) {
+    .hero-grid { grid-template-columns: minmax(0, 1fr); }
+    .bio-col { grid-column: 1; grid-row: auto; }
+    .hero-photo { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 4px; }
+    .hero-timeline { grid-column: 1; }
+  }
+  @media (max-width: 1200px) {
+    .grid-4 { grid-template-columns: repeat(3, 1fr); }
   }
   @media (max-width: 900px) {
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .exp-toggle { font-size: 10.5px; }
   }
   /* Experience moves below the work on phones. The timeline sits in the hero
      grid and the projects sit in a different container, so CSS ordering cannot
@@ -161,6 +176,7 @@
   @media (max-width: 720px) {
     .hero-timeline { display: none; }
     .hero-screen-timeline { display: none !important; }
+    .grid-4 { grid-template-columns: 1fr; }
     .mobile-experience { display: block; }
     .content-pad { padding: 16px 20px 150px; }
     .hero-grid { grid-template-columns: 1fr; gap: 24px; }
@@ -171,14 +187,14 @@
     .footer-bar { flex-direction: column; gap: 12px; align-items: flex-start !important; }
     .bio-narrow-spacer { display: none; }
     .hero-flower-yellow { width: 130px !important; }
-    .hero-flower-pansy { width: 110px !important; }
+    .hero-flower-dandelion { display: none !important; }
+    .hero-flower-pansy { width: 190px !important; top: -26px !important; left: -34px !important; }
     .hero-flower-dandelion { transform: rotate(90deg) scale(0.55) !important; }
     .footer-cluster { width: 320px !important; right: -50px !important; bottom: -40px !important; }
     .footer-cluster .footer-bloom { width: 150px !important; }
     .footer-bloom { width: 180px !important; }
   }
   @media (max-width: 480px) {
-    .grid-4 { grid-template-columns: 1fr; }
     .name-h1 { font-size: 36px !important; }
     .signature-img { width: 100% !important; max-width: 300px !important; height: auto !important; }
   }
