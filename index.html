@@ -186,8 +186,12 @@
     .meta-bar { flex-direction: column; align-items: flex-start !important; gap: 8px; }
     .footer-bar { flex-direction: column; gap: 12px; align-items: flex-start !important; }
     .bio-narrow-spacer { display: none; }
-    .hero-flower-yellow { width: 130px !important; }
-    .hero-flower-dandelion { display: none !important; }
+    .hero-photo { justify-self: center !important; position: relative; z-index: 2; }
+    .hero-flower-yellow { width: 176px !important; top: auto !important;
+      bottom: 10px !important; right: 148px !important; z-index: 1; }
+    .hero-flower-dandelion { display: block !important; top: auto !important;
+      bottom: 92px !important; right: auto !important; left: -34px !important;
+      transform: rotate(90deg) scale(0.44) !important; z-index: 1; }
     .hero-flower-pansy { width: 190px !important; top: -26px !important; left: -34px !important; }
     .hero-flower-dandelion { transform: rotate(90deg) scale(0.55) !important; }
     .footer-cluster { width: 320px !important; right: -50px !important; bottom: -40px !important; }
