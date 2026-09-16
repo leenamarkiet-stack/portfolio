@@ -103,6 +103,7 @@
   .section-list li { margin: 0 0 7px; padding-left: 2px; }
   .section-list li::marker { color: var(--stem); }
   .section-list li:last-child { margin-bottom: 0; }
+  .section-list strong { font-weight: 600; color: #2A241D; }
   .layout-media > div > .section-body:last-child,
   .layout-media > div > .section-list:last-child,
   .section > .section-body:last-child,
@@ -376,6 +377,22 @@ const PLATES = [
   'linear-gradient(135deg,#F7F5FD,#EFEBF9)',  // lilac
 ];
 
+// Most bullets open with a short claim and then explain it. Bolding that opener
+// makes a long list scannable — you can read just the leads and still follow the
+// argument. A bullet that is one short sentence is bolded whole.
+function bulletHTML(raw) {
+  const t = String(raw).trim();
+  const lead = (head, rest) => `<strong>${escapeHtml(head)}</strong>${escapeHtml(rest)}`;
+  if (t.length <= 104 && !/\n/.test(t)) return `<strong>${escapeHtml(t)}</strong>`;
+  const colon = t.indexOf(':');
+  if (colon > 2 && colon <= 66) return lead(t.slice(0, colon), t.slice(colon));
+  const dash = t.indexOf(' \u2014 ');
+  if (dash > 2 && dash <= 52) return lead(t.slice(0, dash), t.slice(dash));
+  const stop = t.match(/^(.{12,86}?[.!?])(\s)/);
+  if (stop) return lead(stop[1], t.slice(stop[1].length));
+  return escapeHtml(t);
+}
+
 function renderBody(text) {
   const blocks = String(text).split(/\n\s*\n/).filter(b => b.trim());
   let html = '';
@@ -383,7 +400,7 @@ function renderBody(text) {
   const flush = () => {
     if (!bullets.length) return;
     html += `<ul class="section-list">${bullets
-      .map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>`;
+      .map(b => `<li>${bulletHTML(b)}</li>`).join('')}</ul>`;
     bullets = [];
   };
   blocks.forEach(b => {
