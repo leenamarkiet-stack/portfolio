@@ -372,9 +372,9 @@
     .exp-line, .exp-marker, .exp-year-label { display: none; }
   }
 </style>
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="vend/react.development.js"></script>
+<script src="vend/react-dom.development.js"></script>
+<script src="vend/babel.min.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -410,7 +410,7 @@ function tagColor(tag){
 const DEFAULT_BIO = {
   name:"Leena Markiet", role:"Service Designer & UX/UI",
   location:"Abu Dhabi, United Arab Emirates",
-  email:"leena@markiet.studo", photoUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/leena-profile-photo.png?v=9",
+  email:"leena@markiet.studo", photoUrl:"leena-profile-photo.png?v=9",
   status:"Available for projects, summer 2026",
   paragraph:"I am a Service Designer and Senior UX/UI Designer with experience designing complex enterprise and government software products, digital services, and customer experiences. My background combines service design, UX, business analysis, and stakeholder facilitation, enabling me to bridge business strategy, technical implementation, and user needs throughout the product lifecycle.\n\nI specialize in transforming complex business challenges into intuitive, scalable digital solutions. By combining systems thinking with user-centred design, I consider the broader service ecosystem—including users, workflows, business objectives, and technical constraints—to create experiences that are both highly usable and aligned with organizational goals.",
   socials:[{label:"LinkedIn",url:"#"},{label:"Read.cv",url:"#"}],
@@ -432,15 +432,15 @@ const DEFAULT_EXPERIENCE = [
   { logoUrl:"", kind:"study", company:"University of Helsinki", title:"M.Sc, Agroecology", startMonth:9, startYear:2007, endMonth:12, endYear:2012, current:false, description:"Agroecology is a holistic farming approach that integrates economic, ecological, societal, political and cultural factors to promote sustainable plant production and preserve natural resources in food systems and agriculture." },
 ];
 const DEFAULT_PROJECTS = [
-  {id:"p15",title:"ASDS: one design system for people and AI assistants",client:"Space42",role:"Design lead and system owner",year:"2026",tags:["Figma","Vibecoding","UI Design"],description:"Space42's design system: a Figma library and a production React component library kept in agreement, plus a handbook written so that people and AI assistants building products get it right without having to guess.",cover:{hue:260,label:"ASDS",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p15-1-asds.png"}},
-  {id:"p16",title:"Improving workflows without breaking the lift-and-shift",client:"",role:"Service & UI/UX Design",year:"2026",tags:["Service Design","UI Design","Figma"],description:"A legacy platform for reporting on capital projects was rebuilt on a modern stack. Without access to the old system, I reconstructed how it worked from documentation and screenshots, then designed clearer workflows while keeping the structure users and the migrated data depended on.",cover:{hue:40,label:"Capital projects",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p16-1-landing.png"}},
-  {id:"p17",title:"From a filtered map view to a recommended intervention",client:"Department of Health — Abu Dhabi",role:"Service & UI/UX Design",year:"2026",tags:["Service Design","UI Design","Vibecoding","Digital Twins","Stakeholder Management"],description:"A population-health platform for Abu Dhabi's 214 districts. You narrow the population to the group you care about, and that group stays with you — across the map, the charts, the forecasts and the interventions the system recommends for them.",cover:{hue:170,label:"Population health",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p17-1-hero-map.png"}},
-  {id:"p13",title:"Routing pedestrians by heat, not distance",client:"Dubai entity",role:"Service Design + UI/UX",year:"2026",tags:["Service Design","UI Design","Vibecoding"],description:"Heat-safe pedestrian mobility. In a Dubai summer the shortest walk is often the most dangerous one, so COOLSTEPS routes pedestrians by felt heat exposure rather than distance, adapting its advice to who is walking and when. Delivered as a working mobile prototype.",cover:{hue:30,label:"COOLSTEPS",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p13-1-hero.png"}},
-  {id:"p12",title:"CCTV Coverage Study",client:"Space42",role:"UI/UX + Service Design",year:"2026",tags:["Vibecoding","Figma","UI Design","Digital Twins"],description:"The security planning tool in Space42's Digital Twin product family. Built code-first alongside a shared design system, testing each component in a real product before it served the wider family. The code also became the reference for an AI workflow that generates Figma frames from code.",cover:{hue:220,label:"CCTV Coverage Study",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p12-4-aim.png"}},
-  {id:"p11",title:"Data Hub: from zero to a scalable design foundation",client:"Space42",role:"UI/UX + Service Design",year:"2025",tags:["UI Design","Figma","Enterprise"],description:"Lead designer on a newly ideated enterprise data platform, joining with no design system, no user flows and no UX direction in place. One governed pipeline replacing fragmented, engineer-only tooling with something data and operations staff could run themselves.",cover:{hue:210,label:"Data Hub",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p11-1-landing.png"}},
-  {id:"p10",title:"Service concept development for B2C and B2B electricity products",client:"Fortum (Customer Solutions)",role:"Service Designer",year:"2023",tags:["Service Design","UX Research","Energy"],description:"Two service concepts for a Nordic energy provider, where research kept surfacing the same gap between what the business wanted to build and the simplicity customers asked for.",cover:{hue:200,label:"Electricity services",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p10-5-mockups.png"}},
-  {id:"p14",title:"Improving customer onboarding: the conflicting KPIs behind churn",client:"Fortum (Customer Solutions)",role:"Service Designer",year:"2023",tags:["Service Design","UX Research","Journey Mapping","Stakeholder Management"],description:"A root cause analysis of why new customers arrived confused and left early. The answer was not the onboarding flow but the incentives behind it: every team's KPIs made sense on their own and worked against the customer together.",cover:{hue:120,label:"Root cause analysis",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p14-1-cover.png"}},
-  {id:"p9",title:"Development of a card game to support dialogue training",client:"Association of Rural Culture and Education (MSL)",role:"Educational & Service Designer",year:"2021",tags:["Service Design","Facilitation","Toolkit"],description:"A card-based toolkit that compressed Sitra's Time Out dialogue method into a 2–3 hour training session.",cover:{hue:140,label:"Dialogue toolkit",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png"}},
+  {id:"p15",title:"ASDS: one design system for people and AI assistants",client:"Space42",role:"Design lead and system owner",year:"2026",tags:["Figma","Vibecoding","UI Design"],description:"Space42's design system: a Figma library and a production React component library kept in agreement, plus a handbook written so that people and AI assistants building products get it right without having to guess.",cover:{hue:260,label:"ASDS",imageUrl:"p15-1-asds.png"}},
+  {id:"p16",title:"Improving workflows without breaking the lift-and-shift",client:"",role:"Service & UI/UX Design",year:"2026",tags:["Service Design","UI Design","Figma"],description:"A legacy platform for reporting on capital projects was rebuilt on a modern stack. Without access to the old system, I reconstructed how it worked from documentation and screenshots, then designed clearer workflows while keeping the structure users and the migrated data depended on.",cover:{hue:40,label:"Capital projects",imageUrl:"p16-1-landing.png"}},
+  {id:"p17",title:"From a filtered map view to a recommended intervention",client:"Department of Health — Abu Dhabi",role:"Service & UI/UX Design",year:"2026",tags:["Service Design","UI Design","Vibecoding","Digital Twins","Stakeholder Management"],description:"A population-health platform for Abu Dhabi's 214 districts. You narrow the population to the group you care about, and that group stays with you — across the map, the charts, the forecasts and the interventions the system recommends for them.",cover:{hue:170,label:"Population health",imageUrl:"p17-1-hero-map.png"}},
+  {id:"p13",title:"Routing pedestrians by heat, not distance",client:"Dubai entity",role:"Service Design + UI/UX",year:"2026",tags:["Service Design","UI Design","Vibecoding"],description:"Heat-safe pedestrian mobility. In a Dubai summer the shortest walk is often the most dangerous one, so COOLSTEPS routes pedestrians by felt heat exposure rather than distance, adapting its advice to who is walking and when. Delivered as a working mobile prototype.",cover:{hue:30,label:"COOLSTEPS",imageUrl:"p13-1-hero.png"}},
+  {id:"p12",title:"CCTV Coverage Study",client:"Space42",role:"UI/UX + Service Design",year:"2026",tags:["Vibecoding","Figma","UI Design","Digital Twins"],description:"The security planning tool in Space42's Digital Twin product family. Built code-first alongside a shared design system, testing each component in a real product before it served the wider family. The code also became the reference for an AI workflow that generates Figma frames from code.",cover:{hue:220,label:"CCTV Coverage Study",imageUrl:"p12-4-aim.png"}},
+  {id:"p11",title:"Data Hub: from zero to a scalable design foundation",client:"Space42",role:"UI/UX + Service Design",year:"2025",tags:["UI Design","Figma","Enterprise"],description:"Lead designer on a newly ideated enterprise data platform, joining with no design system, no user flows and no UX direction in place. One governed pipeline replacing fragmented, engineer-only tooling with something data and operations staff could run themselves.",cover:{hue:210,label:"Data Hub",imageUrl:"p11-1-landing.png"}},
+  {id:"p10",title:"Service concept development for B2C and B2B electricity products",client:"Fortum (Customer Solutions)",role:"Service Designer",year:"2023",tags:["Service Design","UX Research","Energy"],description:"Two service concepts for a Nordic energy provider, where research kept surfacing the same gap between what the business wanted to build and the simplicity customers asked for.",cover:{hue:200,label:"Electricity services",imageUrl:"p10-5-mockups.png"}},
+  {id:"p14",title:"Improving customer onboarding: the conflicting KPIs behind churn",client:"Fortum (Customer Solutions)",role:"Service Designer",year:"2023",tags:["Service Design","UX Research","Journey Mapping","Stakeholder Management"],description:"A root cause analysis of why new customers arrived confused and left early. The answer was not the onboarding flow but the incentives behind it: every team's KPIs made sense on their own and worked against the customer together.",cover:{hue:120,label:"Root cause analysis",imageUrl:"p14-1-cover.png"}},
+  {id:"p9",title:"Development of a card game to support dialogue training",client:"Association of Rural Culture and Education (MSL)",role:"Educational & Service Designer",year:"2021",tags:["Service Design","Facilitation","Toolkit"],description:"A card-based toolkit that compressed Sitra's Time Out dialogue method into a 2–3 hour training session.",cover:{hue:140,label:"Dialogue toolkit",imageUrl:"p9-cards.png"}},
 ];
 
 // A saved snapshot in localStorage used to replace the project list wholesale,
@@ -610,12 +610,12 @@ const DANDELION_SEEDS = [
 function DandelionCluster({style, className}) {
   return (
     <div aria-hidden className={className} style={{position:'absolute',width:220,height:344,...style}}>
-      <img src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/dandelion-puff.png" alt=""
+      <img src="dandelion-puff.png" alt=""
         className="dandelion-puff-sway"
         style={{position:'absolute',left:1.7,top:105.6,width:112.7,height:237.4}}/>
       {DANDELION_SEEDS.map(s=>(
         <img key={s.key||s.n}
-          src={`https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/dandelion-seed${s.n}.png`}
+          src={`dandelion-seed${s.n}.png`}
           alt="" className="dandelion-seed"
           style={{left:s.left,top:s.top,width:s.w,height:s.h,
             '--fx':s.fx,'--fy':s.fy,'--dur':`${s.dur}s`,'--delay':`${(s.n*0.6)%4}s`}}/>
@@ -907,12 +907,12 @@ function Portfolio() {
           borderRadius:'62% 38% 51% 49% / 40% 58% 42% 60%',
           background:`${P.tanBloom}`,filter:'blur(55px)',opacity:0.85,pointerEvents:'none',zIndex:0}}/>
 
-        <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-yellow.png" alt=""
+        <img aria-hidden src="flower-yellow.png" alt=""
           className="hero-flower hero-flower-yellow"
           style={{position:'absolute',bottom:96,right:260,width:260,height:'auto',
             pointerEvents:'none',zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.15))'}}/>
-        <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-cream.png" alt=""
+        <img aria-hidden src="flower-cream.png" alt=""
           className="hero-flower hero-flower-pansy"
           style={{position:'absolute',top:-55,left:-80,width:260,height:'auto',
             pointerEvents:'none',zIndex:0,
@@ -937,7 +937,7 @@ function Portfolio() {
                   <h1 className="name-h1" style={{fontFamily:SERIF,fontWeight:800,
                     display:'flex',flexDirection:'column',gap:14,
                     margin:0,letterSpacing:'-0.025em',color:P.ink}}>
-                    <img src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/signature.png?v=3"
+                    <img src="signature.png?v=3"
                       alt={bio.name} className="signature-img"
                       style={{display:'block',width:540,maxWidth:'100%',height:'auto'}}/>
                     <em className="role-em" style={{display:'block',lineHeight:1,fontFamily:'"Lora",Georgia,serif',fontStyle:'normal',fontWeight:500,fontSize:'0.47em',
@@ -1031,15 +1031,15 @@ function Portfolio() {
           siblings of hero-pad rather than children, so they can hang below the
           hero the way the dandelion does, and they paint at zIndex 1 — over the
           hero wash, under the photo at zIndex 2. */}
-      <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-poppy.png" alt="" className="hero-bloom-mobile footer-bloom"
+      <img aria-hidden src="flower-poppy.png" alt="" className="hero-bloom-mobile footer-bloom"
         style={{position:'absolute',right:-14,bottom:64,width:150,height:'auto',
           '--rot':'-8deg','--dur':'21s',pointerEvents:'none',opacity:0.88,zIndex:3,
           filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
-      <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-pink.png" alt="" className="hero-bloom-mobile footer-bloom"
+      <img aria-hidden src="flower-pink.png" alt="" className="hero-bloom-mobile footer-bloom"
         style={{position:'absolute',left:-22,bottom:-58,width:140,height:'auto',
           '--rot':'-4deg','--dur':'19s',pointerEvents:'none',opacity:0.86,zIndex:3,
           filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
-      <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-pansy.png" alt="" className="hero-bloom-mobile footer-bloom"
+      <img aria-hidden src="flower-pansy.png" alt="" className="hero-bloom-mobile footer-bloom"
         style={{position:'absolute',right:34,bottom:-112,width:118,height:'auto',
           '--rot':'8deg','--dur':'28s',pointerEvents:'none',opacity:0.86,zIndex:3,
           filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
@@ -1090,12 +1090,12 @@ function Portfolio() {
             sit behind the grid. The forget-me-not lies sideways at the left
             (rotated 90deg, stem trailing off-canvas); the other four overlap in
             a cluster at the right, largest behind. */}
-        <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-forgetmenot.png" alt="" className="footer-bloom footer-bloom-forgetmenot"
+        <img aria-hidden src="flower-forgetmenot.png" alt="" className="footer-bloom footer-bloom-forgetmenot"
           style={{position:'absolute',bottom:30,left:-150,width:235,height:'auto',
             '--rot':'90deg','--dur':'26s',pointerEvents:'none',opacity:0.9,zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
 
-        <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-pansy.png" alt="" className="footer-bloom footer-bloom-pansy"
+        <img aria-hidden src="flower-pansy.png" alt="" className="footer-bloom footer-bloom-pansy"
           style={{position:'absolute',bottom:88,left:196,width:262,height:'auto',
             '--rot':'112deg','--dur':'28s',pointerEvents:'none',opacity:0.88,zIndex:0,
             filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
@@ -1103,16 +1103,16 @@ function Portfolio() {
         <div aria-hidden className="footer-cluster"
           style={{position:'absolute',right:-30,bottom:34,width:470,height:270,
             pointerEvents:'none',zIndex:0}}>
-          <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-poppy.png" alt="" className="footer-bloom footer-bloom-poppy"
+          <img aria-hidden src="flower-poppy.png" alt="" className="footer-bloom footer-bloom-poppy"
             style={{position:'absolute',right:-10,bottom:10,width:245,height:'auto',
               '--rot':'-8deg','--dur':'21s',opacity:0.90,filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
-          <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-blush.png" alt="" className="footer-bloom footer-bloom-blush"
+          <img aria-hidden src="flower-blush.png" alt="" className="footer-bloom footer-bloom-blush"
             style={{position:'absolute',right:150,bottom:-18,width:212,height:'auto',
               '--rot':'6deg','--dur':'24s',opacity:0.92,filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
-          <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-anemone.png" alt="" className="footer-bloom footer-bloom-anemone"
+          <img aria-hidden src="flower-anemone.png" alt="" className="footer-bloom footer-bloom-anemone"
             style={{position:'absolute',right:268,bottom:28,width:175,height:'auto',
               '--rot':'10deg','--dur':'23s',opacity:0.88,filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
-          <img aria-hidden src="https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/flower-pink.png" alt="" className="footer-bloom footer-bloom-pink"
+          <img aria-hidden src="flower-pink.png" alt="" className="footer-bloom footer-bloom-pink"
             style={{position:'absolute',right:58,bottom:-40,width:196,height:'auto',
               '--rot':'-4deg','--dur':'19s',opacity:0.95,filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
         </div>
