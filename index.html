@@ -282,6 +282,13 @@
     margin: 0 6px; min-height: 130px;
     scroll-snap-align: start;
   }
+  .exp-card-mini.is-study {
+    background: linear-gradient(135deg, rgba(241,234,254,0.92) 0%, rgba(249,248,255,0.92) 100%);
+    border-color: rgba(188,180,236,0.55);
+  }
+  .exp-card-mini.is-study .exp-card-logo { background: #DCD4F6; color: #3B3270; }
+  .exp-card-mini.is-study .exp-card-title { color: #3B3270; }
+  .exp-dot.is-study { background: #BCB4EC; box-shadow: 0 0 0 3px rgba(188,180,236,0.35); }
   .exp-card-head { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
   .exp-card-logo { width: 30px; height: 30px; border-radius: 7px; overflow: hidden;
     background: #F1EAFE;
@@ -373,9 +380,11 @@ const DEFAULT_EXPERIENCE = [
   { logoUrl:"", company:"Wio Bank", title:"Service Designer (freelance)", startMonth:2, startYear:2024, endMonth:2, endYear:2024, current:false, description:"Restructured a customer-service knowledge base onto a new platform to improve discoverability and response speed." },
   { logoUrl:"", company:"Fortum", title:"Service Designer", startMonth:3, startYear:2023, endMonth:10, endYear:2023, current:false, description:"Nordic UX & Concepts team: customer insight, journey mapping and data-led improvements across B2C and B2B digital channels." },
   { logoUrl:"", company:"MSL", title:"Educational & Service Designer", startMonth:1, startYear:2020, endMonth:3, endYear:2023, current:false, description:"Grew the consultancy from educational design into organisational service design \u2014 interviews, surveys, personas and customer-centric processes for non-profits." },
+  { logoUrl:"", kind:"study", company:"Laurea University of Applied Sciences", title:"M.Sc, Service Design", startMonth:9, startYear:2018, endMonth:12, endYear:2020, current:false, description:"Master's in Service Design." },
   { logoUrl:"", company:"MTK", title:"Member Service Planner", startMonth:10, startYear:2017, endMonth:7, endYear:2018, current:false, description:"Member-perspective service development: new communication pilots, video and podcast content, and improved legal counselling." },
   { logoUrl:"", company:"MTK Regional", title:"Specialist (Agronomist)", startMonth:9, startYear:2014, endMonth:10, endYear:2017, current:false, description:"Secured \u20ac100k of EU funding for young-farmer development, running Startup Weekend Helsinki Food, excursions and entrepreneurship training." },
   { logoUrl:"", company:"Pro Luomu", title:"Project Planner", startMonth:1, startYear:2013, endMonth:6, endYear:2014, current:false, description:"Project planning for the Finnish Organic Food Association." },
+  { logoUrl:"", kind:"study", company:"University of Helsinki", title:"M.Sc, Agroecology", startMonth:9, startYear:2007, endMonth:12, endYear:2012, current:false, description:"Master's in Agroecology." },
 ];
 const DEFAULT_PROJECTS = [
   {id:"p15",title:"ASDS: one design system for people and AI assistants",client:"Space42",role:"Design lead and system owner",year:"2026",tags:["Figma","Vibecoding","UI Design"],description:"Space42's design system: a Figma library and a production React component library kept in agreement, plus a handbook written so that people and AI assistants building products get it right without having to guess.",cover:{hue:260,label:"ASDS",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p15-1-asds.png"}},
@@ -750,12 +759,20 @@ function TimelineGrid({experience, refTo}) {
       style={{ gridTemplateColumns: `repeat(${experience.length}, 220px)` }}>
       <div className="exp-line"/>
       {experience.map((x, i) => (
-        <div key={'c'+i} className="exp-card-mini" style={{ gridColumn: i+1 }}>
+        <div key={'c'+i} className={`exp-card-mini ${x.kind === 'study' ? 'is-study' : ''}`} style={{ gridColumn: i+1 }}>
           <div className="exp-card-head">
             <div className="exp-card-logo">
               {x.logoUrl
                 ? <img src={x.logoUrl} alt=""/>
-                : (x.company||'?').charAt(0).toUpperCase()}
+                : x.kind === 'study'
+                  ? <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden
+                      fill="none" stroke="#3B3270" strokeWidth="1.7"
+                      strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 4 2 9l10 5 10-5-10-5Z"/>
+                      <path d="M6 11.2V16c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6v-4.8"/>
+                      <path d="M21 9.5V15"/>
+                    </svg>
+                  : (x.company||'?').charAt(0).toUpperCase()}
             </div>
             <div style={{minWidth:0,flex:1}}>
               <div className="exp-card-co">{x.company||'Company'}</div>
@@ -767,7 +784,7 @@ function TimelineGrid({experience, refTo}) {
       ))}
       {experience.map((x, i) => (
         <div key={'m'+i} className="exp-marker" style={{ gridColumn: i+1 }}>
-          <div className="exp-dot"/>
+          <div className={`exp-dot ${x.kind === 'study' ? 'is-study' : ''}`}/>
         </div>
       ))}
       {experience.map((x, i) => (
