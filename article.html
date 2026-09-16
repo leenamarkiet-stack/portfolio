@@ -298,6 +298,16 @@ const DEFAULT_PROJECTS = [
   {id:"p9",title:"Development of a card game to support dialogue training",client:"Association of Rural Culture and Education (MSL)",role:"Educational & Service Designer",year:"2021",tags:["Service Design","Facilitation","Toolkit"],description:"A card-based toolkit that compressed Sitra's Time Out dialogue method into a 2–3 hour training session.",cover:{hue:140,label:"Dialogue toolkit",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png"},caseStudy:{overview:"At the Association of Rural Culture and Education we trained member organisations in dialogue skills using the Time Out method developed by The Finnish Innovation Fund Sitra. The method worked, but it took longer than organisations had, and the practice sessions were too comfortable to prepare anyone for a real room.",team:"Me and a colleague",duration:"",heroImage:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png",sections:[{heading:"The challenge",body:"• In practice sessions, participants tended to share similar backgrounds, ideologies or life situations. The discussion scenarios did not reflect real-life situations, so facilitation was never rehearsed in a sufficiently challenging atmosphere.\n\n• The key contents of Time Out needed to fit into roughly 2–3 hours, the average time organisations had available.\n\n• The training needed to be more lightweight overall.",layout:"text-only",images:[]},{heading:"What was designed",body:"• Game modes for building good dialogue, including monitoring and analysing discussion dynamics.\n\n• Facilitator's guide cards for steering the discussion, holding the key content of Time Out dialogue in a concise form.\n\n• Conversation style cards: green cards for building good dialogue, red cards for creating friction and challenge, specifically to support facilitation practice.\n\n• Citizen cards, bringing more diversity into the discussion and letting participants understand and present the perspectives that arise from people's backgrounds or values.\n\n• Role cards to shift mindset, prompting a more comprehensive examination of the topic and disrupting the traditional discussion dynamics of established groups such as a board of directors.",layout:"text-only",images:[]}]}},
 ];
 
+// A saved snapshot in localStorage used to replace the project list wholesale,
+// so anything added to the defaults afterwards stayed invisible to whoever had
+// saved once in admin. Defaults win per project; a saved project with no default
+// (one created in admin) is kept.
+function mergeProjects(saved) {
+  if (!Array.isArray(saved) || !saved.length) return DEFAULT_PROJECTS;
+  const known = new Set(DEFAULT_PROJECTS.map(p => p.id));
+  return DEFAULT_PROJECTS.concat(saved.filter(p => p && !known.has(p.id)));
+}
+
 function loadData() {
   try { const s = localStorage.getItem('portfolio_data'); if (s) return JSON.parse(s); }
   catch(e) {}
@@ -327,7 +337,7 @@ const params = new URLSearchParams(location.search);
 const id = params.get('id') || 'p1';
 
 const data = loadData();
-const projects = (data && data.projects) || DEFAULT_PROJECTS;
+const projects = mergeProjects(data && data.projects);
 const project = projects.find(p => p.id === id) || projects[0];
 const cs = project.caseStudy || (DEFAULT_PROJECTS[0].caseStudy);
 const bioEmail = (data && data.bio && data.bio.email) || 'leena@markiet.studo';

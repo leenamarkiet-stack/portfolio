@@ -378,6 +378,16 @@ const DEFAULT_PROJECTS = [
   {id:"p9",title:"Development of a card game to support dialogue training",client:"Association of Rural Culture and Education (MSL)",role:"Educational & Service Designer",year:"2021",tags:["Service Design","Facilitation","Toolkit"],description:"A card-based toolkit that compressed Sitra's Time Out dialogue method into a 2–3 hour training session.",cover:{hue:140,label:"Dialogue toolkit",imageUrl:"https://raw.githubusercontent.com/leenamarkiet-stack/portfolio/main/p9-cards.png"}},
 ];
 
+// A saved snapshot in localStorage used to replace the project list wholesale,
+// so anything added to the defaults afterwards stayed invisible to whoever had
+// saved once in admin. Defaults win per project; a saved project with no default
+// (one created in admin) is kept.
+function mergeProjects(saved) {
+  if (!Array.isArray(saved) || !saved.length) return DEFAULT_PROJECTS;
+  const known = new Set(DEFAULT_PROJECTS.map(p => p.id));
+  return DEFAULT_PROJECTS.concat(saved.filter(p => p && !known.has(p.id)));
+}
+
 function loadData() {
   try {
     const s = localStorage.getItem('portfolio_data');
@@ -388,7 +398,7 @@ function loadData() {
         skills: d.skills || DEFAULT_SKILLS,
         headerButtons: d.headerButtons || DEFAULT_HEADER_BUTTONS,
         experience: d.experience || DEFAULT_EXPERIENCE,
-        projects: d.projects || DEFAULT_PROJECTS,
+        projects: mergeProjects(d.projects),
       };
     }
   } catch(e) {}
