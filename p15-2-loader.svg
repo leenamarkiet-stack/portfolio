@@ -1,0 +1,160 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+@keyframes kf_Frame_6_transform_0 {
+  0% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translateX(540px) translateY(660px);
+  }
+  25% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translateX(660px) translateY(540px);
+  }
+  50% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translateX(540px) translateY(420px);
+  }
+  75% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translateX(420px) translateY(540px);
+  }
+  100% {
+    transform: translateX(540px) translateY(660px);
+  }
+}
+#Frame_6 {
+  transform-origin: 0 0;
+  animation: kf_Frame_6_transform_0 4s linear infinite;
+}
+@keyframes kf_Frame_7_transform_0 {
+  0% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translate(300px, 60px) rotate(0rad) translate(-300px, -60px);
+  }
+  25% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translate(300px, 60px) rotate(1.571rad) translate(-300px, -60px);
+  }
+  50% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translate(300px, 60px) rotate(3.142rad) translate(-300px, -60px);
+  }
+  75% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translate(300px, 60px) rotate(4.712rad) translate(-300px, -60px);
+  }
+  100% {
+    transform: translate(300px, 60px) rotate(6.283rad) translate(-300px, -60px);
+  }
+}
+#Frame_7 {
+  transform-origin: 0 0;
+  animation: kf_Frame_7_transform_0 4s linear infinite;
+}
+@keyframes kf_Frame_11_transform_0 {
+  0% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translateX(540px) translateY(420px);
+  }
+  25% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translateX(420px) translateY(540px);
+  }
+  50% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translateX(540px) translateY(660px);
+  }
+  75% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translateX(660px) translateY(540px);
+  }
+  100% {
+    transform: translateX(540px) translateY(420px);
+  }
+}
+#Frame_11 {
+  transform-origin: 0 0;
+  animation: kf_Frame_11_transform_0 4s linear infinite;
+}
+@keyframes kf_Frame_12_transform_0 {
+  0% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translate(300px, 60px) rotate(0rad) translate(-300px, -60px);
+  }
+  25% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translate(300px, 60px) rotate(1.571rad) translate(-300px, -60px);
+  }
+  50% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translate(300px, 60px) rotate(3.142rad) translate(-300px, -60px);
+  }
+  75% {
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translate(300px, 60px) rotate(4.712rad) translate(-300px, -60px);
+  }
+  100% {
+    transform: translate(300px, 60px) rotate(6.283rad) translate(-300px, -60px);
+  }
+}
+#Frame_12 {
+  transform-origin: 0 0;
+  animation: kf_Frame_12_transform_0 4s linear infinite;
+}
+</style>
+<g id="white___on_blue_1" clip-path="url(#clip0_4005_22695)">
+<g id="Clip_path_group">
+<mask id="mask0_4005_22695" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
+<g id="i4">
+<path id="Vector" d="M1080 0.01V1079.99C1080 1080 1080 1080 1079.99 1080H0.01C0 1080 0 1080 0 1079.99V0.01C0 0 0 0 0.01 0H1079.99C1080 0 1080 0 1080 0.01Z" fill="white"/>
+</g>
+</mask>
+<g mask="url(#mask0_4005_22695)">
+<g id="i5">
+<g id="Clip_path_group_2">
+<mask id="mask1_4005_22695" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
+<g id="i0">
+<path id="Vector_2" d="M1080 0H0V1080H1080V0Z" fill="white"/>
+</g>
+</mask>
+<g mask="url(#mask1_4005_22695)">
+<g id="Frame">
+<g id="Frame_2">
+<g id="Frame_3">
+<path id="Vector_3" d="M1080 0H0V1080H1080V0Z" fill="#1D3080"/>
+</g>
+</g>
+<g id="Frame_4" transform="translate(240 600)">
+<g id="Frame_5">
+<g id="Frame_6">
+<g id="Frame_7">
+<g id="Frame_8">
+<path id="Vector_4" d="M600 0H0V120H600V0Z" fill="white"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g id="Frame_9" transform="translate(240 360)">
+<g id="Frame_10">
+<g id="Frame_11">
+<g id="Frame_12">
+<g id="Frame_13">
+<path id="Vector_5" d="M600 0H0V120H600V0Z" fill="white"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_4005_22695">
+<rect width="1080" height="1080" fill="white"/>
+</clipPath>
+</defs>
+</svg>
