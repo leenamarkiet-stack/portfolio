@@ -179,7 +179,9 @@
     .hero-screen-timeline { display: none !important; }
     .grid-4 { grid-template-columns: 1fr; }
     .mobile-experience { display: block; }
-    .content-pad { padding: 16px 20px 150px; }
+
+    .content-pad { padding: 0 20px 150px; }
+    .mobile-experience { margin-top: 40px !important; }
     .hero-grid { grid-template-columns: 1fr; gap: 24px; }
     .hero-photo { width: 140px !important; height: 168px !important; }
     .name-h1 { font-size: 44px !important; }
@@ -367,6 +369,14 @@
       padding-left: 0;
       display: flex; flex-direction: column; gap: 10px;
       padding: 0;
+      /* The edge fade exists to hint that the track scrolls sideways. Stacked
+         into a column there is nothing to scroll, and the mask just washed out
+         the first and last 70px of every card's text. */
+      -webkit-mask-image: none;
+              mask-image: none;
+    }
+    .exp-grid[data-at-start], .exp-grid[data-at-end] {
+      -webkit-mask-image: none; mask-image: none;
     }
     .exp-card-mini { margin: 0; min-height: 0; }
     .exp-line, .exp-marker, .exp-year-label { display: none; }
@@ -1108,7 +1118,6 @@ function Portfolio() {
                 count={countFor(s)} on={activeSkill === s}
                 onToggle={()=>setActiveSkill(activeSkill === s ? null : s)}/>
             ))}
-            })}
           </div>
         </section>
 
