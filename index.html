@@ -81,6 +81,9 @@
   }
   .footer-bloom { animation: bloomSway var(--dur,22s) ease-in-out infinite; transform-origin: 50% 85%; }
   .hero-bloom-mobile { display: none; }
+  .wip-dot { animation: wipPulse 2.4s ease-in-out infinite; }
+  @keyframes wipPulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  @media (prefers-reduced-motion: reduce) { .wip-dot { animation: none; } }
 
   /* Individual dandelion seeds drift independently — direction/duration set per-seed via CSS vars */
   @keyframes seedFloat {
@@ -988,9 +991,19 @@ function Portfolio() {
 
           {/* Screen 1 — original hero */}
           <div className="hero-screen">
-            <div className="meta-bar" style={{display:'flex',justifyContent:'flex-end',alignItems:'baseline',
+            <div className="meta-bar" style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:12,
               fontSize:11,letterSpacing:'0.08em',textTransform:'uppercase',color:P.ink,
               borderBottom:`1px solid ${P.ink}22`,paddingBottom:14,marginBottom:56}}>
+              {/* The portfolio is still being filled in; say so plainly rather than
+                  let a visitor wonder about the gaps. Pale yellow from the poppy,
+                  brown text at 5.5:1. */}
+              <span className="wip-badge" style={{display:'inline-flex',alignItems:'center',gap:7,
+                fontSize:10,fontWeight:600,letterSpacing:'0.1em',lineHeight:1,
+                padding:'6px 11px 6px 9px',borderRadius:999,whiteSpace:'nowrap',
+                color:'#7A5C2F',background:'#FBF1CF',border:'1px solid rgba(212,175,55,0.45)'}}>
+                <span aria-hidden className="wip-dot" style={{width:6,height:6,borderRadius:'50%',background:'#D4AF37'}}/>
+                Work in progress
+              </span>
               <span style={{whiteSpace:'nowrap'}}>2026 — {bio.location}</span>
             </div>
 

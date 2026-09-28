@@ -81,6 +81,9 @@
   }
   .footer-bloom { animation: bloomSway var(--dur,22s) ease-in-out infinite; transform-origin: 50% 85%; }
   .hero-bloom-mobile { display: none; }
+  .wip-dot { animation: wipPulse 2.4s ease-in-out infinite; }
+  @keyframes wipPulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  @media (prefers-reduced-motion: reduce) { .wip-dot { animation: none; } }
 
   /* Individual dandelion seeds drift independently — direction/duration set per-seed via CSS vars */
   @keyframes seedFloat {
@@ -442,7 +445,7 @@ const DEFAULT_EXPERIENCE = [
   { logoUrl:"", kind:"study", company:"University of Helsinki", title:"M.Sc, Agroecology", startMonth:9, startYear:2007, endMonth:12, endYear:2012, current:false, description:"Agroecology is a holistic farming approach that integrates economic, ecological, societal, political and cultural factors to promote sustainable plant production and preserve natural resources in food systems and agriculture." },
 ];
 const DEFAULT_PROJECTS = [
-  {id:"p15",title:"ASDS: one design system for people and AI assistants",client:"Space42",role:"Design lead and system owner",year:"2026",tags:["Figma","Vibecoding","UI Design"],description:"Space42's design system: a Figma library and a production React component library kept in agreement, plus a handbook written so that people and AI assistants building products get it right without having to guess.",cover:{hue:260,label:"ASDS",imageUrl:"p15-1-asds.png"}},
+  {id:"p15",title:"ASDS: one design system for people and AI assistants",client:"Space42",role:"Design lead and system owner",year:"2026",tags:["Figma","Vibecoding","UI Design"],description:"Space42's design system: a Figma library and a production React component library kept in agreement, plus a skill, rules, a handbook and Storybook, written so that people and AI assistants building products get it right without having to guess.",cover:{hue:260,label:"ASDS",imageUrl:"p15-1-asds.png"}},
   {id:"p16",title:"Improving workflows without breaking the lift-and-shift",client:"",role:"Service & UI/UX Design",year:"2026",tags:["Service Design","UI Design","Figma"],description:"A legacy platform for reporting on capital projects was rebuilt on a modern stack. Without access to the old system, I reconstructed how it worked from documentation and screenshots, then designed clearer workflows while keeping the structure users and the migrated data depended on.",cover:{hue:40,label:"Capital projects",imageUrl:"p16-1-landing.png"}},
   {id:"p17",title:"From a filtered map view to a recommended intervention",client:"Department of Health — Abu Dhabi",role:"Service & UI/UX Design",year:"2026",tags:["Service Design","UI Design","Vibecoding","Digital Twins","Stakeholder Management"],description:"A population-health platform for Abu Dhabi's 214 districts. You narrow the population to the group you care about, and that group stays with you — across the map, the charts, the forecasts and the interventions the system recommends for them.",cover:{hue:170,label:"Population health",imageUrl:"p17-1-hero-map.png"}},
   {id:"p13",title:"Routing pedestrians by heat, not distance",client:"Dubai entity",role:"Service Design + UI/UX",year:"2026",tags:["Service Design","UI Design","Vibecoding"],description:"Heat-safe pedestrian mobility. In a Dubai summer the shortest walk is often the most dangerous one, so COOLSTEPS routes pedestrians by felt heat exposure rather than distance, adapting its advice to who is walking and when. Delivered as a working mobile prototype.",cover:{hue:30,label:"COOLSTEPS",imageUrl:"p13-1-hero.png"}},
@@ -988,9 +991,19 @@ function Portfolio() {
 
           {/* Screen 1 — original hero */}
           <div className="hero-screen">
-            <div className="meta-bar" style={{display:'flex',justifyContent:'flex-end',alignItems:'baseline',
+            <div className="meta-bar" style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:12,
               fontSize:11,letterSpacing:'0.08em',textTransform:'uppercase',color:P.ink,
               borderBottom:`1px solid ${P.ink}22`,paddingBottom:14,marginBottom:56}}>
+              {/* The portfolio is still being filled in; say so plainly rather than
+                  let a visitor wonder about the gaps. Pale yellow from the poppy,
+                  brown text at 5.5:1. */}
+              <span className="wip-badge" style={{display:'inline-flex',alignItems:'center',gap:7,
+                fontSize:10,fontWeight:600,letterSpacing:'0.1em',lineHeight:1,
+                padding:'6px 11px 6px 9px',borderRadius:999,whiteSpace:'nowrap',
+                color:'#7A5C2F',background:'#FBF1CF',border:'1px solid rgba(212,175,55,0.45)'}}>
+                <span aria-hidden className="wip-dot" style={{width:6,height:6,borderRadius:'50%',background:'#D4AF37'}}/>
+                Work in progress
+              </span>
               <span style={{whiteSpace:'nowrap'}}>2026 — {bio.location}</span>
             </div>
 
