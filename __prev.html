@@ -364,55 +364,6 @@
     white-space: nowrap;
   }
 
-  /* Threads: in the full timeline, each job's case studies hang from its dot
-     on a string. A fourth grid row holds them, so they scroll sideways with
-     their job. The collapsed hero never shows them. */
-  .exp-grid.has-threads { grid-template-rows: auto 16px auto auto; }
-  /* The two hero screens sit side by side in one flex row, so the hidden
-     timeline screen still counts toward the hero's height. Until the view is
-     opened the threads must not exist in the layout at all, or the collapsed
-     front page grows to make room for strings nobody can see. */
-  .hero-stage:not(.expanded) .exp-thread,
-  .hero-stage:not(.expanded) .exp-string-top { display: none; }
-  .exp-grid.has-threads .exp-year-label { position: relative; z-index: 1; }
-  .exp-grid.has-threads .exp-year-label span {
-    display: inline-block; padding: 2px 8px; border-radius: 999px;
-    background: rgba(255,250,240,0.92); }
-  .exp-string-top { grid-row: 2 / 4; justify-self: center; z-index: 0;
-    width: 1.5px; margin-top: 8px; background: rgba(124,140,110,0.55); }
-  .exp-thread { grid-row: 4; display: flex; flex-direction: column;
-    align-items: center; padding: 0 6px 8px; }
-  .exp-pin { position: relative; display: flex; align-items: center; gap: 9px;
-    width: 100%; box-sizing: border-box; margin-top: 22px; padding: 7px 10px 7px 7px;
-    background: rgba(255,250,240,0.9); border: 1px solid rgba(255,255,255,0.8);
-    border-radius: 9px; text-decoration: none; color: var(--ink, #1F1A14);
-    box-shadow: 0 8px 20px -16px rgba(31,26,20,0.45);
-    transition: transform .15s ease, box-shadow .15s ease; }
-  /* The length of string above each card: from the previous card (or the year
-     tag) down to this one, so the thread ends at its last article. */
-  .exp-pin::before { content: ""; position: absolute; left: 50%; top: -23px;
-    width: 1.5px; height: 22px; background: rgba(124,140,110,0.55);
-    transform: translateX(-50%); }
-  .exp-pin:hover { transform: translateY(-2px);
-    box-shadow: 0 14px 28px -14px rgba(212,175,55,0.55); }
-  .exp-pin:focus-visible { outline: 2px solid var(--forest, #546B41); outline-offset: 2px; }
-  .exp-pin-img { width: 44px; height: 34px; flex-shrink: 0; border-radius: 5px;
-    object-fit: cover; background: #F4EDE0; }
-  .exp-pin-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .exp-pin-title { font-size: 11.5px; font-weight: 500; line-height: 1.3;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .exp-pin-year { font-size: 10px; letter-spacing: 0.06em; color: #546B41; }
-  /* The strings drop when the view opens, each a beat after the one before. */
-  .hero-stage.expanded .exp-string-top { animation: threadDrop .5s ease-out both;
-    transform-origin: top; animation-delay: .35s; }
-  .hero-stage.expanded .exp-pin { animation: pinDrop .45s ease-out both;
-    animation-delay: calc(.55s + var(--k) * .09s); }
-  @keyframes threadDrop { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-  @keyframes pinDrop { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) {
-    .hero-stage.expanded .exp-string-top, .hero-stage.expanded .exp-pin { animation: none; }
-  }
-
   /* Mobile timeline */
   @media (max-width: 720px) {
     .hero-screen { padding: 24px 20px 40px; }
@@ -924,44 +875,9 @@ function useScrollEdgeAttrs(ref, deps) {
   }, deps || []);
 }
 
-// Which job a case study belongs to. An explicit `job` wins; otherwise the
-// company named in the client field (longest name first, so "MTK Regional" is
-// not claimed by "MTK"); otherwise the job held in the project's year.
-function jobIndexFor(p, experience) {
-  const jobs = experience.map((x, i) => ({ x, i })).filter(({ x }) => x.kind !== 'study');
-  const norm = v => String(v || '').toLowerCase();
-  if (p.job) {
-    const hit = jobs.find(({ x }) => norm(x.company) === norm(p.job));
-    if (hit) return hit.i;
-  }
-  const client = norm(p.client);
-  const named = jobs
-    .filter(({ x }) => x.company && client.includes(norm(x.company)))
-    .sort((a, b) => b.x.company.length - a.x.company.length)[0];
-  if (named) return named.i;
-  const y = parseInt(p.year, 10);
-  if (!y) return -1;
-  const held = jobs.filter(({ x }) =>
-    x.startYear <= y && (x.current || !x.endYear || x.endYear >= y));
-  // Several jobs can overlap a year; the one that started last is the one the
-  // work most likely came from.
-  held.sort((a, b) => (b.x.startYear * 12 + b.x.startMonth) - (a.x.startYear * 12 + a.x.startMonth));
-  return held.length ? held[0].i : -1;
-}
-
-function TimelineGrid({experience, refTo, projects}) {
-  // Only the full "Read more" view passes projects. Each job then gets a thread
-  // hanging from its dot, with its case studies pinned down it in order.
-  const threads = projects ? experience.map(() => []) : null;
-  if (threads) {
-    projects.forEach(p => {
-      const k = jobIndexFor(p, experience);
-      if (k >= 0) threads[k].push(p);
-    });
-    threads.forEach(t => t.sort((a, b) => (parseInt(b.year, 10) || 0) - (parseInt(a.year, 10) || 0)));
-  }
+function TimelineGrid({experience, refTo}) {
   return (
-    <div ref={refTo} className={`exp-grid ${threads ? 'has-threads' : ''}`}
+    <div ref={refTo} className="exp-grid"
       style={{ gridTemplateColumns: `repeat(${experience.length}, 220px)` }}>
       <div className="exp-line"/>
       {experience.map((x, i) => (
@@ -996,28 +912,8 @@ function TimelineGrid({experience, refTo, projects}) {
       ))}
       {experience.map((x, i) => (
         <div key={'y'+i} className="exp-year-label" style={{ gridColumn: i+1 }}>
-          <span>{yearLabelFor(x)}</span>
+          {yearLabelFor(x)}
         </div>
-      ))}
-      {threads && threads.map((list, i) => list.length > 0 && (
-        <React.Fragment key={'t'+i}>
-          {/* From the dot, down behind the year tag, to where the cards start. */}
-          <div aria-hidden className="exp-string-top" style={{ gridColumn: i+1 }}/>
-          <div className="exp-thread" style={{ gridColumn: i+1, '--i': i }}>
-            {list.map((p, k) => (
-              <a key={p.id} className="exp-pin" href={`article.html?id=${p.id}`}
-                style={{ '--k': k }}>
-                {p.cover && p.cover.imageUrl
-                  ? <img className="exp-pin-img" src={p.cover.imageUrl} alt=""/>
-                  : <span className="exp-pin-img" aria-hidden/>}
-                <span className="exp-pin-text">
-                  <span className="exp-pin-title">{p.title}</span>
-                  <span className="exp-pin-year">{p.year}</span>
-                </span>
-              </a>
-            ))}
-          </div>
-        </React.Fragment>
       ))}
     </div>
   );
@@ -1177,7 +1073,7 @@ function Portfolio() {
             <div className="hero-screen hero-screen-timeline">
               <button className="hero-close" onClick={()=>setExpanded(false)}>← Back</button>
               <div className="exp-full-wrap">
-                <TimelineGrid experience={experience} refTo={fullRef} projects={projects}/>
+                <TimelineGrid experience={experience} refTo={fullRef}/>
               </div>
             </div>
           )}
