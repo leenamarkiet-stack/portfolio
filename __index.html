@@ -413,6 +413,13 @@
     .hero-stage.expanded .exp-string-top, .hero-stage.expanded .exp-pin { animation: none; }
   }
 
+  /* With the timeline open, every case study already hangs from its job, so
+     the big project grid below would only repeat them. The open timeline only
+     exists above the phone breakpoint, so the rule does too. */
+  @media (min-width: 721px) {
+    .timeline-open .work-section { display: none; }
+  }
+
   /* Mobile timeline */
   @media (max-width: 720px) {
     .hero-screen { padding: 24px 20px 40px; }
@@ -883,6 +890,10 @@ function useWheelToHorizontal(getEl, deps) {
       // re-sync when target changes or user has scrolled it via other means
       if (activeEl !== t) { activeEl = t; target = t.scrollLeft; }
       if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      // Only the job cards themselves turn the wheel sideways. Anywhere else —
+      // the dates, the strings and the articles hanging from them, the gaps —
+      // the wheel scrolls the page, or a tall timeline would trap it.
+      if (!(e.target instanceof Element) || !e.target.closest('.exp-card-mini')) return;
       const max = t.scrollWidth - t.clientWidth;
       const canRight = target < max - 1;
       const canLeft  = target > 0;
@@ -1060,7 +1071,8 @@ function Portfolio() {
   const hasExp = experience && experience.length > 0;
 
   return (
-    <div style={{width:'100%',minHeight:'100%',background:P.cream,color:P.ink,fontFamily:'Inter,system-ui,sans-serif'}}>
+    <div className={expanded ? 'timeline-open' : ''}
+      style={{width:'100%',minHeight:'100%',background:P.cream,color:P.ink,fontFamily:'Inter,system-ui,sans-serif'}}>
 
       {/* HERO */}
       {/* Wrapper (no overflow:hidden) so the dandelion can drift past the hero's
@@ -1271,7 +1283,7 @@ function Portfolio() {
               '--rot':'-4deg','--dur':'19s',opacity:0.95,filter:'drop-shadow(0 10px 20px rgba(31,26,20,0.12))'}}/>
         </div>
 
-        <section style={{position:'relative',zIndex:1}}>
+        <section className="work-section" style={{position:'relative',zIndex:1}}>
           <SectionLabel title="Selected work"/>
           {activeSkill && (
             <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:14,
