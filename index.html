@@ -18,8 +18,14 @@
   ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg,#C79E2F,#A67F24); }
   ::-webkit-scrollbar-corner { background: #F3E4CE; }
 
-  html, body { margin: 0; padding: 0; background: #FFEDCE; font-family: Inter, sans-serif;
-    overflow-x: hidden; }
+  html, body { margin: 0; padding: 0; background: #FFEDCE; font-family: Inter, sans-serif; }
+  /* Sideways clipping lives on html only. With overflow-x: hidden on body as
+     well, body became a scroll box of its own: the blooms that hang past its
+     bottom gave it ~180px to scroll inside the window, so a wheel over some
+     parts of the page scrolled the body while the window stood still. clip
+     trims body sideways without making it scrollable. */
+  html { overflow-x: hidden; }
+  body { overflow-x: clip; }
   *, *::before, *::after { box-sizing: border-box; }
   @keyframes blob1 {
     0%   { transform: translate(0, 0) scale(1); }
@@ -414,10 +420,11 @@
   }
 
   /* With the timeline open, every case study already hangs from its job, so
-     the big project grid below would only repeat them. The open timeline only
+     the big project grid below would only repeat them, and the toolkit that
+     filters it has nothing left to filter. The open timeline only
      exists above the phone breakpoint, so the rule does too. */
   @media (min-width: 721px) {
-    .timeline-open .work-section { display: none; }
+    .timeline-open .work-section, .timeline-open .toolkit-section { display: none; }
   }
 
   /* Mobile timeline */
@@ -871,6 +878,15 @@ function useWheelToHorizontal(getEl, deps) {
     let activeEl = null;
     let target = 0;
     let raf = null;
+    // The last wheel event anywhere on the page, and whether it went sideways.
+    // A page scroll that carries the cards up under a resting pointer must
+    // keep scrolling the page, and a sideways swipe that drifts off a card
+    // must keep going sideways; only a fresh gesture that starts on a card
+    // decides anew. Recorded on window after this handler has run, so it sees
+    // wheel events from the whole page, not just the timeline.
+    let lastWheelAt = 0;
+    let lastSideways = false;
+    const record = (e) => { lastWheelAt = performance.now(); lastSideways = e.defaultPrevented; };
     const animate = () => {
       if (!activeEl) { raf = null; return; }
       const cur = activeEl.scrollLeft;
@@ -893,7 +909,9 @@ function useWheelToHorizontal(getEl, deps) {
       // Only the job cards themselves turn the wheel sideways. Anywhere else —
       // the dates, the strings and the articles hanging from them, the gaps —
       // the wheel scrolls the page, or a tall timeline would trap it.
-      if (!(e.target instanceof Element) || !e.target.closest('.exp-card-mini')) return;
+      const continuing = performance.now() - lastWheelAt < 450;
+      const onCard = e.target instanceof Element && e.target.closest('.exp-card-mini');
+      if (continuing ? !lastSideways : !onCard) return;
       const max = t.scrollWidth - t.clientWidth;
       const canRight = target < max - 1;
       const canLeft  = target > 0;
@@ -901,11 +919,18 @@ function useWheelToHorizontal(getEl, deps) {
         e.preventDefault();
         target = Math.max(0, Math.min(max, target + e.deltaY * 0.9));
         if (!raf) raf = requestAnimationFrame(animate);
+      } else if (continuing) {
+        // The timeline has reached its end partway through a sideways swipe.
+        // Swallow the rest of that swipe instead of handing it to the page,
+        // which would lurch downward; a fresh scroll after a pause moves it.
+        e.preventDefault();
       }
     };
     host.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('wheel', record, { passive: true });
     return () => {
       host.removeEventListener('wheel', onWheel);
+      window.removeEventListener('wheel', record);
       if (raf) cancelAnimationFrame(raf);
     };
   }, deps || []);
@@ -1239,7 +1264,7 @@ function Portfolio() {
 
       {/* CONTENT */}
       <div className="content-pad" style={{position:'relative',zIndex:3,overflow:'hidden'}}>
-        <section style={{marginBottom:64}}>
+        <section className="toolkit-section" style={{marginBottom:64}}>
           <SectionLabel title="Toolkit"/>
           <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
             {(skills||[]).map((s,i)=>(
